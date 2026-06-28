@@ -7,6 +7,7 @@ const boolFromString = z
 
 const EnvSchema = z.object({
   DATABASE_URL: z.string(),
+  DATA_DIR: z.string().default("../../data"),
   BASE_URL: z.string().default("http://127.0.0.1:8000"),
   SECRET_KEY: z.string().min(1),
   PORT: z.coerce.number().int().default(8000),

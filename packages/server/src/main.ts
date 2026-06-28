@@ -12,6 +12,13 @@ import {
   RecaptchaEnterprise,
 } from "./infrastructure/captcha/RecaptchaEnterprise.js";
 import { buildAuthRoutes } from "./interfaces/http/authRoutes.js";
+import { PrismaCharacterRepository } from "./infrastructure/persistence/prisma/PrismaCharacterRepository.js";
+import { FileGameDataRepository } from "./infrastructure/gamedata/FileGameDataRepository.js";
+import { CryptoDice } from "./infrastructure/rng/CryptoDice.js";
+import { buildCharacterRoutes } from "./interfaces/http/characterRoutes.js";
+import { buildDataRoutes } from "./interfaces/http/dataRoutes.js";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   Register,
   Login,
@@ -23,6 +30,12 @@ import {
   ChangeEmail,
   DeleteAccount,
   type Captcha,
+  ListCharacters,
+  GetCharacter,
+  CreateCharacter,
+  UpdateCharacter,
+  DeleteCharacter,
+  RollCharacter,
 } from "@kw/core";
 
 async function main() {
@@ -50,6 +63,22 @@ async function main() {
           block: env.CAPTCHA_BLOCK,
         })
       : new NoopCaptcha();
+
+  // ---- adaptadores de personajes/datos de juego ----
+  const characters = new PrismaCharacterRepository(prisma);
+  const here = resolve(fileURLToPath(import.meta.url), "..");
+  const dataDir = resolve(here, env.DATA_DIR);
+  const gameData = new FileGameDataRepository(dataDir);
+  const dice = new CryptoDice();
+
+  const characterUseCases = {
+    list: new ListCharacters(characters),
+    get: new GetCharacter(characters),
+    create: new CreateCharacter(characters),
+    update: new UpdateCharacter(characters),
+    remove: new DeleteCharacter(characters),
+    roll: new RollCharacter(gameData, dice),
+  };
 
   // ---- casos de uso (inyección por constructor) ----
   const authUseCases = {
@@ -84,6 +113,10 @@ async function main() {
   // ---- rutas ----
   app.get("/api/health", async () => ({ status: "ok" }));
   await app.register(buildAuthRoutes(authUseCases), { prefix: "/api/auth" });
+  await app.register(buildCharacterRoutes(characterUseCases), {
+    prefix: "/api/characters",
+  });
+  await app.register(buildDataRoutes(gameData), { prefix: "/api/data" });
 
   await app.listen({ port: env.PORT, host: "0.0.0.0" });
 }
