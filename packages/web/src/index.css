@@ -12,14 +12,20 @@
   --color-muted: var(--kw-muted);
   --color-border: var(--kw-border);
 
-  --color-accent: var(--color-amber-600);
-  --color-accent-fg: var(--color-white);
-  --color-accent-hover: var(--color-amber-700);
-  --color-success: var(--color-emerald-600);
-  --color-success-hover: var(--color-emerald-700);
-  --color-danger: var(--color-rose-600);
-  --color-danger-hover: var(--color-rose-700);
-  --color-info: var(--color-sky-600);
+  /* Acento como TEXTO/enlace/anillo de foco (ámbar oscuro en claro, claro en oscuro):
+     legible como texto sobre el fondo (>=4.5:1) */
+  --color-accent: var(--kw-accent);
+  --color-accent-hover: var(--kw-accent-hover);
+  /* Botón primario como SUPERFICIE bajo texto oscuro (ámbar más claro): >=4.5:1 con texto oscuro */
+  --color-btn: var(--kw-btn);
+  --color-btn-hover: var(--kw-btn-hover);
+  --color-btn-fg: var(--color-stone-950);
+  --color-accent-fg: var(--color-stone-950);
+  --color-success: var(--color-emerald-700);
+  --color-success-hover: var(--color-emerald-800);
+  --color-danger: var(--color-rose-700);
+  --color-danger-hover: var(--color-rose-800);
+  --color-info: var(--color-sky-700);
 
   --radius-lg: 0.5rem;
 }
@@ -31,6 +37,10 @@
   --kw-text: var(--color-stone-800);
   --kw-muted: var(--color-stone-500);
   --kw-border: var(--color-stone-200);
+  --kw-accent: var(--color-amber-800);
+  --kw-accent-hover: var(--color-amber-900);
+  --kw-btn: var(--color-amber-600);
+  --kw-btn-hover: var(--color-amber-500);
   /* Hace que los controles nativos (incluido el popup del <select>) se pinten en claro */
   color-scheme: light;
 }
@@ -41,6 +51,10 @@
   --kw-text: var(--color-stone-100);
   --kw-muted: var(--color-stone-400);
   --kw-border: var(--color-stone-800);
+  --kw-accent: var(--color-amber-400);
+  --kw-accent-hover: var(--color-amber-300);
+  --kw-btn: var(--color-amber-400);
+  --kw-btn-hover: var(--color-amber-300);
   /* Popup nativo del <select> en oscuro: texto legible en dark mode */
   color-scheme: dark;
 }
@@ -58,5 +72,11 @@
   h2,
   h3 {
     font-family: var(--font-serif);
+  }
+  /* Enlaces de acento en línea: subrayados por defecto para que no se distingan
+     SOLO por color (WCAG 1.4.1 / regla link-in-text-block) */
+  a.text-accent {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 }
