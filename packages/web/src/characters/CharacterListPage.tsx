@@ -26,9 +26,14 @@ export function CharacterListPage() {
       <PageHeader
         title={t("Characters")}
         actions={
-          <Link to="/characters/new">
-            <Button>+ {t("Create Character")}</Button>
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/characters/new">
+              <Button>+ {t("Create Character")}</Button>
+            </Link>
+            <Link to="/characters/import">
+              <Button variant="secondary">{t("Import")}</Button>
+            </Link>
+          </div>
         }
       />
       {characters && characters.length === 0 ? (
