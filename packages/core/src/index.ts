@@ -61,3 +61,8 @@ export * from "./application/party/index.js";
 
 // Generator — puerto
 export type { GeneratorRepository } from "./ports/driven/GeneratorRepository.js";
+
+// Generator — errores y casos de uso
+export { GeneratorError } from "./application/generator/errors.js";
+export type { GeneratorErrorCode } from "./application/generator/errors.js";
+export { RollTable } from "./application/generator/RollTable.js";
