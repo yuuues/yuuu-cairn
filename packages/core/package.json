@@ -4,7 +4,15 @@
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing/InMemoryUserRepository.js": "./src/testing/InMemoryUserRepository.ts",
+    "./testing/FakePasswordHasher.js": "./src/testing/FakePasswordHasher.ts",
+    "./testing/FakeMailer.js": "./src/testing/FakeMailer.ts",
+    "./testing/FakeTokenService.js": "./src/testing/FakeTokenService.ts",
+    "./testing/FakeCaptcha.js": "./src/testing/FakeCaptcha.ts",
+    "./testing/FixedClock.js": "./src/testing/FixedClock.ts"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
