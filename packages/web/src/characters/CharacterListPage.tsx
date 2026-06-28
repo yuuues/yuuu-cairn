@@ -32,7 +32,7 @@ export function CharacterListPage() {
         }
       />
       {characters && characters.length === 0 ? (
-        <p className="text-muted">No characters yet.</p>
+        <p className="text-muted">{t("No characters yet.")}</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {characters?.map((c) => (

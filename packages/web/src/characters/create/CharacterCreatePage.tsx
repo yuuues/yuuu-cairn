@@ -225,7 +225,7 @@ export function CharacterCreatePage() {
 
         <div className="flex gap-3">
           <Button variant="ghost" onClick={() => setStep("background")}>
-            ← Back
+            ← {t("Back")}
           </Button>
           <Button onClick={onSave} disabled={!draft.name || create.isPending}>
             {t("Save Character")}

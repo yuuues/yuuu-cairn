@@ -18,7 +18,7 @@ export function CharacterViewPage() {
   if (error || !character)
     return (
       <Container>
-        <p className="text-danger">Character not found.</p>
+        <p className="text-danger">{t("Character not found.")}</p>
       </Container>
     );
 
@@ -29,7 +29,7 @@ export function CharacterViewPage() {
         actions={
           <>
             <Link to="/characters">
-              <Button variant="ghost" size="sm">← Back</Button>
+              <Button variant="ghost" size="sm">← {t("Back")}</Button>
             </Link>
             <Link to={`/characters/${character.id}/edit`}>
               <Button variant="secondary" size="sm">{t("Edit")}</Button>
@@ -38,7 +38,7 @@ export function CharacterViewPage() {
               <Button variant="secondary" size="sm">{t("Inventory")}</Button>
             </Link>
             <Link to={`/characters/${character.id}/print`}>
-              <Button variant="ghost" size="sm">Print</Button>
+              <Button variant="ghost" size="sm">{t("Print")}</Button>
             </Link>
           </>
         }

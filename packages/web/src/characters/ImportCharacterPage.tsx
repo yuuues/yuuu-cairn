@@ -17,7 +17,7 @@ export function ImportCharacterPage() {
     setError(null);
     const file = fileRef.current?.files?.[0];
     if (!file) {
-      setError("Please select a JSON file.");
+      setError(t("Please select a JSON file."));
       return;
     }
     try {
@@ -32,11 +32,11 @@ export function ImportCharacterPage() {
       setSuccess(true);
     } catch (err) {
       if (err instanceof SyntaxError) {
-        setError("Invalid JSON file.");
+        setError(t("Invalid JSON file."));
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Import failed.");
+        setError(t("Import failed."));
       }
     }
   }
@@ -45,9 +45,9 @@ export function ImportCharacterPage() {
     return (
       <Container className="max-w-md">
         <Card className="flex flex-col gap-4 text-center">
-          <p className="text-success">Character imported successfully!</p>
+          <p className="text-success">{t("Character imported successfully!")}</p>
           <Link to="/characters">
-            <Button>Go to characters</Button>
+            <Button>{t("Go to characters")}</Button>
           </Link>
         </Card>
       </Container>
@@ -57,11 +57,11 @@ export function ImportCharacterPage() {
   return (
     <Container className="max-w-md">
       <Card>
-        <h1 className="mb-6 font-serif text-2xl text-text">Upload JSON Character File</h1>
+        <h1 className="mb-6 font-serif text-2xl text-text">{t("Upload JSON Character File")}</h1>
         <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-text">
-              JSON File
+              {t("JSON File")}
             </label>
             <input
               type="file"
@@ -80,7 +80,7 @@ export function ImportCharacterPage() {
               type="submit"
               disabled={importMutation.isPending}
             >
-              {importMutation.isPending ? "Importing..." : t("Import")}
+              {importMutation.isPending ? t("Importing…") : t("Import")}
             </Button>
             <Link to="/characters">
               <Button type="button" variant="secondary">{t("Cancel")}</Button>
