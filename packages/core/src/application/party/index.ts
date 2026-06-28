@@ -15,3 +15,4 @@ export { LeaveParty } from "./LeaveParty.js";
 export type { LeavePartyCommand } from "./LeaveParty.js";
 export { UpdatePartyInventory } from "./UpdatePartyInventory.js";
 export type { UpdatePartyInventoryCommand } from "./UpdatePartyInventory.js";
+export * from "./RollDice.js";
