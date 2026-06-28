@@ -66,3 +66,4 @@ export type { GeneratorRepository } from "./ports/driven/GeneratorRepository.js"
 export { GeneratorError } from "./application/generator/errors.js";
 export type { GeneratorErrorCode } from "./application/generator/errors.js";
 export { RollTable } from "./application/generator/RollTable.js";
+export { GenerateNpc } from "./application/generator/GenerateNpc.js";
