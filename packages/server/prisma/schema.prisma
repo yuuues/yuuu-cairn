@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  lastLogin    DateTime    @default(now())
+  email        String      @unique
+  passwordHash String
+  username     String      @unique
+  confirmed    Boolean     @default(false)
+  characters   Character[]
+  parties      Party[]
+}
+
+model Character {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId       Int
+  name          String
+  background    String
+  strength      Int
+  strengthMax   Int
+  dexterity     Int
+  dexterityMax  Int
+  willpower     Int
+  willpowerMax  Int
+  hp            Int
+  hpMax         Int
+  deprived      Boolean  @default(false)
+  panicked      Boolean  @default(false)
+  gold          Int      @default(0)
+  items         String   @default("[]")      // JSON
+  containers    String   @default("[]")      // JSON
+  description   String?
+  traits        String?
+  notes         String?
+  bonds         String?
+  scars         String?
+  omens         String?
+  armor         String?
+  imageUrl      String?
+  partyId       Int?
+}
+
+model Party {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     Int
+  name        String
+  description String?
+  notes       String?
+  members     String   @default("[]")        // JSON array de ids
+  subowners   String   @default("[]")        // JSON array de ids
+  joinCode    String   @unique
+  items       String   @default("[]")        // JSON
+  containers  String   @default("[]")        // JSON
+  events      String   @default("[]")        // JSON
+  version     Int      @default(0)
+}
