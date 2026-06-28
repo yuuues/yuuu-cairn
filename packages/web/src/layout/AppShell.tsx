@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSession } from "../auth/useSession.js";
+import { USE_LOCAL } from "../client/mode.js";
 import { LanguageSelector } from "../i18n/LanguageSelector.js";
 import { ThemeToggle } from "./ThemeToggle.js";
 import { NavDrawer } from "./NavDrawer.js";
@@ -17,6 +18,20 @@ function NavLinks({
   className?: string;
 }) {
   const { t } = useTranslation();
+  if (USE_LOCAL) {
+    // Modo local: sin cuentas ni partidas online; solo personajes.
+    return (
+      <div className={className}>
+        <Link
+          to="/characters"
+          onClick={onNavigate}
+          className="text-text hover:text-accent"
+        >
+          {t("Characters")}
+        </Link>
+      </div>
+    );
+  }
   return (
     <div className={className}>
       {authed ? (
@@ -74,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-bg text-text">
       <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
           <Link to="/" className="font-serif text-xl font-bold text-text">
             Kettlewright
           </Link>
