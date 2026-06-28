@@ -1,6 +1,11 @@
 import Fastify from "fastify";
 import cookie from "@fastify/cookie";
 import session from "@fastify/session";
+import fastifyIO from "fastify-socket.io";
+import { MemoryStore } from "@fastify/session";
+import { SocketEventPublisher } from "./infrastructure/realtime/socketio/SocketEventPublisher.js";
+import { registerSocketHandlers } from "./interfaces/socket/socketGateway.js";
+import { resolveSessionUser } from "./interfaces/socket/sessionFromHandshake.js";
 import { loadEnv } from "./infrastructure/config/env.js";
 import { getPrismaClient } from "./infrastructure/persistence/prisma/prismaClient.js";
 import { PrismaUserRepository } from "./infrastructure/persistence/prisma/PrismaUserRepository.js";
@@ -53,6 +58,7 @@ import {
   JoinParty,
   LeaveParty,
   UpdatePartyInventory,
+  RollDice,
 } from "@kw/core";
 
 async function main() {
@@ -139,11 +145,13 @@ async function main() {
     deleteAccount: new DeleteAccount(users, hasher),
   };
 
-  // ---- sesión por cookie httpOnly ----
+  // ---- sesión por cookie httpOnly (store explícito, compartido con Socket.IO) ----
+  const sessionStore = new MemoryStore();
   await app.register(cookie);
   await app.register(session, {
     secret: env.SECRET_KEY,
     cookieName: "kw_session",
+    store: sessionStore,
     cookie: {
       httpOnly: true,
       sameSite: "lax",
@@ -151,6 +159,11 @@ async function main() {
       maxAge: 60 * 60 * 24, // 24 h (paridad: PERMANENT_SESSION_LIFETIME)
       path: "/",
     },
+  });
+
+  // ---- Socket.IO montado sobre el servidor HTTP de Fastify ----
+  await app.register(fastifyIO, {
+    cors: { origin: env.BASE_URL, credentials: true },
   });
 
   // ---- rutas ----
@@ -167,6 +180,23 @@ async function main() {
     prefix: "/api/marketplace",
   });
   await app.register(buildPartyRoutes(partyUseCases), { prefix: "/api/parties" });
+
+  // ---- tiempo real: publisher + caso de uso + gateway ----
+  await app.ready(); // garantiza que app.io está disponible
+  const eventPublisher = new SocketEventPublisher(app.io);
+  const rollDice = new RollDice(characters, parties, eventPublisher);
+
+  registerSocketHandlers(app.io, {
+    rollDice,
+    parties,
+    resolveUser: (socket) =>
+      resolveSessionUser(
+        socket.handshake.headers.cookie,
+        env.SECRET_KEY,
+        "kw_session",
+        sessionStore
+      ),
+  });
 
   await app.listen({ port: env.PORT, host: "0.0.0.0" });
 }
