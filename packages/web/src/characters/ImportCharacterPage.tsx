@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { charactersApi } from "../client/characters.js";
 import { importEnvelopeIntoStore, readFileText } from "../local/exportFile.js";
-import { Container, Card, Button } from "../ui/index.js";
+import { decodeFromQr } from "../local/qr.js";
+import { Container, Card, Button, Textarea } from "../ui/index.js";
 
 export function ImportCharacterPage() {
   const { t } = useTranslation();
@@ -12,6 +13,8 @@ export function ImportCharacterPage() {
   const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [qrText, setQrText] = useState("");
+  const [qrError, setQrError] = useState<string | null>(null);
 
   const importMutation = useMutation({
     mutationFn: (json: string) =>
@@ -40,6 +43,26 @@ export function ImportCharacterPage() {
         setError(err.message);
       } else {
         setError(t("Import failed."));
+      }
+    }
+  }
+
+  async function handleQrSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setQrError(null);
+    const value = qrText.trim();
+    if (!value) {
+      setQrError(t("Please paste QR content."));
+      return;
+    }
+    try {
+      const json = decodeFromQr(value);
+      await importMutation.mutateAsync(json);
+    } catch (err) {
+      if (err instanceof Error) {
+        setQrError(err.message);
+      } else {
+        setQrError(t("Import failed."));
       }
     }
   }
@@ -77,6 +100,32 @@ export function ImportCharacterPage() {
               <Button type="button" variant="secondary">{t("Cancel")}</Button>
             </Link>
           </div>
+        </form>
+      </Card>
+
+      <Card className="mt-6">
+        <h2 className="mb-4 font-serif text-xl text-text">{t("Import from QR")}</h2>
+        <form onSubmit={(e) => void handleQrSubmit(e)} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="import-qr-text" className="text-sm font-medium text-text">
+              {t("QR content")}
+            </label>
+            <Textarea
+              id="import-qr-text"
+              rows={4}
+              value={qrText}
+              onChange={(e) => setQrText(e.target.value)}
+              placeholder="C1:…"
+            />
+          </div>
+          {qrError && (
+            <p role="alert" className="text-sm text-danger">
+              {qrError}
+            </p>
+          )}
+          <Button type="submit" disabled={importMutation.isPending}>
+            {importMutation.isPending ? t("Importing…") : t("Import")}
+          </Button>
         </form>
       </Card>
     </Container>

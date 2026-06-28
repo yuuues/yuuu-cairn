@@ -1,15 +1,41 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import QRCode from "qrcode";
 import { serializeCharacter } from "@kw/shared";
 import { useCharacter } from "./useCharacters.js";
 import { downloadJson } from "../local/exportFile.js";
-import { Container, PageHeader, Card, Badge, Button, Spinner } from "../ui/index.js";
+import { encodeForQr, fitsInQr } from "../local/qr.js";
+import { Container, PageHeader, Card, Badge, Button, Spinner, Modal } from "../ui/index.js";
 
 export function CharacterViewPage() {
   const { t } = useTranslation();
   const { id } = useParams();
   const charId = Number(id);
   const { data: character, isLoading, error } = useCharacter(charId);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [qrError, setQrError] = useState<string | null>(null);
+
+  async function handleShowQr() {
+    if (!character) return;
+    setQrError(null);
+    setQrDataUrl(null);
+    const encoded = encodeForQr(serializeCharacter(character));
+    if (!fitsInQr(encoded)) {
+      setQrError(t("Character too large for QR, use Export file instead."));
+      setQrOpen(true);
+      return;
+    }
+    try {
+      const url = await QRCode.toDataURL(encoded, { errorCorrectionLevel: "L" });
+      setQrDataUrl(url);
+      setQrOpen(true);
+    } catch {
+      setQrError(t("Could not generate QR code."));
+      setQrOpen(true);
+    }
+  }
 
   if (isLoading)
     return (
@@ -54,9 +80,39 @@ export function CharacterViewPage() {
             >
               {t("Export")}
             </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => void handleShowQr()}
+            >
+              {t("QR")}
+            </Button>
           </>
         }
       />
+
+      <Modal
+        open={qrOpen}
+        onClose={() => setQrOpen(false)}
+        title={t("Character QR code")}
+      >
+        {qrError ? (
+          <p role="alert" className="text-sm text-danger">
+            {qrError}
+          </p>
+        ) : qrDataUrl ? (
+          <div className="flex flex-col items-center gap-3">
+            <img
+              src={qrDataUrl}
+              alt={t("QR code for {{name}}", { name: character.name })}
+              className="h-auto w-full max-w-xs"
+            />
+            <p className="text-sm text-muted">
+              {t("Scan or copy this code to import the character elsewhere.")}
+            </p>
+          </div>
+        ) : null}
+      </Modal>
 
       <div className="flex flex-col gap-4">
         <Card>

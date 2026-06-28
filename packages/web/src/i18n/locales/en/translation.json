@@ -135,5 +135,14 @@
   "Virtue": "Virtue",
   "Vice": "Vice",
   "Quirk": "Quirk",
-  "Goal": "Goal"
+  "Goal": "Goal",
+  "QR": "QR",
+  "Character QR code": "Character QR code",
+  "Character too large for QR, use Export file instead.": "Character too large for QR, use Export file instead.",
+  "Could not generate QR code.": "Could not generate QR code.",
+  "QR code for {{name}}": "QR code for {{name}}",
+  "Scan or copy this code to import the character elsewhere.": "Scan or copy this code to import the character elsewhere.",
+  "Import from QR": "Import from QR",
+  "QR content": "QR content",
+  "Please paste QR content.": "Please paste QR content."
 }

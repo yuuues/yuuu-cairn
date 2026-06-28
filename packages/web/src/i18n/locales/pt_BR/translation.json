@@ -135,5 +135,14 @@
   "Virtue": "Virtude",
   "Vice": "Vício",
   "Quirk": "Mania",
-  "Goal": "Objetivo"
+  "Goal": "Objetivo",
+  "QR": "QR",
+  "Character QR code": "Código QR do personagem",
+  "Character too large for QR, use Export file instead.": "Personagem grande demais para QR, use Exportar arquivo.",
+  "Could not generate QR code.": "Não foi possível gerar o código QR.",
+  "QR code for {{name}}": "Código QR de {{name}}",
+  "Scan or copy this code to import the character elsewhere.": "Escaneie ou copie este código para importar o personagem em outro lugar.",
+  "Import from QR": "Importar de QR",
+  "QR content": "Conteúdo QR",
+  "Please paste QR content.": "Cole o conteúdo do QR."
 }

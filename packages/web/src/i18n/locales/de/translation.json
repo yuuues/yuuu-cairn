@@ -135,5 +135,14 @@
   "Virtue": "Tugend",
   "Vice": "Laster",
   "Quirk": "Eigenheit",
-  "Goal": "Ziel"
+  "Goal": "Ziel",
+  "QR": "QR",
+  "Character QR code": "QR-Code des Charakters",
+  "Character too large for QR, use Export file instead.": "Charakter zu groß für QR, nutze stattdessen Datei exportieren.",
+  "Could not generate QR code.": "QR-Code konnte nicht erstellt werden.",
+  "QR code for {{name}}": "QR-Code für {{name}}",
+  "Scan or copy this code to import the character elsewhere.": "Scanne oder kopiere diesen Code, um den Charakter anderswo zu importieren.",
+  "Import from QR": "Aus QR importieren",
+  "QR content": "QR-Inhalt",
+  "Please paste QR content.": "Bitte füge den QR-Inhalt ein."
 }

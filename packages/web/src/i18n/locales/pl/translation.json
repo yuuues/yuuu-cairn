@@ -135,5 +135,14 @@
   "Virtue": "Cnota",
   "Vice": "Wada",
   "Quirk": "Cecha",
-  "Goal": "Cel"
+  "Goal": "Cel",
+  "QR": "QR",
+  "Character QR code": "Kod QR postaci",
+  "Character too large for QR, use Export file instead.": "Postać zbyt duża na QR, użyj eksportu do pliku.",
+  "Could not generate QR code.": "Nie udało się wygenerować kodu QR.",
+  "QR code for {{name}}": "Kod QR dla {{name}}",
+  "Scan or copy this code to import the character elsewhere.": "Zeskanuj lub skopiuj ten kod, aby zaimportować postać gdzie indziej.",
+  "Import from QR": "Importuj z QR",
+  "QR content": "Treść QR",
+  "Please paste QR content.": "Wklej treść kodu QR."
 }
