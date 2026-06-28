@@ -15,6 +15,19 @@ importers:
         specifier: ^2.0.5
         version: 2.1.9
 
+  packages/core:
+    dependencies:
+      '@kw/shared':
+        specifier: workspace:*
+        version: link:../shared
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      vitest:
+        specifier: ^2.0.5
+        version: 2.1.9
+
   packages/shared:
     dependencies:
       zod:
