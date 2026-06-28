@@ -14,7 +14,8 @@ export function CharacterViewPage() {
       <h1>{character.name}</h1>
       <p>
         <Link to="/characters">← Back</Link> ·{" "}
-        <Link to={`/characters/${character.id}/edit`}>Edit</Link>
+        <Link to={`/characters/${character.id}/edit`}>Edit</Link> ·{" "}
+        <Link to={`/characters/${character.id}/inventory`}>Inventory</Link>
       </p>
       <p>Background: {character.background}</p>
       <ul>

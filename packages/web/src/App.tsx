@@ -13,6 +13,7 @@ import { CharacterListPage } from "./characters/CharacterListPage.js";
 import { CharacterViewPage } from "./characters/CharacterViewPage.js";
 import { CharacterEditPage } from "./characters/CharacterEditPage.js";
 import { CharacterCreatePage } from "./characters/create/CharacterCreatePage.js";
+import { InventoryEditorPage } from "./inventory/InventoryEditorPage.js";
 
 function Home() {
   const { data: user } = useSession();
@@ -50,6 +51,10 @@ export function App() {
       <Route path="/characters/new" element={<CharacterCreatePage />} />
       <Route path="/characters/:id" element={<CharacterViewPage />} />
       <Route path="/characters/:id/edit" element={<CharacterEditPage />} />
+      <Route
+        path="/characters/:id/inventory"
+        element={<InventoryEditorPage />}
+      />
     </Routes>
   );
 }
