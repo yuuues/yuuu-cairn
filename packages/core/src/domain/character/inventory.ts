@@ -24,3 +24,32 @@ export function mainContainerSlots(containers: Container[]): number {
 export function isOverburdened(items: Item[], containers: Container[]): boolean {
   return occupiedMainSlots(items) >= mainContainerSlots(containers);
 }
+
+/** Slots ocupados en un contenedor concreto (paridad Inventory.container_slots). */
+export function containerSlots(items: Item[], containerId: number): number {
+  return items
+    .filter((it) => it.location === containerId)
+    .reduce((sum, it) => sum + itemSlotCost(it), 0);
+}
+
+/** Capacidad libre del contenedor (0 si no existe). */
+export function containerCapacityLeft(
+  items: Item[],
+  containers: Container[],
+  containerId: number
+): number {
+  const container = containers.find((c) => c.id === containerId);
+  if (!container) return 0;
+  return container.slots - containerSlots(items, containerId);
+}
+
+/** Lleno cuando los slots ocupados alcanzan/superan la capacidad (>=). */
+export function isContainerFull(
+  items: Item[],
+  containers: Container[],
+  containerId: number
+): boolean {
+  const container = containers.find((c) => c.id === containerId);
+  if (!container) return true;
+  return containerSlots(items, containerId) >= container.slots;
+}

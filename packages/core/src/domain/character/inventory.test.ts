@@ -4,6 +4,9 @@ import { itemSlotCost, occupiedMainSlots } from "./inventory.js";
 import {
   mainContainerSlots,
   isOverburdened,
+  containerSlots,
+  containerCapacityLeft,
+  isContainerFull,
 } from "./inventory.js";
 
 const item = (over: Partial<Item>): Item => ({
@@ -65,5 +68,46 @@ describe("isOverburdened", () => {
       item({ id: i + 1, location: 0 })
     ); // 10 slots
     expect(isOverburdened(items, [mainContainer(10)])).toBe(true);
+  });
+});
+
+describe("containerSlots", () => {
+  it("suma el coste de los items cuyo location coincide con el contenedor", () => {
+    const items = [
+      item({ id: 1, location: 3, tags: [] }), // 1
+      item({ id: 2, location: 3, tags: ["bulky"] }), // 2
+      item({ id: 3, location: 3, tags: ["petty"] }), // 0
+      item({ id: 4, location: 0, tags: [] }), // ignorado
+    ];
+    expect(containerSlots(items, 3)).toBe(3);
+  });
+  it("contenedor sin items => 0", () => {
+    expect(containerSlots([], 3)).toBe(0);
+  });
+});
+
+describe("containerCapacityLeft", () => {
+  it("capacidad libre = slots del contenedor menos ocupados", () => {
+    const items = [item({ id: 1, location: 2, tags: [] })]; // 1
+    const containers = [{ id: 2, name: "Sack", slots: 6 }];
+    expect(containerCapacityLeft(items, containers, 2)).toBe(5);
+  });
+  it("contenedor inexistente => 0", () => {
+    expect(containerCapacityLeft([], [], 9)).toBe(0);
+  });
+});
+
+describe("isContainerFull", () => {
+  it("lleno cuando los slots ocupados alcanzan la capacidad (>=)", () => {
+    const items = Array.from({ length: 6 }, (_, i) =>
+      item({ id: i + 1, location: 2, tags: [] })
+    ); // 6 slots
+    const containers = [{ id: 2, name: "Sack", slots: 6 }];
+    expect(isContainerFull(items, containers, 2)).toBe(true);
+  });
+  it("no lleno con hueco", () => {
+    const items = [item({ id: 1, location: 2, tags: [] })];
+    const containers = [{ id: 2, name: "Sack", slots: 6 }];
+    expect(isContainerFull(items, containers, 2)).toBe(false);
   });
 });
