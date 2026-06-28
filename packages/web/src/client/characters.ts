@@ -2,9 +2,7 @@ import {
   charactersApi as httpCharactersApi,
   dataApi as httpDataApi,
 } from "../api/characters.js";
-
-// Local por defecto; HTTP solo si VITE_LOCAL === "false".
-const USE_LOCAL = import.meta.env.VITE_LOCAL !== "false";
+import { USE_LOCAL } from "./mode.js";
 
 let charactersApi = httpCharactersApi;
 let dataApi = httpDataApi;

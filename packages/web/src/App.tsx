@@ -23,21 +23,39 @@ import { PartyViewPage } from "./parties/PartyViewPage.js";
 import { PartyEditPage } from "./parties/PartyEditPage.js";
 import { JoinPartyPage } from "./parties/JoinPartyPage.js";
 import { ToolsPage } from "./generators/ToolsPage.js";
+import { USE_LOCAL } from "./client/mode.js";
 
 export function App() {
   return (
     <AppShell>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/resend-confirmation" element={<ResendConfirmationPage />} />
-        <Route path="/reset-request" element={<RequestPasswordResetPage />} />
-        <Route path="/reset" element={<ResetPasswordPage />} />
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/account/change-password" element={<ChangePasswordPage />} />
-        <Route path="/account/change-email" element={<ChangeEmailPage />} />
-        <Route path="/account/delete" element={<DeleteAccountPage />} />
+        {/* Rutas online (auth/cuenta/parties/realtime): solo fuera de modo local. */}
+        {!USE_LOCAL && (
+          <>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/resend-confirmation"
+              element={<ResendConfirmationPage />}
+            />
+            <Route path="/reset-request" element={<RequestPasswordResetPage />} />
+            <Route path="/reset" element={<ResetPasswordPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route
+              path="/account/change-password"
+              element={<ChangePasswordPage />}
+            />
+            <Route path="/account/change-email" element={<ChangeEmailPage />} />
+            <Route path="/account/delete" element={<DeleteAccountPage />} />
+            <Route path="/parties" element={<PartyListPage />} />
+            <Route path="/parties/new" element={<PartyCreatePage />} />
+            <Route path="/parties/join" element={<JoinPartyPage />} />
+            <Route path="/parties/:id" element={<PartyViewPage />} />
+            <Route path="/parties/:id/edit" element={<PartyEditPage />} />
+          </>
+        )}
+        {/* Rutas siempre activas: personajes + import/export. */}
         <Route path="/characters" element={<CharacterListPage />} />
         <Route path="/characters/new" element={<CharacterCreatePage />} />
         <Route path="/characters/import" element={<ImportCharacterPage />} />
@@ -48,11 +66,6 @@ export function App() {
           element={<InventoryEditorPage />}
         />
         <Route path="/characters/:id/print" element={<PrintCharacterPage />} />
-        <Route path="/parties" element={<PartyListPage />} />
-        <Route path="/parties/new" element={<PartyCreatePage />} />
-        <Route path="/parties/join" element={<JoinPartyPage />} />
-        <Route path="/parties/:id" element={<PartyViewPage />} />
-        <Route path="/parties/:id/edit" element={<PartyEditPage />} />
         <Route path="/tools" element={<ToolsPage />} />
       </Routes>
     </AppShell>
