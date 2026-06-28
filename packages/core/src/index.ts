@@ -39,3 +39,10 @@ export { ChangeEmail } from "./application/auth/ChangeEmail.js";
 export type { ChangeEmailCommand } from "./application/auth/ChangeEmail.js";
 export { DeleteAccount } from "./application/auth/DeleteAccount.js";
 export type { DeleteAccountCommand } from "./application/auth/DeleteAccount.js";
+
+// Character — dominio puro
+export * from "./domain/character/traits.js";
+export * from "./domain/character/creation.js";
+
+// Character — casos de uso
+export * from "./application/character/index.js";
