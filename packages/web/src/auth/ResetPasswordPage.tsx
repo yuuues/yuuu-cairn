@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { authApi, ApiError } from "../api/auth.js";
+import { Card, Field, Input, Button } from "../ui/index.js";
 
 export function ResetPasswordPage() {
   const [params] = useSearchParams();
@@ -28,12 +29,38 @@ export function ResetPasswordPage() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <h1>{t("New Password")}</h1>
-      {error && <p role="alert">{error}</p>}
-      <input type="password" placeholder={t("Password")} value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input type="password" placeholder={t("Confirm password")} value={password2} onChange={(e) => setPassword2(e.target.value)} required />
-      <button type="submit" disabled={!token}>{t("Reset Password")}</button>
-    </form>
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+      <Card className="w-full">
+        <h1 className="mb-6 font-serif text-2xl text-text">{t("New Password")}</h1>
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          {error && (
+            <p role="alert" className="text-sm text-danger">
+              {error}
+            </p>
+          )}
+          <Field label={t("Password")} htmlFor="reset-password">
+            <Input
+              id="reset-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("Confirm password")} htmlFor="reset-password2">
+            <Input
+              id="reset-password2"
+              type="password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+              required
+            />
+          </Field>
+          <Button type="submit" disabled={!token}>
+            {t("Reset Password")}
+          </Button>
+        </form>
+      </Card>
+    </div>
   );
 }

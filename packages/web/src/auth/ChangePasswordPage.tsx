@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { authApi, ApiError } from "../api/auth.js";
+import { Card, Field, Input, Button } from "../ui/index.js";
 
 export function ChangePasswordPage() {
   const [oldPassword, setOldPassword] = useState("");
@@ -27,13 +28,45 @@ export function ChangePasswordPage() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <h1>Change Password</h1>
-      {error && <p role="alert">{error}</p>}
-      <input type="password" placeholder={t("Current Password")} value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} required />
-      <input type="password" placeholder={t("New password")} value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input type="password" placeholder={t("Confirm new password")} value={password2} onChange={(e) => setPassword2(e.target.value)} required />
-      <button type="submit">{t("Change")}</button>
-    </form>
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+      <Card className="w-full">
+        <h1 className="mb-6 font-serif text-2xl text-text">Change Password</h1>
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          {error && (
+            <p role="alert" className="text-sm text-danger">
+              {error}
+            </p>
+          )}
+          <Field label={t("Current Password")} htmlFor="change-old-password">
+            <Input
+              id="change-old-password"
+              type="password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("New password")} htmlFor="change-password">
+            <Input
+              id="change-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("Confirm new password")} htmlFor="change-password2">
+            <Input
+              id="change-password2"
+              type="password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+              required
+            />
+          </Field>
+          <Button type="submit">{t("Change")}</Button>
+        </form>
+      </Card>
+    </div>
   );
 }

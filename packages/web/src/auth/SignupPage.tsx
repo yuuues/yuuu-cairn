@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { authApi, ApiError } from "../api/auth.js";
+import { Card, Field, Input, Button } from "../ui/index.js";
 
 export function SignupPage() {
   const [email, setEmail] = useState("");
@@ -36,22 +37,75 @@ export function SignupPage() {
   }
 
   if (done) {
-    return <p>A confirmation email has been sent. Please check your inbox.</p>;
+    return (
+      <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+        <Card className="w-full">
+          <p className="text-text">A confirmation email has been sent. Please check your inbox.</p>
+        </Card>
+      </div>
+    );
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <h1>{t("Sign Up")}</h1>
-      {error && <p role="alert">{error}</p>}
-      <input placeholder={t("Email")} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input placeholder={t("Username")} value={username} onChange={(e) => setUsername(e.target.value)} required />
-      <input placeholder={t("Password")} type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input placeholder={t("Confirm password")} type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} required />
-      <input placeholder={t("Signup Code")} value={signupCode} onChange={(e) => setSignupCode(e.target.value)} />
-      <button type="submit">{t("Sign Up")}</button>
-      <p>
-        <Link to="/login">Already have an account? {t("Login")}</Link>
-      </p>
-    </form>
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+      <Card className="w-full">
+        <h1 className="mb-6 font-serif text-2xl text-text">{t("Sign Up")}</h1>
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          {error && (
+            <p role="alert" className="text-sm text-danger">
+              {error}
+            </p>
+          )}
+          <Field label={t("Email")} htmlFor="signup-email">
+            <Input
+              id="signup-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("Username")} htmlFor="signup-username">
+            <Input
+              id="signup-username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("Password")} htmlFor="signup-password">
+            <Input
+              id="signup-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("Confirm password")} htmlFor="signup-password2">
+            <Input
+              id="signup-password2"
+              type="password"
+              value={password2}
+              onChange={(e) => setPassword2(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={t("Signup Code")} htmlFor="signup-code">
+            <Input
+              id="signup-code"
+              value={signupCode}
+              onChange={(e) => setSignupCode(e.target.value)}
+            />
+          </Field>
+          <Button type="submit">{t("Sign Up")}</Button>
+        </form>
+        <p className="mt-4 text-sm text-muted">
+          <Link to="/login" className="text-accent hover:underline">
+            Already have an account? {t("Login")}
+          </Link>
+        </p>
+      </Card>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { authApi, ApiError } from "../api/auth.js";
+import { Card, Field, Input, Button } from "../ui/index.js";
 
 export function ResendConfirmationPage() {
   const [email, setEmail] = useState("");
@@ -23,11 +24,27 @@ export function ResendConfirmationPage() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <h1>{t("Resend Confirmation")}</h1>
-      {message && <p role="alert">{message}</p>}
-      <input type="email" placeholder={t("Email")} value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <button type="submit">{t("Resend Confirmation")}</button>
-    </form>
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+      <Card className="w-full">
+        <h1 className="mb-6 font-serif text-2xl text-text">{t("Resend Confirmation")}</h1>
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          {message && (
+            <p role="alert" className="text-sm text-muted">
+              {message}
+            </p>
+          )}
+          <Field label={t("Email")} htmlFor="resend-email">
+            <Input
+              id="resend-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Field>
+          <Button type="submit">{t("Resend Confirmation")}</Button>
+        </form>
+      </Card>
+    </div>
   );
 }
