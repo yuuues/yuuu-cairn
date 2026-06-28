@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+packages/server/prisma/*.sqlite
+packages/server/prisma/dev.db*
+.DS_Store
