@@ -6,6 +6,7 @@ import { useSession } from "../auth/useSession.js";
 import { useCharacters } from "../characters/useCharacters.js";
 import { useDiceRoller } from "../realtime/useDiceRoller.js";
 import { DiceModal } from "../realtime/DiceModal.js";
+import { Container, PageHeader, Card, Badge, Button, Spinner } from "../ui/index.js";
 
 export function PartyViewPage() {
   const { t } = useTranslation();
@@ -17,8 +18,18 @@ export function PartyViewPage() {
   const { notifications, roll } = useDiceRoller();
   const [diceOpen, setDiceOpen] = useState(false);
 
-  if (isLoading) return <p>Loading…</p>;
-  if (error) return <p>Party not found or access denied.</p>;
+  if (isLoading)
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
+  if (error)
+    return (
+      <Container>
+        <p className="text-danger">Party not found or access denied.</p>
+      </Container>
+    );
   if (!data) return null;
 
   const { party, joinCode } = data;
@@ -35,26 +46,34 @@ export function PartyViewPage() {
   }
 
   return (
-    <div>
-      <h1>{party.name}</h1>
-      {party.description && <p>{party.description}</p>}
+    <Container>
+      <PageHeader
+        title={party.name}
+        actions={
+          (isOwner || isSubowner) ? (
+            <Link to={`/parties/${party.id}/edit`}>
+              <Button variant="secondary">{t("Edit")}</Button>
+            </Link>
+          ) : undefined
+        }
+      />
 
-      {(isOwner || isSubowner) && (
-        <div>
-          <Link to={`/parties/${party.id}/edit`}>{t("Edit")}</Link>
-          {joinCode && (
-            <p>
-              {t("Party Code")}: <strong>{joinCode}</strong>
-            </p>
-          )}
-        </div>
+      {party.description && (
+        <p className="mb-6 text-muted">{party.description}</p>
+      )}
+
+      {(isOwner || isSubowner) && joinCode && (
+        <Card className="mb-6">
+          <p className="text-sm text-muted">{t("Party Code")}</p>
+          <Badge variant="accent" className="mt-1 text-base font-mono">{joinCode}</Badge>
+        </Card>
       )}
 
       {myMemberCharacter && (
-        <section>
-          <button type="button" onClick={() => setDiceOpen(true)}>
+        <Card className="mb-6">
+          <Button type="button" onClick={() => setDiceOpen(true)}>
             Roll dice
-          </button>
+          </Button>
           {diceOpen && (
             <DiceModal
               mode="party"
@@ -62,47 +81,47 @@ export function PartyViewPage() {
               onClose={() => setDiceOpen(false)}
             />
           )}
-        </section>
+        </Card>
       )}
 
-      <section aria-live="polite">
-        <h2>Dice rolls</h2>
+      <Card className="mb-6" aria-live="polite">
+        <h2 className="mb-3 font-serif text-lg text-text">Dice rolls</h2>
         {notifications.length === 0 ? (
-          <p>No rolls yet.</p>
+          <p className="text-muted">No rolls yet.</p>
         ) : (
-          <ul>
+          <ul className="flex flex-col gap-1">
             {notifications.map((msg, i) => (
-              <li key={i}>{msg}</li>
+              <li key={i} className="text-sm text-text">{msg}</li>
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
-      <section>
-        <h2>Members ({party.members.length})</h2>
+      <Card className="mb-6">
+        <h2 className="mb-3 font-serif text-lg text-text">Members ({party.members.length})</h2>
         {party.members.length === 0 ? (
-          <p>No members yet.</p>
+          <p className="text-muted">No members yet.</p>
         ) : (
-          <ul>
+          <ul className="flex flex-col gap-1">
             {party.members.map((memberId) => (
-              <li key={memberId}>Character #{memberId}</li>
+              <li key={memberId} className="text-sm text-text">Character #{memberId}</li>
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
-      <section>
-        <h2>{t("Items")}</h2>
+      <Card>
+        <h2 className="mb-3 font-serif text-lg text-text">{t("Items")}</h2>
         {party.items.length === 0 ? (
-          <p>No items in group storage.</p>
+          <p className="text-muted">No items in group storage.</p>
         ) : (
-          <ul>
+          <ul className="flex flex-col gap-1">
             {party.items.map((item) => (
-              <li key={item.id}>{item.name}</li>
+              <li key={item.id} className="text-sm text-text">{item.name}</li>
             ))}
           </ul>
         )}
-      </section>
-    </div>
+      </Card>
+    </Container>
   );
 }

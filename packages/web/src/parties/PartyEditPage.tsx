@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useParty, useUpdateParty, useDeleteParty, useRemoveMember } from "./useParties.js";
 import { useSession } from "../auth/useSession.js";
+import { Container, Card, Field, Input, Textarea, Button, Spinner } from "../ui/index.js";
 
 export function PartyEditPage() {
   const { t } = useTranslation();
@@ -18,15 +19,29 @@ export function PartyEditPage() {
   const [name, setName] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null | undefined>(undefined);
 
-  if (isLoading) return <p>Loading…</p>;
-  if (error || !data) return <p>Party not found or access denied.</p>;
+  if (isLoading)
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
+  if (error || !data)
+    return (
+      <Container>
+        <p className="text-danger">Party not found or access denied.</p>
+      </Container>
+    );
 
   const { party } = data;
   const isOwner = session?.id === party.ownerId;
   const isSubowner = session?.id !== undefined && party.subowners.includes(session.id);
 
   if (!isOwner && !isSubowner) {
-    return <p>Access denied.</p>;
+    return (
+      <Container>
+        <p className="text-danger">Access denied.</p>
+      </Container>
+    );
   }
 
   const currentName = name ?? party.name;
@@ -45,62 +60,77 @@ export function PartyEditPage() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSave}>
-        <h1>
-          <input
-            type="text"
-            value={currentName}
-            onChange={(e) => setName(e.target.value)}
-            required
-            maxLength={64}
-          />
-        </h1>
-        <textarea
-          value={currentDescription ?? ""}
-          onChange={(e) => setDescription(e.target.value || null)}
-          maxLength={2000}
-        />
-        <div>
-          <button type="submit" disabled={update.isPending}>{t("Save Party")}</button>
-          <button type="button" onClick={() => navigate(`/parties/${partyId}`)}>{t("Cancel")}</button>
-        </div>
-      </form>
+    <Container className="max-w-2xl">
+      <h1 className="mb-6 font-serif text-3xl text-text">{t("Edit")} {party.name}</h1>
 
-      <section>
-        <h2>Members ({party.members.length})</h2>
+      <Card className="mb-6">
+        <form onSubmit={handleSave} className="flex flex-col gap-4">
+          <Field label={t("Name")} htmlFor="edit-party-name">
+            <Input
+              id="edit-party-name"
+              type="text"
+              value={currentName}
+              onChange={(e) => setName(e.target.value)}
+              required
+              maxLength={64}
+            />
+          </Field>
+          <Field label={t("Description")} htmlFor="edit-party-description">
+            <Textarea
+              id="edit-party-description"
+              value={currentDescription ?? ""}
+              onChange={(e) => setDescription(e.target.value || null)}
+              maxLength={2000}
+            />
+          </Field>
+          <div className="flex gap-2">
+            <Button type="submit" disabled={update.isPending}>
+              {t("Save Party")}
+            </Button>
+            <Button type="button" variant="secondary" onClick={() => navigate(`/parties/${partyId}`)}>
+              {t("Cancel")}
+            </Button>
+          </div>
+        </form>
+      </Card>
+
+      <Card className="mb-6">
+        <h2 className="mb-3 font-serif text-lg text-text">Members ({party.members.length})</h2>
         {party.members.length === 0 ? (
-          <p>No members yet.</p>
+          <p className="text-muted">No members yet.</p>
         ) : (
-          <ul>
+          <ul className="flex flex-col divide-y divide-border">
             {party.members.map((memberId) => (
-              <li key={memberId}>
-                Character #{memberId}
+              <li key={memberId} className="flex items-center justify-between py-2">
+                <span className="text-sm text-text">Character #{memberId}</span>
                 {isOwner && (
-                  <button
+                  <Button
+                    variant="danger"
+                    size="sm"
                     onClick={() => removeMember.mutate(memberId)}
                     disabled={removeMember.isPending}
                   >
                     Remove
-                  </button>
+                  </Button>
                 )}
               </li>
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
       {isOwner && (
         <div>
-          <button
+          <Button
             type="button"
+            variant="danger"
             onClick={handleDelete}
             disabled={del.isPending}
           >
             {t("Delete")}
-          </button>
+          </Button>
         </div>
       )}
-    </div>
+    </Container>
   );
 }
