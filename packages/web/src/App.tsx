@@ -1,5 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useSession } from "./auth/useSession.js";
+import { LanguageSelector } from "./i18n/LanguageSelector.js";
 import { LoginPage } from "./auth/LoginPage.js";
 import { SignupPage } from "./auth/SignupPage.js";
 import { ResendConfirmationPage } from "./auth/ResendConfirmationPage.js";
@@ -20,20 +22,58 @@ import { PartyViewPage } from "./parties/PartyViewPage.js";
 import { PartyEditPage } from "./parties/PartyEditPage.js";
 import { JoinPartyPage } from "./parties/JoinPartyPage.js";
 
+function Nav() {
+  const { data: user } = useSession();
+  const { t } = useTranslation();
+
+  return (
+    <nav className="navbar">
+      <div className="nav-logo-container">
+        <Link to="/">Kettlewright</Link>
+      </div>
+      <div className="navbar-menu">
+        <div className="navbar-start">
+          {user ? (
+            <>
+              <Link className="navbar-item" to="/characters">{t("Characters")}</Link>
+              <Link className="navbar-item" to="/parties">{t("Parties")}</Link>
+            </>
+          ) : null}
+        </div>
+        <div className="navbar-end">
+          {user ? (
+            <>
+              <Link className="navbar-item" to="/account">{t("Account")}</Link>
+            </>
+          ) : (
+            <>
+              <Link className="navbar-item" to="/login">{t("Login")}</Link>
+              <Link className="navbar-item" to="/signup">{t("Sign Up")}</Link>
+            </>
+          )}
+          <LanguageSelector />
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 function Home() {
   const { data: user } = useSession();
+  const { t } = useTranslation();
+
   return (
     <div>
       <h1>Kettlewright</h1>
       {user ? (
         <p>
-          Logged in as {user.username}. <Link to="/characters">Characters</Link> ·{" "}
-          <Link to="/parties">Parties</Link> ·{" "}
-          <Link to="/account">Account</Link>
+          {t("Characters")}: <Link to="/characters">{t("Characters")}</Link> ·{" "}
+          <Link to="/parties">{t("Parties")}</Link> ·{" "}
+          <Link to="/account">{t("Account")}</Link>
         </p>
       ) : (
         <p>
-          <Link to="/login">Login</Link> · <Link to="/signup">Sign Up</Link>
+          <Link to="/login">{t("Login")}</Link> · <Link to="/signup">{t("Sign Up")}</Link>
         </p>
       )}
     </div>
@@ -42,30 +82,33 @@ function Home() {
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/resend-confirmation" element={<ResendConfirmationPage />} />
-      <Route path="/reset-request" element={<RequestPasswordResetPage />} />
-      <Route path="/reset" element={<ResetPasswordPage />} />
-      <Route path="/account" element={<AccountPage />} />
-      <Route path="/account/change-password" element={<ChangePasswordPage />} />
-      <Route path="/account/change-email" element={<ChangeEmailPage />} />
-      <Route path="/account/delete" element={<DeleteAccountPage />} />
-      <Route path="/characters" element={<CharacterListPage />} />
-      <Route path="/characters/new" element={<CharacterCreatePage />} />
-      <Route path="/characters/:id" element={<CharacterViewPage />} />
-      <Route path="/characters/:id/edit" element={<CharacterEditPage />} />
-      <Route
-        path="/characters/:id/inventory"
-        element={<InventoryEditorPage />}
-      />
-      <Route path="/parties" element={<PartyListPage />} />
-      <Route path="/parties/new" element={<PartyCreatePage />} />
-      <Route path="/parties/join" element={<JoinPartyPage />} />
-      <Route path="/parties/:id" element={<PartyViewPage />} />
-      <Route path="/parties/:id/edit" element={<PartyEditPage />} />
-    </Routes>
+    <>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/resend-confirmation" element={<ResendConfirmationPage />} />
+        <Route path="/reset-request" element={<RequestPasswordResetPage />} />
+        <Route path="/reset" element={<ResetPasswordPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/account/change-password" element={<ChangePasswordPage />} />
+        <Route path="/account/change-email" element={<ChangeEmailPage />} />
+        <Route path="/account/delete" element={<DeleteAccountPage />} />
+        <Route path="/characters" element={<CharacterListPage />} />
+        <Route path="/characters/new" element={<CharacterCreatePage />} />
+        <Route path="/characters/:id" element={<CharacterViewPage />} />
+        <Route path="/characters/:id/edit" element={<CharacterEditPage />} />
+        <Route
+          path="/characters/:id/inventory"
+          element={<InventoryEditorPage />}
+        />
+        <Route path="/parties" element={<PartyListPage />} />
+        <Route path="/parties/new" element={<PartyCreatePage />} />
+        <Route path="/parties/join" element={<JoinPartyPage />} />
+        <Route path="/parties/:id" element={<PartyViewPage />} />
+        <Route path="/parties/:id/edit" element={<PartyEditPage />} />
+      </Routes>
+    </>
   );
 }
