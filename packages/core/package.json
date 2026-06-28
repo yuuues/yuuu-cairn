@@ -14,7 +14,8 @@
     "./testing/FixedClock.js": "./src/testing/FixedClock.ts",
     "./testing/SequenceDice.js": "./src/testing/SequenceDice.ts",
     "./testing/FakeGameDataRepository.js": "./src/testing/FakeGameDataRepository.ts",
-    "./testing/InMemoryCharacterRepository.js": "./src/testing/InMemoryCharacterRepository.ts"
+    "./testing/InMemoryCharacterRepository.js": "./src/testing/InMemoryCharacterRepository.ts",
+    "./testing/FakeMarketRepository.js": "./src/testing/FakeMarketRepository.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
