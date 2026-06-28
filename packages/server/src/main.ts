@@ -30,6 +30,7 @@ import { CryptoIdGenerator } from "./infrastructure/rng/CryptoIdGenerator.js";
 import { buildPartyRoutes } from "./interfaces/http/partyRoutes.js";
 import { FileGeneratorRepository } from "./infrastructure/generators/FileGeneratorRepository.js";
 import { buildGeneratorRoutes } from "./interfaces/http/generatorRoutes.js";
+import { buildCharacterIoRoutes } from "./interfaces/http/characterIoRoutes.js";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -193,6 +194,10 @@ async function main() {
   });
   await app.register(buildPartyRoutes(partyUseCases), { prefix: "/api/parties" });
   await app.register(buildGeneratorRoutes(generatorUseCases), { prefix: "/api/generators" });
+  await app.register(
+    buildCharacterIoRoutes({ create: characterUseCases.create, get: characterUseCases.get }),
+    { prefix: "/api/characters" }
+  );
 
   // ---- tiempo real: publisher + caso de uso + gateway ----
   await app.ready(); // garantiza que app.io está disponible
