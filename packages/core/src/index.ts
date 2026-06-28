@@ -55,3 +55,6 @@ export type { MarketRepository } from "./ports/driven/MarketRepository.js";
 
 // Inventory/Marketplace — casos de uso
 export * from "./application/inventory/index.js";
+
+// Party — casos de uso
+export * from "./application/party/index.js";
