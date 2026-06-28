@@ -46,3 +46,12 @@ export * from "./domain/character/creation.js";
 
 // Character — casos de uso
 export * from "./application/character/index.js";
+
+// Inventory/Marketplace — dominio puro
+export * from "./domain/character/market.js";
+
+// Inventory/Marketplace — puerto
+export type { MarketRepository } from "./ports/driven/MarketRepository.js";
+
+// Inventory/Marketplace — casos de uso
+export * from "./application/inventory/index.js";
