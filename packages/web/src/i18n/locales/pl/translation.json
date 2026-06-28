@@ -76,5 +76,21 @@
   "Buy": "Kup",
   "Cost": "Koszt",
   "Dark Mode": "Tryb ciemny",
-  "Language": "Język"
+  "Language": "Język",
+  "uses": "użycia",
+  "charges": "ładunki",
+  "blast": "wybuch",
+  "d6": "k6",
+  "d8": "k8",
+  "d10": "k10",
+  "d12": "k12",
+  "Rations": "Racje",
+  "Torch": "Pochodnia",
+  "Tools": "Narzędzia",
+  "Generators": "Generatory",
+  "Dice": "Kości",
+  "Roll": "Rzuć",
+  "Leave Party": "Opuść drużynę",
+  "Slots": "Sloty",
+  "Overburdened": "Przeciążony"
 }

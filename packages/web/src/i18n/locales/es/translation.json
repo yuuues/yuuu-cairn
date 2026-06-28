@@ -76,5 +76,21 @@
   "Buy": "Comprar",
   "Cost": "Coste",
   "Dark Mode": "Modo oscuro",
-  "Language": "Idioma"
+  "Language": "Idioma",
+  "uses": "usos",
+  "charges": "cargas",
+  "blast": "explosión",
+  "d6": "d6",
+  "d8": "d8",
+  "d10": "d10",
+  "d12": "d12",
+  "Rations": "Raciones",
+  "Torch": "Antorcha",
+  "Tools": "Herramientas",
+  "Generators": "Generadores",
+  "Dice": "Dados",
+  "Roll": "Tirar",
+  "Leave Party": "Abandonar grupo",
+  "Slots": "Espacios",
+  "Overburdened": "Sobrecargado"
 }

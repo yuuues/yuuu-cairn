@@ -76,5 +76,21 @@
   "Buy": "Kaufen",
   "Cost": "Kosten",
   "Dark Mode": "Dunkelmodus",
-  "Language": "Sprache"
+  "Language": "Sprache",
+  "uses": "Nutzungen",
+  "charges": "Ladungen",
+  "blast": "Explosion",
+  "d6": "W6",
+  "d8": "W8",
+  "d10": "W10",
+  "d12": "W12",
+  "Rations": "Rationen",
+  "Torch": "Fackel",
+  "Tools": "Werkzeuge",
+  "Generators": "Generatoren",
+  "Dice": "Würfel",
+  "Roll": "Würfeln",
+  "Leave Party": "Gruppe verlassen",
+  "Slots": "Plätze",
+  "Overburdened": "Überladen"
 }
