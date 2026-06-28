@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { authApi, ApiError } from "../api/auth.js";
 
 export function RequestPasswordResetPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -22,10 +24,10 @@ export function RequestPasswordResetPage() {
 
   return (
     <form onSubmit={onSubmit}>
-      <h1>Reset Password</h1>
+      <h1>{t("Reset Password")}</h1>
       {message && <p role="alert">{message}</p>}
-      <input type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <button type="submit">Reset Password</button>
+      <input type="email" placeholder={t("Email")} value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <button type="submit">{t("Reset Password")}</button>
     </form>
   );
 }

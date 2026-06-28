@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { authApi, ApiError } from "../api/auth.js";
 
 export function SignupPage() {
@@ -11,12 +12,13 @@ export function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     if (password !== password2) {
-      setError("Passwords must match");
+      setError(t("Passwords must match"));
       return;
     }
     try {
@@ -39,16 +41,16 @@ export function SignupPage() {
 
   return (
     <form onSubmit={onSubmit}>
-      <h1>Sign Up</h1>
+      <h1>{t("Sign Up")}</h1>
       {error && <p role="alert">{error}</p>}
-      <input placeholder="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-      <input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input placeholder="confirm password" type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} required />
-      <input placeholder="signup code (if required)" value={signupCode} onChange={(e) => setSignupCode(e.target.value)} />
-      <button type="submit">Sign Up</button>
+      <input placeholder={t("Email")} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input placeholder={t("Username")} value={username} onChange={(e) => setUsername(e.target.value)} required />
+      <input placeholder={t("Password")} type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <input placeholder={t("Confirm password")} type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} required />
+      <input placeholder={t("Signup Code")} value={signupCode} onChange={(e) => setSignupCode(e.target.value)} />
+      <button type="submit">{t("Sign Up")}</button>
       <p>
-        <Link to="/login">Already have an account? Login</Link>
+        <Link to="/login">Already have an account? {t("Login")}</Link>
       </p>
     </form>
   );
