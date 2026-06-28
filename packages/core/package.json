@@ -11,7 +11,10 @@
     "./testing/FakeMailer.js": "./src/testing/FakeMailer.ts",
     "./testing/FakeTokenService.js": "./src/testing/FakeTokenService.ts",
     "./testing/FakeCaptcha.js": "./src/testing/FakeCaptcha.ts",
-    "./testing/FixedClock.js": "./src/testing/FixedClock.ts"
+    "./testing/FixedClock.js": "./src/testing/FixedClock.ts",
+    "./testing/SequenceDice.js": "./src/testing/SequenceDice.ts",
+    "./testing/FakeGameDataRepository.js": "./src/testing/FakeGameDataRepository.ts",
+    "./testing/InMemoryCharacterRepository.js": "./src/testing/InMemoryCharacterRepository.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
