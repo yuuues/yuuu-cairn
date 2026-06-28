@@ -31,8 +31,10 @@ import { buildPartyRoutes } from "./interfaces/http/partyRoutes.js";
 import { FileGeneratorRepository } from "./infrastructure/generators/FileGeneratorRepository.js";
 import { buildGeneratorRoutes } from "./interfaces/http/generatorRoutes.js";
 import { buildCharacterIoRoutes } from "./interfaces/http/characterIoRoutes.js";
+import fastifyStatic from "@fastify/static";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { existsSync } from "node:fs";
 import {
   Register,
   Login,
@@ -206,6 +208,27 @@ async function main() {
     buildCharacterIoRoutes({ create: characterUseCases.create, get: characterUseCases.get }),
     { prefix: "/api/characters" }
   );
+
+  // ---- servir el SPA compilado en producción (opcional) ----
+  // Si WEB_DIST apunta a un dist de web existente, Fastify sirve los estáticos
+  // y hace fallback a index.html para rutas de cliente (SPA). En dev se omite
+  // (Vite sirve la web y hace proxy de /api).
+  if (env.WEB_DIST) {
+    const webRoot = resolve(here, env.WEB_DIST);
+    if (existsSync(webRoot)) {
+      await app.register(fastifyStatic, { root: webRoot, wildcard: false });
+      app.setNotFoundHandler((req, reply) => {
+        if (req.url.startsWith("/api") || req.url.startsWith("/socket.io")) {
+          reply.code(404).send({ error: "Not Found", statusCode: 404 });
+          return;
+        }
+        reply.sendFile("index.html");
+      });
+      app.log.info(`Sirviendo SPA desde ${webRoot}`);
+    } else {
+      app.log.warn(`WEB_DIST=${webRoot} no existe; no se sirve el SPA`);
+    }
+  }
 
   // ---- tiempo real: publisher + caso de uso + gateway ----
   await app.ready(); // garantiza que app.io está disponible

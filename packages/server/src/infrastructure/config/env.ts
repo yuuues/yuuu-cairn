@@ -32,6 +32,10 @@ const EnvSchema = z.object({
 
   // Cookie de sesión
   COOKIE_SECURE: boolFromString,
+
+  // Servir el SPA compilado desde Fastify (producción). Ruta al dist de web,
+  // relativa a la ubicación del bundle o absoluta. Vacío => no servir (modo dev con Vite).
+  WEB_DIST: z.string().optional(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

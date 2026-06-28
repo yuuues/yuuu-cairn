@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+**/.turbo
+**/*.tsbuildinfo
+.git
+docs
+**/.env
+packages/server/prisma/*.db
+packages/server/prisma/*.db-journal
+packages/server/prisma/dev.db*
+**/coverage
