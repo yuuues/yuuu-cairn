@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { charactersApi } from "../api/characters.js";
+import { charactersApi } from "../client/characters.js";
 import { armorValue, occupiedMainSlots } from "@kw/core";
 import type { Character, Item, Container } from "@kw/shared";
 import { Button, Badge } from "../ui/index.js";

@@ -7,7 +7,7 @@ import type {
   CreateCharacterInput,
   UpdateCharacterInput,
 } from "@kw/shared";
-import { charactersApi, dataApi } from "../api/characters.js";
+import { charactersApi, dataApi } from "../client/characters.js";
 
 export function useCharacters() {
   return useQuery({
