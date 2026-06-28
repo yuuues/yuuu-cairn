@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import QRCode from "qrcode";
 import { serializeCharacter } from "@kw/shared";
 import { useCharacter } from "./useCharacters.js";
-import { downloadJson } from "../local/exportFile.js";
+import { downloadOrShare } from "../local/exportFile.js";
 import { encodeForQr, fitsInQr } from "../local/qr.js";
 import { Container, PageHeader, Card, Badge, Button, Spinner, Modal } from "../ui/index.js";
 
@@ -72,7 +72,7 @@ export function CharacterViewPage() {
               variant="secondary"
               size="sm"
               onClick={() =>
-                downloadJson(
+                void downloadOrShare(
                   `${character.name}.cairn.json`,
                   serializeCharacter(character),
                 )

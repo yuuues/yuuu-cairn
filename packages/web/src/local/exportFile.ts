@@ -1,5 +1,8 @@
 import { parseCharacterEnvelope, type CreateCharacterInput } from "@kw/shared";
 import type { Character } from "@kw/shared";
+import { Capacitor } from "@capacitor/core";
+import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 
 type CharactersApi = {
   create: (input: CreateCharacterInput) => Promise<Character>;
@@ -48,4 +51,22 @@ export function downloadJson(filename: string, json: string): void {
 /** Lee un File como texto. */
 export function readFileText(file: File): Promise<string> {
   return file.text();
+}
+
+/**
+ * Exporta el JSON: en plataforma nativa (Capacitor) lo escribe en Cache y abre
+ * el diálogo de compartir; en web descarga el archivo.
+ */
+export async function downloadOrShare(filename: string, json: string): Promise<void> {
+  if (!Capacitor.isNativePlatform()) {
+    downloadJson(filename, json);
+    return;
+  }
+  const res = await Filesystem.writeFile({
+    path: filename,
+    data: json,
+    directory: Directory.Cache,
+    encoding: Encoding.UTF8,
+  });
+  await Share.share({ url: res.uri, title: filename });
 }
