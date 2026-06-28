@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useGenerateNpc } from "./useGenerators.js";
 import type { NpcResult } from "@kw/shared";
 
@@ -15,6 +16,7 @@ function NpcCard({ npc }: { npc: NpcResult }) {
 }
 
 export function NpcGeneratorPanel() {
+  const { t } = useTranslation();
   const npcMutation = useGenerateNpc();
 
   return (
@@ -26,7 +28,7 @@ export function NpcGeneratorPanel() {
         disabled={npcMutation.isPending}
       >
         <i className="fa-solid fa-dice dice"></i>
-        {" "}Generate NPC
+        {" "}{t("Generators")}
       </button>
       {npcMutation.data && <NpcCard npc={npcMutation.data} />}
     </div>

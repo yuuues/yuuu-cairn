@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /** Tipos de dado disponibles (paridad con el JS del cliente de origen). */
 const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100] as const;
@@ -23,6 +24,7 @@ export function DiceModal({
   isOpen,
   onClose,
 }: DiceModalProps) {
+  const { t } = useTranslation();
   const [face, setFace] = useState<DiceFace>(6);
   const [count, setCount] = useState<number>(1);
 
@@ -39,12 +41,12 @@ export function DiceModal({
       className="modal is-active"
       role="dialog"
       aria-modal="true"
-      aria-label="Dice roller"
+      aria-label={t("Dice")}
     >
       <div className="modal-background" onClick={onClose} />
       <div className="modal-card">
         <header className="modal-card-head">
-          <p className="modal-card-title">Roll Dice</p>
+          <p className="modal-card-title">{t("Dice")}</p>
           <button className="delete" aria-label="close" onClick={onClose} />
         </header>
         <section className="modal-card-body">
@@ -81,7 +83,7 @@ export function DiceModal({
         </section>
         <footer className="modal-card-foot">
           <button className="button is-primary" onClick={handleRoll}>
-            <i className="fa-solid fa-dice" /> Roll {count}d{face}
+            <i className="fa-solid fa-dice" /> {t("Roll")} {count}d{face}
           </button>
           <button className="button" onClick={onClose}>Close</button>
         </footer>

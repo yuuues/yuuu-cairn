@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { GeneratorTablePanel } from "./GeneratorTablePanel.js";
 import { NpcGeneratorPanel } from "./NpcGeneratorPanel.js";
 
@@ -6,11 +7,12 @@ type Tab = "tables" | "pcgen";
 
 export function ToolsPage() {
   const [tab, setTab] = useState<Tab>("tables");
+  const { t } = useTranslation();
 
   return (
     <div className="body-container">
       <div className="sheet party-tools-sheet">
-        <h2>Tools</h2>
+        <h2>{t("Tools")}</h2>
         <div className="tabs" role="tablist">
           <ul>
             <li>
@@ -30,7 +32,7 @@ export function ToolsPage() {
                 onClick={() => setTab("pcgen")}
                 className={tab === "pcgen" ? "is-active" : ""}
               >
-                Character Generator
+                {t("Generators")}
               </button>
             </li>
           </ul>

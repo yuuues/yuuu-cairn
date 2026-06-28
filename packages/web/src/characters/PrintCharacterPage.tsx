@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { charactersApi } from "../api/characters.js";
 import { armorValue, occupiedMainSlots } from "@kw/core";
@@ -17,9 +19,10 @@ function containerSlots(items: Item[], containerId: number): number {
 }
 
 function InventorySection({ character }: { character: Character }) {
+  const { t } = useTranslation();
   return (
     <div>
-      <h3>Inventory</h3>
+      <h3>{t("Inventory")}</h3>
       <div id="additional-inventory-container" className="character-print-grid">
         {character.containers.map((c: Container) => (
           <div key={c.id} style={{ marginBottom: "1em" }} className="inventory-container print-container">
@@ -39,12 +42,11 @@ function InventorySection({ character }: { character: Character }) {
   );
 }
 
-interface PrintCharacterPageProps {
-  /** Id del personaje a imprimir (pasado desde el router). */
-  characterId: number;
-}
+export function PrintCharacterPage() {
+  const { id } = useParams();
+  const characterId = Number(id);
+  const { t } = useTranslation();
 
-export function PrintCharacterPage({ characterId }: PrintCharacterPageProps) {
   const { data: character, isLoading, isError } = useQuery({
     queryKey: ["characters", characterId],
     queryFn: () => charactersApi.get(characterId),
@@ -102,28 +104,28 @@ export function PrintCharacterPage({ characterId }: PrintCharacterPageProps) {
                 <p className="subtitle view-mode">{character.willpower}/{character.willpowerMax}</p>
               </div>
               <div className="character-attribute-container">
-                <h4>HP</h4>
+                <h4>{t("HP")}</h4>
                 <p className="subtitle view-mode">{character.hp}/{character.hpMax}</p>
               </div>
               {character.deprived && (
-                <h4 className="character-deprived-text view-mode">DEPRIVED</h4>
+                <h4 className="character-deprived-text view-mode">{t("Deprived").toUpperCase()}</h4>
               )}
               <div className="character-attribute-container">
-                <h4 className="view-attribute-font">Gold</h4>
+                <h4 className="view-attribute-font">{t("Gold")}</h4>
                 <p className="subtitle view-mode">{character.gold}</p>
               </div>
               <div className="character-attribute-container">
-                <h4>Armor</h4>
+                <h4>{t("Armor")}</h4>
                 <p className="subtitle">{armor}</p>
               </div>
               <div className="character-attribute-container">
-                <h4>Slots</h4>
+                <h4>{t("Slots")}</h4>
                 <p className="subtitle">{slots}/10</p>
               </div>
             </div>
           </div>
           <div>
-            <h3>Traits</h3>
+            <h3>{t("Traits")}</h3>
             <p id="character-traits-view" className="character-section">{character.traits}</p>
           </div>
         </div>
@@ -136,21 +138,21 @@ export function PrintCharacterPage({ characterId }: PrintCharacterPageProps) {
           {character.description && (
             <div id="character-print-description-container" className="print-container">
               <div className="character-section">
-                <h3>Description</h3>
+                <h3>{t("Description")}</h3>
                 <p>{character.description}</p>
               </div>
             </div>
           )}
           <div id="character-print-bonds-container" className="print-container">
             <div className="character-section">
-              <h3>Bonds</h3>
+              <h3>{t("Bonds")}</h3>
               <p className="with-whitespace">{character.bonds}</p>
             </div>
           </div>
           {character.omens && (
             <div id="character-print-omens-container" className="print-container">
               <div className="character-section">
-                <h3>Omens</h3>
+                <h3>{t("Omens")}</h3>
                 <p>{character.omens}</p>
               </div>
             </div>
@@ -158,7 +160,7 @@ export function PrintCharacterPage({ characterId }: PrintCharacterPageProps) {
           {character.scars && (
             <div id="character-print-scars-container" className="print-container">
               <div className="character-section">
-                <h3>Scars</h3>
+                <h3>{t("Scars")}</h3>
                 <p>{character.scars}</p>
               </div>
             </div>
@@ -166,7 +168,7 @@ export function PrintCharacterPage({ characterId }: PrintCharacterPageProps) {
           {character.notes && (
             <div id="character-print-notes-container" className="print-container">
               <div className="character-section">
-                <h3>Notes</h3>
+                <h3>{t("Notes")}</h3>
                 <p>{character.notes}</p>
               </div>
             </div>

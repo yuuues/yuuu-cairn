@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useImportCharacter } from "../generators/useGenerators.js";
 import { ImportCharacterPayloadSchema } from "@kw/shared";
 
 export function ImportCharacterPage() {
+  const { t } = useTranslation();
   const fileRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -60,13 +62,18 @@ export function ImportCharacterPage() {
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <br /><br />
-        <button
-          type="submit"
-          className="button is-success"
-          disabled={importMutation.isPending}
-        >
-          {importMutation.isPending ? "Importing..." : "Import"}
-        </button>
+        <div style={{ display: "flex", gap: "0.5em" }}>
+          <button
+            type="submit"
+            className="button is-success"
+            disabled={importMutation.isPending}
+          >
+            {importMutation.isPending ? "Importing..." : t("Import")}
+          </button>
+          <a href="/characters" className="button">
+            {t("Cancel")}
+          </a>
+        </div>
       </form>
     </section>
   );

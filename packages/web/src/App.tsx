@@ -15,12 +15,15 @@ import { CharacterListPage } from "./characters/CharacterListPage.js";
 import { CharacterViewPage } from "./characters/CharacterViewPage.js";
 import { CharacterEditPage } from "./characters/CharacterEditPage.js";
 import { CharacterCreatePage } from "./characters/create/CharacterCreatePage.js";
+import { ImportCharacterPage } from "./characters/ImportCharacterPage.js";
+import { PrintCharacterPage } from "./characters/PrintCharacterPage.js";
 import { InventoryEditorPage } from "./inventory/InventoryEditorPage.js";
 import { PartyListPage } from "./parties/PartyListPage.js";
 import { PartyCreatePage } from "./parties/PartyCreatePage.js";
 import { PartyViewPage } from "./parties/PartyViewPage.js";
 import { PartyEditPage } from "./parties/PartyEditPage.js";
 import { JoinPartyPage } from "./parties/JoinPartyPage.js";
+import { ToolsPage } from "./generators/ToolsPage.js";
 
 function Nav() {
   const { data: user } = useSession();
@@ -97,17 +100,20 @@ export function App() {
         <Route path="/account/delete" element={<DeleteAccountPage />} />
         <Route path="/characters" element={<CharacterListPage />} />
         <Route path="/characters/new" element={<CharacterCreatePage />} />
+        <Route path="/characters/import" element={<ImportCharacterPage />} />
         <Route path="/characters/:id" element={<CharacterViewPage />} />
         <Route path="/characters/:id/edit" element={<CharacterEditPage />} />
         <Route
           path="/characters/:id/inventory"
           element={<InventoryEditorPage />}
         />
+        <Route path="/characters/:id/print" element={<PrintCharacterPage />} />
         <Route path="/parties" element={<PartyListPage />} />
         <Route path="/parties/new" element={<PartyCreatePage />} />
         <Route path="/parties/join" element={<JoinPartyPage />} />
         <Route path="/parties/:id" element={<PartyViewPage />} />
         <Route path="/parties/:id/edit" element={<PartyEditPage />} />
+        <Route path="/tools" element={<ToolsPage />} />
       </Routes>
     </>
   );

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useGeneratorTables, useRollTable } from "./useGenerators.js";
 
 function getSubcategories(value: unknown): string[] | null {
@@ -8,6 +9,7 @@ function getSubcategories(value: unknown): string[] | null {
 }
 
 export function GeneratorTablePanel() {
+  const { t } = useTranslation();
   const { data: tables, isLoading } = useGeneratorTables();
   const rollMutation = useRollTable();
   const [category, setCategory] = useState<string>("");
@@ -70,6 +72,7 @@ export function GeneratorTablePanel() {
           type="button"
           onClick={handleRoll}
           disabled={!category || rollMutation.isPending}
+          aria-label={t("Roll")}
         >
           <i className="fa-solid fa-dice dice"></i>
         </button>
