@@ -1,16 +1,26 @@
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useImportCharacter } from "../generators/useGenerators.js";
-import { ImportCharacterPayloadSchema } from "@kw/shared";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { charactersApi } from "../client/characters.js";
+import { importEnvelopeIntoStore, readFileText } from "../local/exportFile.js";
 import { Container, Card, Button } from "../ui/index.js";
 
 export function ImportCharacterPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const importMutation = useImportCharacter();
+
+  const importMutation = useMutation({
+    mutationFn: (json: string) =>
+      importEnvelopeIntoStore(charactersApi, json),
+    onSuccess: (character) => {
+      void qc.invalidateQueries({ queryKey: ["characters"] });
+      navigate(`/characters/${character.id}`);
+    },
+  });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,15 +31,8 @@ export function ImportCharacterPage() {
       return;
     }
     try {
-      const text = await file.text();
-      const raw = JSON.parse(text) as unknown;
-
-      // Normalización de claves del formato del origen (snake_case → camelCase)
-      const normalized = normalizeCharacterJson(raw);
-      const payload = ImportCharacterPayloadSchema.parse(normalized);
-
-      await importMutation.mutateAsync(payload);
-      setSuccess(true);
+      const text = await readFileText(file);
+      await importMutation.mutateAsync(text);
     } catch (err) {
       if (err instanceof SyntaxError) {
         setError(t("Invalid JSON file."));
@@ -39,19 +42,6 @@ export function ImportCharacterPage() {
         setError(t("Import failed."));
       }
     }
-  }
-
-  if (success) {
-    return (
-      <Container className="max-w-md">
-        <Card className="flex flex-col gap-4 text-center">
-          <p className="text-success">{t("Character imported successfully!")}</p>
-          <Link to="/characters">
-            <Button>{t("Go to characters")}</Button>
-          </Link>
-        </Card>
-      </Container>
-    );
   }
 
   return (
@@ -91,38 +81,4 @@ export function ImportCharacterPage() {
       </Card>
     </Container>
   );
-}
-
-/**
- * Normaliza el JSON de export del origen (claves snake_case) a camelCase.
- * Paridad: los exports del origin usan strength_max, hp_max, etc.
- */
-function normalizeCharacterJson(raw: unknown): Record<string, unknown> {
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
-    throw new Error("Invalid character data: expected an object.");
-  }
-  const r = raw as Record<string, unknown>;
-  return {
-    name: r["name"],
-    background: r["background"],
-    strengthMax: r["strengthMax"] ?? r["strength_max"],
-    dexterityMax: r["dexterityMax"] ?? r["dexterity_max"],
-    willpowerMax: r["willpowerMax"] ?? r["willpower_max"],
-    hpMax: r["hpMax"] ?? r["hp_max"],
-    strength: r["strength"],
-    dexterity: r["dexterity"],
-    willpower: r["willpower"],
-    hp: r["hp"],
-    deprived: r["deprived"],
-    gold: r["gold"],
-    items: r["items"],
-    containers: r["containers"],
-    description: r["description"],
-    traits: r["traits"],
-    notes: r["notes"],
-    bonds: r["bonds"],
-    omens: r["omens"],
-    scars: r["scars"],
-    imageUrl: r["imageUrl"] ?? r["image_url"],
-  };
 }

@@ -1,6 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { serializeCharacter } from "@kw/shared";
 import { useCharacter } from "./useCharacters.js";
+import { downloadJson } from "../local/exportFile.js";
 import { Container, PageHeader, Card, Badge, Button, Spinner } from "../ui/index.js";
 
 export function CharacterViewPage() {
@@ -40,6 +42,18 @@ export function CharacterViewPage() {
             <Link to={`/characters/${character.id}/print`}>
               <Button variant="ghost" size="sm">{t("Print")}</Button>
             </Link>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                downloadJson(
+                  `${character.name}.cairn.json`,
+                  serializeCharacter(character),
+                )
+              }
+            >
+              {t("Export")}
+            </Button>
           </>
         }
       />
