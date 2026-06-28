@@ -31,6 +31,8 @@
   --kw-text: var(--color-stone-800);
   --kw-muted: var(--color-stone-500);
   --kw-border: var(--color-stone-200);
+  /* Hace que los controles nativos (incluido el popup del <select>) se pinten en claro */
+  color-scheme: light;
 }
 
 .dark {
@@ -39,6 +41,8 @@
   --kw-text: var(--color-stone-100);
   --kw-muted: var(--color-stone-400);
   --kw-border: var(--color-stone-800);
+  /* Popup nativo del <select> en oscuro: texto legible en dark mode */
+  color-scheme: dark;
 }
 
 @layer base {
