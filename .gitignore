@@ -5,3 +5,4 @@ dist/
 packages/server/prisma/*.sqlite
 packages/server/prisma/dev.db*
 .DS_Store
+packages/web/src/local/gamedata/bundle.generated.ts
