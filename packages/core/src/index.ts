@@ -58,3 +58,6 @@ export * from "./application/inventory/index.js";
 
 // Party — casos de uso
 export * from "./application/party/index.js";
+
+// Generator — puerto
+export type { GeneratorRepository } from "./ports/driven/GeneratorRepository.js";
