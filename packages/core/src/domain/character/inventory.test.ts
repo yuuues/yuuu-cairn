@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import type { Item } from "@kw/shared";
 import { itemSlotCost, occupiedMainSlots } from "./inventory.js";
+import {
+  mainContainerSlots,
+  isOverburdened,
+} from "./inventory.js";
 
 const item = (over: Partial<Item>): Item => ({
   id: 1,
@@ -37,5 +41,29 @@ describe("occupiedMainSlots", () => {
   });
   it("lista vacía => 0", () => {
     expect(occupiedMainSlots([])).toBe(0);
+  });
+});
+
+const mainContainer = (slots: number) => ({ id: 0, name: "Main", slots });
+
+describe("mainContainerSlots", () => {
+  it("usa los slots del contenedor con id 0", () => {
+    expect(mainContainerSlots([mainContainer(8)])).toBe(8);
+  });
+  it("sin contenedor principal => 10 por defecto", () => {
+    expect(mainContainerSlots([{ id: 3, name: "Sack", slots: 6 }])).toBe(10);
+  });
+});
+
+describe("isOverburdened", () => {
+  it("no sobrecargado con menos slots que la capacidad", () => {
+    const items = [item({ id: 1, location: 0 }), item({ id: 2, location: 0 })]; // 2 slots
+    expect(isOverburdened(items, [mainContainer(10)])).toBe(false);
+  });
+  it("sobrecargado al alcanzar la capacidad", () => {
+    const items = Array.from({ length: 10 }, (_, i) =>
+      item({ id: i + 1, location: 0 })
+    ); // 10 slots
+    expect(isOverburdened(items, [mainContainer(10)])).toBe(true);
   });
 });
