@@ -15,6 +15,9 @@ export type { IdGenerator } from "./ports/driven/IdGenerator.js";
 export type { TokenService, TokenPurpose } from "./ports/driven/TokenService.js";
 export type { Captcha } from "./ports/driven/Captcha.js";
 
+export type { Dice } from "./ports/driven/Dice.js";
+export type { GameDataRepository } from "./ports/driven/GameDataRepository.js";
+
 // Auth — errores y casos de uso
 export { AuthError } from "./application/auth/errors.js";
 export type { AuthErrorCode } from "./application/auth/errors.js";
