@@ -1,0 +1,50 @@
+@use './variables' as *;
+
+.inventory-container { grid-area: inventory-container; }
+
+.inventory-main-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inventory-item-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+.inventory-item-row:hover {
+  background-color: color-mix(in lab, transparent 95%, var(--fg));
+}
+
+.inventory-container-card {
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid color-mix(in lab, transparent 80%, var(--fg));
+  border-radius: 4px;
+}
+
+.slot-indicator {
+  font-size: 0.85rem;
+  color: color-mix(in lab, transparent 40%, var(--fg));
+}
+
+.overburdened-badge {
+  color: $red;
+  font-weight: 700;
+}
+
+.marketplace-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+}
+
+@media (max-width: 760px) {
+  .marketplace-grid { grid-template-columns: 1fr; }
+}
