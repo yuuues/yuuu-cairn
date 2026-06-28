@@ -38,8 +38,15 @@ node packages/server/dist/main.js
 Variables relevantes: `SECRET_KEY` (≥32 chars, requerido por la sesión), `DATA_DIR` (datos de juego), `WEB_DIST` (sirve el SPA si apunta a un dist existente; vacío en dev), `DATABASE_URL`, `PORT`, además de las de mail/captcha/signup (paridad con el `.env` del origen).
 
 ## Docker
-Imagen multi-stage que compila web + server, aplica migraciones de Prisma al arrancar y sirve todo en un único contenedor.
 
+### Opción A — docker compose (recomendado)
+```
+cp .env.example .env     # edita SECRET_KEY (>=32 chars) y lo que necesites
+docker compose up -d
+```
+Abrir http://127.0.0.1:8000. Compose construye la imagen, aplica migraciones al arrancar, persiste la base SQLite en el volumen `kettlewright_db` e incluye healthcheck. Parar con `docker compose down` (los datos se conservan en el volumen).
+
+### Opción B — docker build/run manual
 ```
 docker build -t kettlewright .
 docker run -d --name kettlewright \
@@ -48,4 +55,4 @@ docker run -d --name kettlewright \
   -p 8000:8000 kettlewright
 ```
 
-Abrir http://127.0.0.1:8000. La base SQLite persiste en el volumen `/app/db`.
+La base SQLite persiste en el volumen `/app/db`.

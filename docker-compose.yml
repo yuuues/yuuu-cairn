@@ -1,0 +1,41 @@
+services:
+  kettlewright:
+    build: .
+    image: kettlewright:local
+    container_name: kettlewright
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      # Requerido: clave de sesión (>=32 caracteres)
+      SECRET_KEY: ${SECRET_KEY:?Define SECRET_KEY (>=32 chars) en el fichero .env}
+      BASE_URL: ${BASE_URL:-http://127.0.0.1:8000}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      # Código de registro (paridad: REQUIRE_SIGNUP_CODE / SIGNUP_CODE)
+      REQUIRE_SIGNUP_CODE: ${REQUIRE_SIGNUP_CODE:-false}
+      SIGNUP_CODE: ${SIGNUP_CODE:-default}
+      # Email (opcional; sin esto el envío de correos no funciona)
+      MAIL_SERVER: ${MAIL_SERVER:-}
+      MAIL_PORT: ${MAIL_PORT:-}
+      MAIL_USE_TLS: ${MAIL_USE_TLS:-}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      # Captcha reCAPTCHA Enterprise (opcional)
+      USE_CAPTCHA: ${USE_CAPTCHA:-false}
+      CAPTCHA_BLOCK: ${CAPTCHA_BLOCK:-false}
+      CAPTCHA_KEY: ${CAPTCHA_KEY:-}
+      CAPTCHA_PROJECT_ID: ${CAPTCHA_PROJECT_ID:-}
+      CAPTCHA_API_KEY: ${CAPTCHA_API_KEY:-}
+    volumes:
+      - kettlewright_db:/app/db
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - node -e "fetch('http://127.0.0.1:8000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  kettlewright_db:
