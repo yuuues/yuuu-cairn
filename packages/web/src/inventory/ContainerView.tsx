@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Item, Container } from "@kw/shared";
 import { containerSlots, isContainerFull } from "@kw/core";
 
@@ -14,6 +15,7 @@ export function ContainerView({
   containers,
   onDeleteItem,
 }: ContainerViewProps) {
+  const { t } = useTranslation();
   const used = containerSlots(items, container.id);
   const full = isContainerFull(items, containers, container.id);
   const containerItems = items.filter((it) => it.location === container.id);
@@ -21,13 +23,13 @@ export function ContainerView({
   return (
     <section className={full ? "container encumbered" : "container"}>
       <h3>
-        {container.name} ({used}/{container.slots})
+        {container.name} ({used}/{container.slots} {t("Slots")})
       </h3>
       <ul>
         {containerItems.map((it) => (
           <li key={it.id}>
             {it.name}
-            {it.tags.length > 0 ? ` (${it.tags.join(", ")})` : ""}{" "}
+            {it.tags.length > 0 ? ` (${it.tags.map((tag) => t(tag)).join(", ")})` : ""}{" "}
             <button type="button" onClick={() => onDeleteItem(it.id)}>
               ×
             </button>

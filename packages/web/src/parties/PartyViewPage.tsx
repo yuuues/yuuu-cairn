@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useParty } from "./useParties.js";
 import { useSession } from "../auth/useSession.js";
 import { useCharacters } from "../characters/useCharacters.js";
@@ -7,6 +8,7 @@ import { useDiceRoller } from "../realtime/useDiceRoller.js";
 import { DiceModal } from "../realtime/DiceModal.js";
 
 export function PartyViewPage() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const partyId = Number(id);
   const { data: session } = useSession();
@@ -39,10 +41,10 @@ export function PartyViewPage() {
 
       {(isOwner || isSubowner) && (
         <div>
-          <Link to={`/parties/${party.id}/edit`}>Edit party</Link>
+          <Link to={`/parties/${party.id}/edit`}>{t("Edit")}</Link>
           {joinCode && (
             <p>
-              Join code: <strong>{joinCode}</strong>
+              {t("Party Code")}: <strong>{joinCode}</strong>
             </p>
           )}
         </div>
@@ -90,7 +92,7 @@ export function PartyViewPage() {
       </section>
 
       <section>
-        <h2>Group Storage</h2>
+        <h2>{t("Items")}</h2>
         {party.items.length === 0 ? (
           <p>No items in group storage.</p>
         ) : (

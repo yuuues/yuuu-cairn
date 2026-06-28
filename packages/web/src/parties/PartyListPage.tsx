@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useParties, useDeleteParty } from "./useParties.js";
 
 export function PartyListPage() {
+  const { t } = useTranslation();
   const { data: parties, isLoading, error } = useParties();
   const del = useDeleteParty();
 
@@ -10,11 +12,11 @@ export function PartyListPage() {
 
   return (
     <div>
-      <h1>Parties</h1>
+      <h1>{t("Parties")}</h1>
       <p>
-        <Link to="/parties/new">+ New party</Link>
+        <Link to="/parties/new">+ {t("Create Party")}</Link>
         {" · "}
-        <Link to="/parties/join">Join by code</Link>
+        <Link to="/parties/join">{t("Join Party")}</Link>
       </p>
       {parties && parties.length === 0 ? (
         <p>No parties yet.</p>
@@ -28,9 +30,9 @@ export function PartyListPage() {
               <button
                 onClick={() => del.mutate(p.id)}
                 disabled={del.isPending}
-                aria-label={`Delete ${p.name}`}
+                aria-label={`${t("Delete")} ${p.name}`}
               >
-                Delete
+                {t("Delete")}
               </button>
             </li>
           ))}

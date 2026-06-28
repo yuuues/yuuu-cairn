@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCreateParty } from "./useParties.js";
 
 export function PartyCreatePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const create = useCreateParty();
   const [name, setName] = useState("");
@@ -16,10 +18,10 @@ export function PartyCreatePage() {
 
   return (
     <div>
-      <h1>New Party</h1>
+      <h1>{t("Create Party")}</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Name</label>
+          <label>{t("Name")}</label>
           <input
             type="text"
             value={name}
@@ -29,7 +31,7 @@ export function PartyCreatePage() {
           />
         </div>
         <div>
-          <label>Description</label>
+          <label>{t("Description")}</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -37,10 +39,10 @@ export function PartyCreatePage() {
           />
         </div>
         <button type="submit" disabled={create.isPending}>
-          Create Party
+          {t("Create Party")}
         </button>
         <button type="button" onClick={() => navigate("/parties")}>
-          Cancel
+          {t("Cancel")}
         </button>
       </form>
       {create.error && <p>Error: {(create.error as Error).message}</p>}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { MarketItem } from "@kw/shared";
 import { useMarketCatalog, useBuyItems } from "./useInventory.js";
 
@@ -15,6 +16,7 @@ export function MarketplaceModal({
   containerId,
   onClose,
 }: MarketplaceModalProps) {
+  const { t } = useTranslation();
   const { data, isLoading } = useMarketCatalog();
   const buy = useBuyItems(characterId);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
@@ -72,15 +74,15 @@ export function MarketplaceModal({
   return (
     <div className="modal marketplace-modal">
       <header>
-        <h2>Marketplace</h2>
-        <span className="gold-display">Gold: {remainingGold}</span>
+        <h2>{t("Marketplace")}</h2>
+        <span className="gold-display">{t("Gold")}: {remainingGold}</span>
       </header>
       {error && <p className="error">{error}</p>}
       <table>
         <thead>
           <tr>
             <th>Name</th>
-            <th>Cost</th>
+            <th>{t("Cost")}</th>
             <th>Type</th>
             <th>Qty</th>
           </tr>
@@ -90,7 +92,7 @@ export function MarketplaceModal({
             <tr key={`${it.category}:${it.name}`}>
               <td>
                 {it.name}
-                {it.tags.length > 0 ? ` (${it.tags.join(", ")})` : ""}
+                {it.tags.length > 0 ? ` (${it.tags.map((tag) => t(tag)).join(", ")})` : ""}
               </td>
               <td>{it.cost}</td>
               <td>{it.category}</td>
@@ -109,10 +111,10 @@ export function MarketplaceModal({
       </table>
       <footer>
         <button type="button" onClick={onClose}>
-          Cancel
+          {t("Cancel")}
         </button>
         <button type="button" onClick={handleBuy} disabled={buy.isPending}>
-          Buy
+          {t("Buy")}
         </button>
       </footer>
     </div>

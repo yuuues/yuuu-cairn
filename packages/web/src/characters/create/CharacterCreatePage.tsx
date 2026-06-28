@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { CreateCharacterInput } from "@kw/shared";
 import {
   useBackgrounds,
@@ -28,6 +29,7 @@ const emptyDraft = (background: string): CreateCharacterInput => ({
 });
 
 export function CharacterCreatePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: backgrounds } = useBackgrounds();
   const roll = useRollCharacter();
@@ -57,11 +59,11 @@ export function CharacterCreatePage() {
   if (step === "background") {
     return (
       <div>
-        <h1>New character</h1>
+        <h1>{t("Create Character")}</h1>
         <button onClick={() => rollWith("")} disabled={roll.isPending}>
           Roll a random character
         </button>
-        <h2>…or pick a background</h2>
+        <h2>…or pick a {t("Background")}</h2>
         <select value={selected} onChange={(e) => setSelected(e.target.value)}>
           <option value="">Select…</option>
           {backgrounds &&
@@ -91,9 +93,9 @@ export function CharacterCreatePage() {
   return (
     <div>
       <h1>Review character</h1>
-      <p>Background: {draft.background}</p>
+      <p>{t("Background")}: {draft.background}</p>
       <label>
-        Name
+        {t("Name")}
         <input
           value={draft.name}
           onChange={(e) => setField("name", e.target.value)}
@@ -102,7 +104,7 @@ export function CharacterCreatePage() {
       <fieldset>
         <legend>Attributes (max)</legend>
         <label>
-          STR
+          {t("Strength")}
           <input
             type="number"
             value={draft.strengthMax}
@@ -110,7 +112,7 @@ export function CharacterCreatePage() {
           />
         </label>
         <label>
-          DEX
+          {t("Dexterity")}
           <input
             type="number"
             value={draft.dexterityMax}
@@ -118,7 +120,7 @@ export function CharacterCreatePage() {
           />
         </label>
         <label>
-          WIL
+          {t("Willpower")}
           <input
             type="number"
             value={draft.willpowerMax}
@@ -126,7 +128,7 @@ export function CharacterCreatePage() {
           />
         </label>
         <label>
-          HP
+          {t("HP")}
           <input
             type="number"
             value={draft.hpMax}
@@ -135,7 +137,7 @@ export function CharacterCreatePage() {
         </label>
       </fieldset>
       <label>
-        Gold
+        {t("Gold")}
         <input
           type="number"
           value={draft.gold}
@@ -155,18 +157,18 @@ export function CharacterCreatePage() {
       </section>
       {draft.bonds && (
         <p>
-          <strong>Bonds:</strong> {draft.bonds}
+          <strong>{t("Bonds")}:</strong> {draft.bonds}
         </p>
       )}
       {draft.omens && (
         <p>
-          <strong>Omens:</strong> {draft.omens}
+          <strong>{t("Omens")}:</strong> {draft.omens}
         </p>
       )}
       <div>
         <button onClick={() => setStep("background")}>← Back</button>
         <button onClick={onSave} disabled={!draft.name || create.isPending}>
-          Save character
+          {t("Save Character")}
         </button>
       </div>
       {create.isError && <p role="alert">Failed to save. Check required fields.</p>}

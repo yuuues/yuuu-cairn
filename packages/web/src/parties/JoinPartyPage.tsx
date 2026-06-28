@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useJoinParty } from "./useParties.js";
 import { useCharacters } from "../characters/useCharacters.js";
 
 export function JoinPartyPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const join = useJoinParty();
   const { data: characters, isLoading } = useCharacters();
@@ -22,10 +24,10 @@ export function JoinPartyPage() {
 
   return (
     <div>
-      <h1>Join Party</h1>
+      <h1>{t("Join Party")}</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Join Code</label>
+          <label>{t("Party Code")}</label>
           <input
             type="text"
             value={joinCode}
@@ -50,10 +52,10 @@ export function JoinPartyPage() {
           </select>
         </div>
         <button type="submit" disabled={join.isPending}>
-          Join Party
+          {t("Join Party")}
         </button>
         <button type="button" onClick={() => navigate("/parties")}>
-          Cancel
+          {t("Cancel")}
         </button>
       </form>
       {join.error && <p>Error: {(join.error as Error).message}</p>}

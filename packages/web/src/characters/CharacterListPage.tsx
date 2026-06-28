@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCharacters, useDeleteCharacter } from "./useCharacters.js";
 
 export function CharacterListPage() {
+  const { t } = useTranslation();
   const { data: characters, isLoading, error } = useCharacters();
   const del = useDeleteCharacter();
 
@@ -10,9 +12,9 @@ export function CharacterListPage() {
 
   return (
     <div>
-      <h1>Characters</h1>
+      <h1>{t("Characters")}</h1>
       <p>
-        <Link to="/characters/new">+ New character</Link>
+        <Link to="/characters/new">+ {t("Create Character")}</Link>
       </p>
       {characters && characters.length === 0 ? (
         <p>No characters yet.</p>
@@ -24,9 +26,9 @@ export function CharacterListPage() {
               <button
                 onClick={() => del.mutate(c.id)}
                 disabled={del.isPending}
-                aria-label={`Delete ${c.name}`}
+                aria-label={`${t("Delete")} ${c.name}`}
               >
-                Delete
+                {t("Delete")}
               </button>
             </li>
           ))}

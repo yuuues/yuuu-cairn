@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { UpdateCharacterInput } from "@kw/shared";
 import { useCharacter, useUpdateCharacter } from "./useCharacters.js";
 
 export function CharacterEditPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const charId = Number(id);
   const navigate = useNavigate();
@@ -61,64 +63,64 @@ export function CharacterEditPage() {
     <form onSubmit={onSubmit}>
       <h1>Edit {character.name}</h1>
       <label>
-        Name <input value={form.name ?? ""} onChange={str("name")} />
+        {t("Name")} <input value={form.name ?? ""} onChange={str("name")} />
       </label>
       <fieldset>
         <legend>Attributes</legend>
         <label>
-          STR <input type="number" value={form.strength ?? 0} onChange={num("strength")} />
+          {t("Strength")} <input type="number" value={form.strength ?? 0} onChange={num("strength")} />
           / <input type="number" value={form.strengthMax ?? 0} onChange={num("strengthMax")} />
         </label>
         <label>
-          DEX <input type="number" value={form.dexterity ?? 0} onChange={num("dexterity")} />
+          {t("Dexterity")} <input type="number" value={form.dexterity ?? 0} onChange={num("dexterity")} />
           / <input type="number" value={form.dexterityMax ?? 0} onChange={num("dexterityMax")} />
         </label>
         <label>
-          WIL <input type="number" value={form.willpower ?? 0} onChange={num("willpower")} />
+          {t("Willpower")} <input type="number" value={form.willpower ?? 0} onChange={num("willpower")} />
           / <input type="number" value={form.willpowerMax ?? 0} onChange={num("willpowerMax")} />
         </label>
         <label>
-          HP <input type="number" value={form.hp ?? 0} onChange={num("hp")} />
+          {t("HP")} <input type="number" value={form.hp ?? 0} onChange={num("hp")} />
           / <input type="number" value={form.hpMax ?? 0} onChange={num("hpMax")} />
         </label>
       </fieldset>
       <label>
-        Gold <input type="number" value={form.gold ?? 0} onChange={num("gold")} />
+        {t("Gold")} <input type="number" value={form.gold ?? 0} onChange={num("gold")} />
       </label>
       <label>
         <input type="checkbox" checked={form.deprived ?? false} onChange={bool("deprived")} />{" "}
-        Deprived
+        {t("Deprived")}
       </label>
       <label>
         <input type="checkbox" checked={form.panicked ?? false} onChange={bool("panicked")} />{" "}
-        Panicked
+        {t("Panicked")}
       </label>
       <label>
-        Description
+        {t("Description")}
         <textarea value={form.description ?? ""} onChange={str("description")} />
       </label>
       <label>
-        Traits
+        {t("Traits")}
         <textarea value={form.traits ?? ""} onChange={str("traits")} />
       </label>
       <label>
-        Bonds
+        {t("Bonds")}
         <textarea value={form.bonds ?? ""} onChange={str("bonds")} />
       </label>
       <label>
-        Omens
+        {t("Omens")}
         <textarea value={form.omens ?? ""} onChange={str("omens")} />
       </label>
       <label>
-        Scars
+        {t("Scars")}
         <textarea value={form.scars ?? ""} onChange={str("scars")} />
       </label>
       <label>
-        Notes
+        {t("Notes")}
         <textarea value={form.notes ?? ""} onChange={str("notes")} />
       </label>
       <button type="submit" disabled={update.isPending}>
-        Save
+        {t("Save Character")}
       </button>
       {update.isError && <p role="alert">Failed to save.</p>}
     </form>

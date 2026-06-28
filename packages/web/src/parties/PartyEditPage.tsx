@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useParty, useUpdateParty, useDeleteParty, useRemoveMember } from "./useParties.js";
 import { useSession } from "../auth/useSession.js";
 
 export function PartyEditPage() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const partyId = Number(id);
   const navigate = useNavigate();
@@ -60,13 +62,13 @@ export function PartyEditPage() {
           maxLength={2000}
         />
         <div>
-          <button type="submit" disabled={update.isPending}>Save</button>
-          <button type="button" onClick={() => navigate(`/parties/${partyId}`)}>Cancel</button>
+          <button type="submit" disabled={update.isPending}>{t("Save Party")}</button>
+          <button type="button" onClick={() => navigate(`/parties/${partyId}`)}>{t("Cancel")}</button>
         </div>
       </form>
 
       <section>
-        <h2>Members</h2>
+        <h2>Members ({party.members.length})</h2>
         {party.members.length === 0 ? (
           <p>No members yet.</p>
         ) : (
@@ -95,7 +97,7 @@ export function PartyEditPage() {
             onClick={handleDelete}
             disabled={del.isPending}
           >
-            Delete Party
+            {t("Delete")}
           </button>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { Item, Container } from "@kw/shared";
 import { armorValue, occupiedMainSlots } from "@kw/core";
 import { useCharacter } from "../characters/useCharacters.js";
@@ -8,6 +9,7 @@ import { ContainerView } from "./ContainerView.js";
 import { MarketplaceModal } from "./MarketplaceModal.js";
 
 export function InventoryEditorPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const characterId = Number(id);
   const navigate = useNavigate();
@@ -43,14 +45,14 @@ export function InventoryEditorPage() {
 
   return (
     <div className="inventory-editor">
-      <h1>Inventory — {character.name}</h1>
+      <h1>{t("Inventory")} — {character.name}</h1>
       <p>
         <Link to={`/characters/${characterId}`}>← Back</Link>
       </p>
 
       <div className="inventory-summary">
         <label>
-          Gold:{" "}
+          {t("Gold")}:{" "}
           <input
             type="number"
             min={0}
@@ -58,12 +60,12 @@ export function InventoryEditorPage() {
             onChange={(e) => setGold(Math.max(0, Number(e.target.value)))}
           />
         </label>
-        <span>Armor: {liveArmor}</span>
+        <span>{t("Armor")}: {liveArmor}</span>
         <span>Main slots: {mainSlots}</span>
       </div>
 
       <button type="button" onClick={() => setShowMarket(true)}>
-        Open Marketplace
+        {t("Marketplace")}
       </button>
 
       {containers.map((c) => (
@@ -77,7 +79,7 @@ export function InventoryEditorPage() {
       ))}
 
       <button type="button" onClick={handleSave} disabled={update.isPending}>
-        Save inventory
+        {t("Save")}
       </button>
 
       {showMarket && (
