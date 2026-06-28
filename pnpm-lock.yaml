@@ -79,6 +79,9 @@ importers:
 
   packages/web:
     dependencies:
+      '@kw/core':
+        specifier: workspace:*
+        version: link:../core
       '@kw/shared':
         specifier: workspace:*
         version: link:../shared
