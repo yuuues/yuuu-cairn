@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { MarketItem } from "@kw/shared";
 import { useMarketCatalog, useBuyItems } from "./useInventory.js";
+import { Modal, Button, Input, Field, Badge, Spinner } from "../ui/index.js";
 
 interface MarketplaceModalProps {
   characterId: number;
@@ -69,54 +70,81 @@ export function MarketplaceModal({
     onClose();
   }
 
-  if (isLoading) return <div className="modal">Loading marketplace…</div>;
-
   return (
-    <div className="modal marketplace-modal">
-      <header>
-        <h2>{t("Marketplace")}</h2>
-        <span className="gold-display">{t("Gold")}: {remainingGold}</span>
-      </header>
-      {error && <p className="error">{error}</p>}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>{t("Cost")}</th>
-            <th>Type</th>
-            <th>Qty</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(data?.items ?? []).map((it) => (
-            <tr key={`${it.category}:${it.name}`}>
-              <td>
-                {it.name}
-                {it.tags.length > 0 ? ` (${it.tags.map((tag) => t(tag)).join(", ")})` : ""}
-              </td>
-              <td>{it.cost}</td>
-              <td>{it.category}</td>
-              <td>
-                <button type="button" onClick={() => changeQty(it.name, -1)}>
-                  -
-                </button>
-                <span>{quantities[it.name] ?? 0}</span>
-                <button type="button" onClick={() => changeQty(it.name, 1)}>
-                  +
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <footer>
-        <button type="button" onClick={onClose}>
-          {t("Cancel")}
-        </button>
-        <button type="button" onClick={handleBuy} disabled={buy.isPending}>
-          {t("Buy")}
-        </button>
-      </footer>
-    </div>
+    <Modal open onClose={onClose} title={t("Marketplace")} className="max-w-2xl">
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <Spinner />
+        </div>
+      ) : (
+        <>
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-sm text-text">
+              {t("Gold")}:{" "}
+              <span className={remainingGold < 0 ? "font-semibold text-danger" : "font-semibold"}>
+                {remainingGold}
+              </span>
+            </p>
+          </div>
+
+          {error && (
+            <p role="alert" className="mb-3 text-sm text-danger">
+              {error}
+            </p>
+          )}
+
+          <div className="flex flex-col divide-y divide-border">
+            {(data?.items ?? []).map((it) => (
+              <div
+                key={`${it.category}:${it.name}`}
+                className="flex items-center justify-between gap-3 py-3"
+              >
+                <div className="flex flex-1 flex-wrap items-center gap-2">
+                  <span className="text-sm text-text">{it.name}</span>
+                  {it.tags.map((tag) => (
+                    <Badge key={tag}>{t(tag)}</Badge>
+                  ))}
+                  <Badge variant="neutral">{it.category}</Badge>
+                </div>
+                <span className="w-12 shrink-0 text-right text-sm text-muted">
+                  {it.cost} gp
+                </span>
+                <div className="flex shrink-0 items-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-label={`Remove one ${it.name}`}
+                    onClick={() => changeQty(it.name, -1)}
+                  >
+                    −
+                  </Button>
+                  <span className="w-6 text-center text-sm text-text">
+                    {quantities[it.name] ?? 0}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-label={`Add one ${it.name}`}
+                    onClick={() => changeQty(it.name, 1)}
+                    disabled={remainingGold < it.cost}
+                  >
+                    +
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 flex justify-end gap-2">
+            <Button variant="secondary" onClick={onClose}>
+              {t("Cancel")}
+            </Button>
+            <Button onClick={handleBuy} disabled={buy.isPending || spent === 0}>
+              {t("Buy")}
+            </Button>
+          </div>
+        </>
+      )}
+    </Modal>
   );
 }

@@ -7,6 +7,7 @@ import { useCharacter } from "../characters/useCharacters.js";
 import { useUpdateInventory } from "./useInventory.js";
 import { ContainerView } from "./ContainerView.js";
 import { MarketplaceModal } from "./MarketplaceModal.js";
+import { Container as UiContainer, PageHeader, Card, Field, Input, Button, Spinner } from "../ui/index.js";
 
 export function InventoryEditorPage() {
   const { t } = useTranslation();
@@ -41,32 +42,49 @@ export function InventoryEditorPage() {
     navigate(`/characters/${characterId}`);
   }
 
-  if (isLoading || !character) return <p>Loading…</p>;
+  if (isLoading || !character)
+    return (
+      <UiContainer>
+        <Spinner />
+      </UiContainer>
+    );
 
   return (
-    <div className="inventory-editor">
-      <h1>{t("Inventory")} — {character.name}</h1>
-      <p>
-        <Link to={`/characters/${characterId}`}>← Back</Link>
-      </p>
+    <UiContainer>
+      <PageHeader
+        title={`${t("Inventory")} — ${character.name}`}
+        actions={
+          <Link to={`/characters/${characterId}`}>
+            <Button variant="ghost" size="sm">← Back</Button>
+          </Link>
+        }
+      />
 
-      <div className="inventory-summary">
-        <label>
-          {t("Gold")}:{" "}
-          <input
+      <Card className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6">
+        <Field label={t("Gold")} htmlFor="inv-gold" className="w-28">
+          <Input
+            id="inv-gold"
             type="number"
             min={0}
             value={gold}
             onChange={(e) => setGold(Math.max(0, Number(e.target.value)))}
           />
-        </label>
-        <span>{t("Armor")}: {liveArmor}</span>
-        <span>Main slots: {mainSlots}</span>
-      </div>
-
-      <button type="button" onClick={() => setShowMarket(true)}>
-        {t("Marketplace")}
-      </button>
+        </Field>
+        <p className="text-sm text-text">
+          {t("Armor")}: <span className="font-semibold">{liveArmor}</span>
+        </p>
+        <p className="text-sm text-text">
+          Main slots: <span className="font-semibold">{mainSlots}</span>
+        </p>
+        <div className="flex gap-2 sm:ml-auto">
+          <Button variant="secondary" onClick={() => setShowMarket(true)}>
+            {t("Marketplace")}
+          </Button>
+          <Button onClick={handleSave} disabled={update.isPending}>
+            {t("Save")}
+          </Button>
+        </div>
+      </Card>
 
       {containers.map((c) => (
         <ContainerView
@@ -78,10 +96,6 @@ export function InventoryEditorPage() {
         />
       ))}
 
-      <button type="button" onClick={handleSave} disabled={update.isPending}>
-        {t("Save")}
-      </button>
-
       {showMarket && (
         <MarketplaceModal
           characterId={characterId}
@@ -90,6 +104,6 @@ export function InventoryEditorPage() {
           onClose={() => setShowMarket(false)}
         />
       )}
-    </div>
+    </UiContainer>
   );
 }
