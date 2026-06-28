@@ -20,6 +20,9 @@ import { buildDataRoutes } from "./interfaces/http/dataRoutes.js";
 import { FileMarketRepository } from "./infrastructure/marketplace/FileMarketRepository.js";
 import { buildInventoryRoutes } from "./interfaces/http/inventoryRoutes.js";
 import { buildMarketplaceRoutes } from "./interfaces/http/marketplaceRoutes.js";
+import { PrismaPartyRepository } from "./infrastructure/persistence/prisma/PrismaPartyRepository.js";
+import { CryptoIdGenerator } from "./infrastructure/rng/CryptoIdGenerator.js";
+import { buildPartyRoutes } from "./interfaces/http/partyRoutes.js";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -42,6 +45,14 @@ import {
   UpdateInventory,
   TransferItem,
   BuyItems,
+  CreateParty,
+  GetParty,
+  ListParties,
+  UpdateParty,
+  DeleteParty,
+  JoinParty,
+  LeaveParty,
+  UpdatePartyInventory,
 } from "@kw/core";
 
 async function main() {
@@ -84,6 +95,21 @@ async function main() {
     update: new UpdateCharacter(characters),
     remove: new DeleteCharacter(characters),
     roll: new RollCharacter(gameData, dice),
+  };
+
+  // ---- adaptador y casos de uso de partidas ----
+  const parties = new PrismaPartyRepository(prisma);
+  const idGenerator = new CryptoIdGenerator();
+
+  const partyUseCases = {
+    list: new ListParties(parties),
+    create: new CreateParty(parties, idGenerator),
+    get: new GetParty(parties),
+    update: new UpdateParty(parties),
+    remove: new DeleteParty(parties),
+    join: new JoinParty(parties, characters),
+    leave: new LeaveParty(parties, characters),
+    updateInventory: new UpdatePartyInventory(parties),
   };
 
   // ---- adaptador y casos de uso de inventario/marketplace ----
@@ -140,6 +166,7 @@ async function main() {
   await app.register(buildMarketplaceRoutes(market, marketplaceUseCases), {
     prefix: "/api/marketplace",
   });
+  await app.register(buildPartyRoutes(partyUseCases), { prefix: "/api/parties" });
 
   await app.listen({ port: env.PORT, host: "0.0.0.0" });
 }
