@@ -2,15 +2,22 @@ import type { FastifyPluginAsync } from "fastify";
 import "@fastify/session";
 import {
   AuthError,
-  type Register,
+  Register,
+  ResendConfirmation,
+  RequestPasswordReset,
   type Login,
   type ConfirmEmail,
-  type ResendConfirmation,
-  type RequestPasswordReset,
   type ResetPassword,
   type ChangePassword,
   type ChangeEmail,
   type DeleteAccount,
+  type UserRepository,
+  type PasswordHasher,
+  type Mailer,
+  type EmailMessage,
+  type TokenService,
+  type Captcha,
+  type RegisterConfig,
 } from "@kw/core";
 import {
   RegisterInputSchema,
@@ -23,10 +30,57 @@ import {
   DeleteAccountInputSchema,
   type SessionUser,
 } from "@kw/shared";
+import {
+  buildConfirmEmail,
+  buildResetEmail,
+} from "../../infrastructure/i18n/emailTranslations.js";
+import { parseLocale } from "@kw/shared";
+import type { Locale } from "@kw/shared";
 
 declare module "fastify" {
   interface Session {
     user?: SessionUser;
+  }
+}
+
+/** Lee la cookie kw_lang del header Cookie de Fastify. */
+function localeFromCookie(cookieHeader: string | undefined): Locale {
+  if (!cookieHeader) return "en";
+  const match = cookieHeader.match(/(?:^|;\s*)kw_lang=([^;]+)/);
+  return parseLocale(match?.[1]);
+}
+
+/**
+ * Wrapper de Mailer que intercepta el send de emails de auth y los
+ * sobreescribe con la versión localizada según el locale dado.
+ * Los demás correos pasan sin cambios.
+ */
+class LocalizedAuthMailer implements Mailer {
+  constructor(
+    private readonly inner: Mailer,
+    private readonly locale: Locale,
+    private readonly username: string
+  ) {}
+
+  async send(message: EmailMessage): Promise<void> {
+    // Detectar por el subject (hardcoded en los casos de uso)
+    let localized: Partial<EmailMessage> = {};
+    if (message.subject.startsWith("Confirm Your Account")) {
+      const token = this.extractToken(message.text);
+      const built = buildConfirmEmail(this.locale, this.username, token);
+      localized = { subject: built.subject, text: built.text, html: built.html };
+    } else if (message.subject.startsWith("Reset Your Password")) {
+      const token = this.extractToken(message.text);
+      const built = buildResetEmail(this.locale, this.username, token);
+      localized = { subject: built.subject, text: built.text, html: built.html };
+    }
+    await this.inner.send({ ...message, ...localized });
+  }
+
+  /** Extrae el token del body de texto (formato: 'token: <TOKEN>') */
+  private extractToken(text: string): string {
+    const match = text.match(/token:\s*(\S+)/i);
+    return match?.[1] ?? "";
   }
 }
 
@@ -40,6 +94,13 @@ export interface AuthUseCases {
   changePassword: ChangePassword;
   changeEmail: ChangeEmail;
   deleteAccount: DeleteAccount;
+  /** Dependencias raw para re-instanciar casos de uso con mailer localizado */
+  mailer: Mailer;
+  users: UserRepository;
+  hasher: PasswordHasher;
+  tokens: TokenService;
+  captcha: Captcha;
+  registerConfig: RegisterConfig;
 }
 
 function statusFor(code: string): number {
@@ -69,7 +130,17 @@ export function buildAuthRoutes(uc: AuthUseCases): FastifyPluginAsync {
 
     app.post("/signup", async (req, reply) => {
       const input = RegisterInputSchema.parse(req.body);
-      await uc.register.execute({ ...input, ip: req.ip });
+      const locale = localeFromCookie(req.headers.cookie);
+      const localizedMailer = new LocalizedAuthMailer(uc.mailer, locale, input.username);
+      const register = new Register(
+        uc.users,
+        uc.hasher,
+        localizedMailer,
+        uc.tokens,
+        uc.captcha,
+        uc.registerConfig
+      );
+      await register.execute({ ...input, ip: req.ip });
       return reply.status(201).send({ ok: true });
     });
 
@@ -99,13 +170,25 @@ export function buildAuthRoutes(uc: AuthUseCases): FastifyPluginAsync {
 
     app.post("/resend-confirmation", async (req, reply) => {
       const input = ResendConfirmationInputSchema.parse(req.body);
-      const result = await uc.resendConfirmation.execute(input);
+      const locale = localeFromCookie(req.headers.cookie);
+      // Necesitamos el username para el LocalizedAuthMailer; lo obtenemos del user
+      const user = await uc.users.findByEmail(input.email.toLowerCase());
+      const username = user?.username ?? "";
+      const localizedMailer = new LocalizedAuthMailer(uc.mailer, locale, username);
+      const resendConfirmation = new ResendConfirmation(uc.users, localizedMailer, uc.tokens);
+      const result = await resendConfirmation.execute(input);
       return reply.send(result);
     });
 
     app.post("/reset-request", async (req, reply) => {
       const input = RequestPasswordResetInputSchema.parse(req.body);
-      const result = await uc.requestPasswordReset.execute(input);
+      const locale = localeFromCookie(req.headers.cookie);
+      // Necesitamos el username para el LocalizedAuthMailer; lo obtenemos del user
+      const user = await uc.users.findByEmail(input.email.toLowerCase());
+      const username = user?.username ?? "";
+      const localizedMailer = new LocalizedAuthMailer(uc.mailer, locale, username);
+      const requestPasswordReset = new RequestPasswordReset(uc.users, localizedMailer, uc.tokens);
+      const result = await requestPasswordReset.execute(input);
       return reply.send(result);
     });
 

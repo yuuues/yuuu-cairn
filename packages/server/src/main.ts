@@ -143,11 +143,12 @@ async function main() {
   };
 
   // ---- casos de uso (inyección por constructor) ----
+  const registerConfig = {
+    requireSignupCode: env.REQUIRE_SIGNUP_CODE,
+    signupCode: env.SIGNUP_CODE,
+  };
   const authUseCases = {
-    register: new Register(users, hasher, mailer, tokens, captcha, {
-      requireSignupCode: env.REQUIRE_SIGNUP_CODE,
-      signupCode: env.SIGNUP_CODE,
-    }),
+    register: new Register(users, hasher, mailer, tokens, captcha, registerConfig),
     login: new Login(users, hasher),
     confirmEmail: new ConfirmEmail(users, tokens),
     resendConfirmation: new ResendConfirmation(users, mailer, tokens),
@@ -156,6 +157,13 @@ async function main() {
     changePassword: new ChangePassword(users, hasher),
     changeEmail: new ChangeEmail(users, hasher),
     deleteAccount: new DeleteAccount(users, hasher),
+    // Dependencias raw para localización de emails en las rutas HTTP
+    mailer,
+    users,
+    hasher,
+    tokens,
+    captcha,
+    registerConfig,
   };
 
   // ---- sesión por cookie httpOnly (store explícito, compartido con Socket.IO) ----

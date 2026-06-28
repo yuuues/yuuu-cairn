@@ -31,12 +31,10 @@ async function buildApp(): Promise<{
   const mailer = new FakeMailer();
   const tokens = new FakeTokenService();
   const captcha = new FakeCaptcha(true);
+  const registerConfig = { requireSignupCode: false, signupCode: "default" };
 
   const uc = {
-    register: new Register(users, hasher, mailer, tokens, captcha, {
-      requireSignupCode: false,
-      signupCode: "default",
-    }),
+    register: new Register(users, hasher, mailer, tokens, captcha, registerConfig),
     login: new Login(users, hasher),
     confirmEmail: new ConfirmEmail(users, tokens),
     resendConfirmation: new ResendConfirmation(users, mailer, tokens),
@@ -45,6 +43,13 @@ async function buildApp(): Promise<{
     changePassword: new ChangePassword(users, hasher),
     changeEmail: new ChangeEmail(users, hasher),
     deleteAccount: new DeleteAccount(users, hasher),
+    // Dependencias raw para localización de emails en las rutas HTTP
+    mailer,
+    users,
+    hasher,
+    tokens,
+    captcha,
+    registerConfig,
   };
 
   const app = Fastify();
@@ -163,5 +168,22 @@ describe("auth routes", () => {
       payload: { oldPassword: "x", password: "y" },
     });
     expect(res.statusCode).toBe(401);
+  });
+
+  it("signup con kw_lang=es envía email de confirmación en español", async () => {
+    const { app, mailer } = ctx;
+    const res = await app.inject({
+      method: "POST",
+      url: "/api/auth/signup",
+      headers: { cookie: "kw_lang=es" },
+      payload: {
+        email: "test-es@example.com",
+        username: "testies",
+        password: "password123",
+      },
+    });
+    expect(res.statusCode).toBe(201);
+    const sent = mailer.sent.at(-1);
+    expect(sent?.subject).toBe("Confirma tu cuenta");
   });
 });
