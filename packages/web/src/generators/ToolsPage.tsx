@@ -20,7 +20,7 @@ export function ToolsPage() {
 
   return (
     <Container className="max-w-3xl">
-      <h2 className="mb-4 font-serif text-3xl text-text">{t("Tools")}</h2>
+      <h1 className="mb-4 font-serif text-3xl text-text">{t("Tools")}</h1>
       <div role="tablist" className="flex gap-2 border-b border-border">
         <button
           role="tab"

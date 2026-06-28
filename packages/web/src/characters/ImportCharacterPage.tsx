@@ -60,10 +60,11 @@ export function ImportCharacterPage() {
         <h1 className="mb-6 font-serif text-2xl text-text">{t("Upload JSON Character File")}</h1>
         <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-text">
+            <label htmlFor="import-json-file" className="text-sm font-medium text-text">
               {t("JSON File")}
             </label>
             <input
+              id="import-json-file"
               type="file"
               ref={fileRef}
               accept=".json"

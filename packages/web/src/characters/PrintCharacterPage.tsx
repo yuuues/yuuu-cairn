@@ -23,7 +23,7 @@ function InventorySection({ character }: { character: Character }) {
   const { t } = useTranslation();
   return (
     <div className="mt-4">
-      <h3 className="mb-2 font-serif text-lg text-black">{t("Inventory")}</h3>
+      <h2 className="mb-2 font-serif text-lg text-black">{t("Inventory")}</h2>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {character.containers.map((c: Container) => (
           <div key={c.id} className="rounded border border-stone-300 p-2">
@@ -69,8 +69,8 @@ export function PrintCharacterPage() {
     }
   }, [character]);
 
-  if (isLoading) return <p className="p-8 text-stone-600">Loading...</p>;
-  if (isError || !character) return <p className="p-8 text-stone-600">Character not found.</p>;
+  if (isLoading) return <p className="p-8 text-stone-600">{t("Loading")}…</p>;
+  if (isError || !character) return <p className="p-8 text-stone-600">{t("Character not found.")}</p>;
 
   const armor = armorValue(character.items);
   const slots = occupiedMainSlots(character.items);
@@ -93,7 +93,7 @@ export function PrintCharacterPage() {
               ? character.imageUrl
               : "/static/images/portraits/default-portrait.webp"
           }
-          alt="character portrait"
+          alt={`${character.name} — ${t("character portrait")}`}
           className="h-24 w-24 rounded object-cover"
         />
         <div>
@@ -105,7 +105,7 @@ export function PrintCharacterPage() {
       {/* Stats + Rasgos */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="rounded border border-stone-200 p-3">
-          <h3 className="mb-2 font-serif text-lg text-black">Stats</h3>
+          <h2 className="mb-2 font-serif text-lg text-black">{t("Stats")}</h2>
           <div className="grid grid-cols-4 gap-2">
             {[
               { label: "STR", val: `${character.strength}/${character.strengthMax}` },
@@ -130,7 +130,7 @@ export function PrintCharacterPage() {
         </div>
 
         <div className="rounded border border-stone-200 p-3">
-          <h3 className="mb-2 font-serif text-lg text-black">{t("Traits")}</h3>
+          <h2 className="mb-2 font-serif text-lg text-black">{t("Traits")}</h2>
           <p className="whitespace-pre-wrap text-sm text-black">{character.traits}</p>
         </div>
       </div>
@@ -142,29 +142,29 @@ export function PrintCharacterPage() {
       <div className="mt-4 grid grid-cols-1 gap-3">
         {character.description && (
           <div className="rounded border border-stone-200 p-3">
-            <h3 className="mb-1 font-serif text-base text-black">{t("Description")}</h3>
+            <h2 className="mb-1 font-serif text-base text-black">{t("Description")}</h2>
             <p className="text-sm text-black">{character.description}</p>
           </div>
         )}
         <div className="rounded border border-stone-200 p-3">
-          <h3 className="mb-1 font-serif text-base text-black">{t("Bonds")}</h3>
+          <h2 className="mb-1 font-serif text-base text-black">{t("Bonds")}</h2>
           <p className="whitespace-pre-wrap text-sm text-black">{character.bonds}</p>
         </div>
         {character.omens && (
           <div className="rounded border border-stone-200 p-3">
-            <h3 className="mb-1 font-serif text-base text-black">{t("Omens")}</h3>
+            <h2 className="mb-1 font-serif text-base text-black">{t("Omens")}</h2>
             <p className="text-sm text-black">{character.omens}</p>
           </div>
         )}
         {character.scars && (
           <div className="rounded border border-stone-200 p-3">
-            <h3 className="mb-1 font-serif text-base text-black">{t("Scars")}</h3>
+            <h2 className="mb-1 font-serif text-base text-black">{t("Scars")}</h2>
             <p className="text-sm text-black">{character.scars}</p>
           </div>
         )}
         {character.notes && (
           <div className="rounded border border-stone-200 p-3">
-            <h3 className="mb-1 font-serif text-base text-black">{t("Notes")}</h3>
+            <h2 className="mb-1 font-serif text-base text-black">{t("Notes")}</h2>
             <p className="text-sm text-black">{character.notes}</p>
           </div>
         )}
