@@ -74,7 +74,7 @@ export function CharacterCreatePage() {
 
   if (step === "background") {
     return (
-      <Container className="max-w-lg">
+      <Container className="max-w-2xl">
         <Stepper step={step} />
         <Card className="flex flex-col gap-4">
           <h1 className="font-serif text-2xl text-text">{t("Create Character")}</h1>
@@ -83,16 +83,16 @@ export function CharacterCreatePage() {
             disabled={roll.isPending}
           >
             {roll.isPending ? <Spinner className="h-4 w-4" /> : null}
-            Roll a random character
+            {t("Roll a random character")}
           </Button>
-          <p className="text-sm text-muted">…or pick a {t("Background")}</p>
+          <p className="text-sm text-muted">{t("…or pick a background")}</p>
           <Field label={t("Background")} htmlFor="create-background">
             <Select
               id="create-background"
               value={selected}
               onChange={(e) => setSelected(e.target.value)}
             >
-              <option value="">Select…</option>
+              <option value="">{t("Select…")}</option>
               {backgrounds &&
                 Object.keys(backgrounds).map((name) => (
                   <option key={name} value={name}>
@@ -106,14 +106,14 @@ export function CharacterCreatePage() {
               onClick={() => rollWith(selected)}
               disabled={!selected || roll.isPending}
             >
-              Roll this background
+              {t("Roll this background")}
             </Button>
             <Button
               variant="secondary"
               onClick={startManual}
               disabled={!selected}
             >
-              Fill manually
+              {t("Fill manually")}
             </Button>
           </div>
         </Card>
