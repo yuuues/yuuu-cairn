@@ -1,13 +1,19 @@
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { useParty } from "./useParties.js";
 import { useSession } from "../auth/useSession.js";
+import { useCharacters } from "../characters/useCharacters.js";
+import { useDiceRoller } from "../realtime/useDiceRoller.js";
+import { DiceModal } from "../realtime/DiceModal.js";
 
 export function PartyViewPage() {
   const { id } = useParams<{ id: string }>();
   const partyId = Number(id);
   const { data: session } = useSession();
   const { data, isLoading, error } = useParty(partyId);
+  const { data: myCharacters } = useCharacters();
+  const { notifications, roll } = useDiceRoller();
+  const [diceOpen, setDiceOpen] = useState(false);
 
   if (isLoading) return <p>Loading…</p>;
   if (error) return <p>Party not found or access denied.</p>;
@@ -16,6 +22,15 @@ export function PartyViewPage() {
   const { party, joinCode } = data;
   const isOwner = session?.id === party.ownerId;
   const isSubowner = session?.id !== undefined && party.subowners.includes(session.id);
+
+  // Primer personaje del usuario que es miembro de la partida (para tirar dados).
+  const myMemberCharacter = (myCharacters ?? []).find((c) => party.members.includes(c.id));
+
+  function handleRoll(rollText: string) {
+    if (!myMemberCharacter) return;
+    roll({ characterId: myMemberCharacter.id, partyId: party.id, roll: rollText });
+    setDiceOpen(false);
+  }
 
   return (
     <div>
@@ -32,6 +47,34 @@ export function PartyViewPage() {
           )}
         </div>
       )}
+
+      {myMemberCharacter && (
+        <section>
+          <button type="button" onClick={() => setDiceOpen(true)}>
+            Roll dice
+          </button>
+          {diceOpen && (
+            <DiceModal
+              mode="party"
+              onRoll={handleRoll}
+              onClose={() => setDiceOpen(false)}
+            />
+          )}
+        </section>
+      )}
+
+      <section aria-live="polite">
+        <h2>Dice rolls</h2>
+        {notifications.length === 0 ? (
+          <p>No rolls yet.</p>
+        ) : (
+          <ul>
+            {notifications.map((msg, i) => (
+              <li key={i}>{msg}</li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section>
         <h2>Members ({party.members.length})</h2>
