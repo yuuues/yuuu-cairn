@@ -17,6 +17,9 @@ import { FileGameDataRepository } from "./infrastructure/gamedata/FileGameDataRe
 import { CryptoDice } from "./infrastructure/rng/CryptoDice.js";
 import { buildCharacterRoutes } from "./interfaces/http/characterRoutes.js";
 import { buildDataRoutes } from "./interfaces/http/dataRoutes.js";
+import { FileMarketRepository } from "./infrastructure/marketplace/FileMarketRepository.js";
+import { buildInventoryRoutes } from "./interfaces/http/inventoryRoutes.js";
+import { buildMarketplaceRoutes } from "./interfaces/http/marketplaceRoutes.js";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -36,6 +39,9 @@ import {
   UpdateCharacter,
   DeleteCharacter,
   RollCharacter,
+  UpdateInventory,
+  TransferItem,
+  BuyItems,
 } from "@kw/core";
 
 async function main() {
@@ -80,6 +86,17 @@ async function main() {
     roll: new RollCharacter(gameData, dice),
   };
 
+  // ---- adaptador y casos de uso de inventario/marketplace ----
+  const market = new FileMarketRepository(dataDir);
+
+  const inventoryUseCases = {
+    updateInventory: new UpdateInventory(characters),
+    transferItem: new TransferItem(characters),
+  };
+  const marketplaceUseCases = {
+    buyItems: new BuyItems(characters, market),
+  };
+
   // ---- casos de uso (inyección por constructor) ----
   const authUseCases = {
     register: new Register(users, hasher, mailer, tokens, captcha, {
@@ -117,6 +134,12 @@ async function main() {
     prefix: "/api/characters",
   });
   await app.register(buildDataRoutes(gameData), { prefix: "/api/data" });
+  await app.register(buildInventoryRoutes(inventoryUseCases), {
+    prefix: "/api/characters",
+  });
+  await app.register(buildMarketplaceRoutes(market, marketplaceUseCases), {
+    prefix: "/api/marketplace",
+  });
 
   await app.listen({ port: env.PORT, host: "0.0.0.0" });
 }
