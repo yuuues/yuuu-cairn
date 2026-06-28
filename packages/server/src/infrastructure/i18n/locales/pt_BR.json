@@ -1,0 +1,11 @@
+{
+  "email.confirm.subject": "Confirme sua conta",
+  "email.confirm.text": "Olá {{username}},\n\npara confirmar sua conta use este token: {{token}}\n\nObs.: respostas para este endereço não são monitoradas.",
+  "email.confirm.html": "<p>Olá {{username}},</p><p>para confirmar sua conta use este token: <code>{{token}}</code></p><p><small>Obs.: respostas para este endereço não são monitoradas.</small></p>",
+  "email.reset.subject": "Redefina sua senha",
+  "email.reset.text": "Olá {{username}},\n\npara redefinir sua senha use este token: {{token}}\n\nSe você não solicitou a redefinição, ignore este e-mail.\n\nObs.: respostas para este endereço não são monitoradas.",
+  "email.reset.html": "<p>Olá {{username}},</p><p>para redefinir sua senha use este token: <code>{{token}}</code></p><p>Se você não solicitou a redefinição, ignore este e-mail.</p><p><small>Obs.: respostas para este endereço não são monitoradas.</small></p>",
+  "email.changeEmail.subject": "Confirme seu novo endereço de e-mail",
+  "email.changeEmail.text": "Olá {{username}},\n\npara confirmar seu novo endereço de e-mail use este token: {{token}}\n\nObs.: respostas para este endereço não são monitoradas.",
+  "email.changeEmail.html": "<p>Olá {{username}},</p><p>para confirmar seu novo endereço de e-mail use este token: <code>{{token}}</code></p><p><small>Obs.: respostas para este endereço não são monitoradas.</small></p>"
+}

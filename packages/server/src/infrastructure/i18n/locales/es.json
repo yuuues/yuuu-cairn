@@ -1,0 +1,11 @@
+{
+  "email.confirm.subject": "Confirma tu cuenta",
+  "email.confirm.text": "Hola {{username}},\n\npara confirmar tu cuenta utiliza este token: {{token}}\n\nNota: los mensajes dirigidos a esta dirección no son monitorizados.",
+  "email.confirm.html": "<p>Hola {{username}},</p><p>para confirmar tu cuenta utiliza este token: <code>{{token}}</code></p><p><small>Nota: los mensajes dirigidos a esta dirección no son monitorizados.</small></p>",
+  "email.reset.subject": "Restablece tu contraseña",
+  "email.reset.text": "Hola {{username}},\n\npara restablecer tu contraseña utiliza este token: {{token}}\n\nSi no solicitaste el restablecimiento, ignora este mensaje.\n\nNota: los mensajes dirigidos a esta dirección no son monitorizados.",
+  "email.reset.html": "<p>Hola {{username}},</p><p>para restablecer tu contraseña utiliza este token: <code>{{token}}</code></p><p>Si no solicitaste el restablecimiento, ignora este mensaje.</p><p><small>Nota: los mensajes dirigidos a esta dirección no son monitorizados.</small></p>",
+  "email.changeEmail.subject": "Confirma tu nueva dirección de correo",
+  "email.changeEmail.text": "Hola {{username}},\n\npara confirmar tu nueva dirección de correo utiliza este token: {{token}}\n\nNota: los mensajes dirigidos a esta dirección no son monitorizados.",
+  "email.changeEmail.html": "<p>Hola {{username}},</p><p>para confirmar tu nueva dirección de correo utiliza este token: <code>{{token}}</code></p><p><small>Nota: los mensajes dirigidos a esta dirección no son monitorizados.</small></p>"
+}

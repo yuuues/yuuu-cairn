@@ -1,0 +1,11 @@
+{
+  "email.confirm.subject": "Confirm Your Account",
+  "email.confirm.text": "Hi {{username}},\n\nTo confirm your account please use this token: {{token}}\n\nNote: replies to this email address are not monitored.",
+  "email.confirm.html": "<p>Hi {{username}},</p><p>To confirm your account please use this token: <code>{{token}}</code></p><p><small>Note: replies to this email address are not monitored.</small></p>",
+  "email.reset.subject": "Reset Your Password",
+  "email.reset.text": "Hi {{username}},\n\nTo reset your password please use this token: {{token}}\n\nIf you did not request a password reset, please ignore this email.\n\nNote: replies to this email address are not monitored.",
+  "email.reset.html": "<p>Hi {{username}},</p><p>To reset your password please use this token: <code>{{token}}</code></p><p>If you did not request a password reset, please ignore this email.</p><p><small>Note: replies to this email address are not monitored.</small></p>",
+  "email.changeEmail.subject": "Confirm Your New Email Address",
+  "email.changeEmail.text": "Hi {{username}},\n\nTo confirm your new email address please use this token: {{token}}\n\nNote: replies to this email address are not monitored.",
+  "email.changeEmail.html": "<p>Hi {{username}},</p><p>To confirm your new email address please use this token: <code>{{token}}</code></p><p><small>Note: replies to this email address are not monitored.</small></p>"
+}

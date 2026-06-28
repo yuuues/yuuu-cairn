@@ -1,0 +1,11 @@
+{
+  "email.confirm.subject": "Potwierdź swoje konto",
+  "email.confirm.text": "Cześć {{username}},\n\naby potwierdzić swoje konto, użyj tego tokenu: {{token}}\n\nUwaga: odpowiedzi na ten adres e-mail nie są monitorowane.",
+  "email.confirm.html": "<p>Cześć {{username}},</p><p>aby potwierdzić swoje konto, użyj tego tokenu: <code>{{token}}</code></p><p><small>Uwaga: odpowiedzi na ten adres e-mail nie są monitorowane.</small></p>",
+  "email.reset.subject": "Resetuj hasło",
+  "email.reset.text": "Cześć {{username}},\n\naby zresetować hasło, użyj tego tokenu: {{token}}\n\nJeśli nie prosiłeś o reset, zignoruj tę wiadomość.\n\nUwaga: odpowiedzi na ten adres e-mail nie są monitorowane.",
+  "email.reset.html": "<p>Cześć {{username}},</p><p>aby zresetować hasło, użyj tego tokenu: <code>{{token}}</code></p><p>Jeśli nie prosiłeś o reset, zignoruj tę wiadomość.</p><p><small>Uwaga: odpowiedzi na ten adres e-mail nie są monitorowane.</small></p>",
+  "email.changeEmail.subject": "Potwierdź nowy adres e-mail",
+  "email.changeEmail.text": "Cześć {{username}},\n\naby potwierdzić nowy adres e-mail, użyj tego tokenu: {{token}}\n\nUwaga: odpowiedzi na ten adres e-mail nie są monitorowane.",
+  "email.changeEmail.html": "<p>Cześć {{username}},</p><p>aby potwierdzić nowy adres e-mail, użyj tego tokenu: <code>{{token}}</code></p><p><small>Uwaga: odpowiedzi na ten adres e-mail nie są monitorowane.</small></p>"
+}

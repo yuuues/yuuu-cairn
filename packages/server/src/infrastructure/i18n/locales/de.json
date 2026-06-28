@@ -1,0 +1,11 @@
+{
+  "email.confirm.subject": "Bitte bestätige dein Konto",
+  "email.confirm.text": "Hallo {{username}},\n\nbitte bestätige dein Konto mit diesem Token: {{token}}\n\nHinweis: Antworten auf diese E-Mail-Adresse werden nicht überwacht.",
+  "email.confirm.html": "<p>Hallo {{username}},</p><p>bitte bestätige dein Konto mit diesem Token: <code>{{token}}</code></p><p><small>Hinweis: Antworten auf diese E-Mail-Adresse werden nicht überwacht.</small></p>",
+  "email.reset.subject": "Passwort zurücksetzen",
+  "email.reset.text": "Hallo {{username}},\n\nbitte setze dein Passwort mit diesem Token zurück: {{token}}\n\nFalls du kein Zurücksetzen angefordert hast, ignoriere diese E-Mail.\n\nHinweis: Antworten auf diese E-Mail-Adresse werden nicht überwacht.",
+  "email.reset.html": "<p>Hallo {{username}},</p><p>bitte setze dein Passwort mit diesem Token zurück: <code>{{token}}</code></p><p>Falls du kein Zurücksetzen angefordert hast, ignoriere diese E-Mail.</p><p><small>Hinweis: Antworten auf diese E-Mail-Adresse werden nicht überwacht.</small></p>",
+  "email.changeEmail.subject": "Neue E-Mail-Adresse bestätigen",
+  "email.changeEmail.text": "Hallo {{username}},\n\nbitte bestätige deine neue E-Mail-Adresse mit diesem Token: {{token}}\n\nHinweis: Antworten auf diese E-Mail-Adresse werden nicht überwacht.",
+  "email.changeEmail.html": "<p>Hallo {{username}},</p><p>bitte bestätige deine neue E-Mail-Adresse mit diesem Token: <code>{{token}}</code></p><p><small>Hinweis: Antworten auf diese E-Mail-Adresse werden nicht überwacht.</small></p>"
+}
