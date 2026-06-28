@@ -28,7 +28,7 @@ export function PartyEditPage() {
   if (error || !data)
     return (
       <Container>
-        <p className="text-danger">Party not found or access denied.</p>
+        <p className="text-danger">{t("Party not found or access denied.")}</p>
       </Container>
     );
 
@@ -39,7 +39,7 @@ export function PartyEditPage() {
   if (!isOwner && !isSubowner) {
     return (
       <Container>
-        <p className="text-danger">Access denied.</p>
+        <p className="text-danger">{t("Access denied.")}</p>
       </Container>
     );
   }
@@ -95,14 +95,14 @@ export function PartyEditPage() {
       </Card>
 
       <Card className="mb-6">
-        <h2 className="mb-3 font-serif text-lg text-text">Members ({party.members.length})</h2>
+        <h2 className="mb-3 font-serif text-lg text-text">{t("Members")} ({party.members.length})</h2>
         {party.members.length === 0 ? (
-          <p className="text-muted">No members yet.</p>
+          <p className="text-muted">{t("No members yet.")}</p>
         ) : (
           <ul className="flex flex-col divide-y divide-border">
             {party.members.map((memberId) => (
               <li key={memberId} className="flex items-center justify-between py-2">
-                <span className="text-sm text-text">Character #{memberId}</span>
+                <span className="text-sm text-text">{t("Character #{{id}}", { id: memberId })}</span>
                 {isOwner && (
                   <Button
                     variant="danger"
@@ -110,7 +110,7 @@ export function PartyEditPage() {
                     onClick={() => removeMember.mutate(memberId)}
                     disabled={removeMember.isPending}
                   >
-                    Remove
+                    {t("Remove")}
                   </Button>
                 )}
               </li>

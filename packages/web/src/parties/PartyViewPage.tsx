@@ -27,7 +27,7 @@ export function PartyViewPage() {
   if (error)
     return (
       <Container>
-        <p className="text-danger">Party not found or access denied.</p>
+        <p className="text-danger">{t("Party not found or access denied.")}</p>
       </Container>
     );
   if (!data) return null;
@@ -72,7 +72,7 @@ export function PartyViewPage() {
       {myMemberCharacter && (
         <Card className="mb-6">
           <Button type="button" onClick={() => setDiceOpen(true)}>
-            Roll dice
+            {t("Roll dice")}
           </Button>
           {diceOpen && (
             <DiceModal
@@ -85,9 +85,9 @@ export function PartyViewPage() {
       )}
 
       <Card className="mb-6" aria-live="polite">
-        <h2 className="mb-3 font-serif text-lg text-text">Dice rolls</h2>
+        <h2 className="mb-3 font-serif text-lg text-text">{t("Dice rolls")}</h2>
         {notifications.length === 0 ? (
-          <p className="text-muted">No rolls yet.</p>
+          <p className="text-muted">{t("No rolls yet.")}</p>
         ) : (
           <ul className="flex flex-col gap-1">
             {notifications.map((msg, i) => (
@@ -98,13 +98,13 @@ export function PartyViewPage() {
       </Card>
 
       <Card className="mb-6">
-        <h2 className="mb-3 font-serif text-lg text-text">Members ({party.members.length})</h2>
+        <h2 className="mb-3 font-serif text-lg text-text">{t("Members")} ({party.members.length})</h2>
         {party.members.length === 0 ? (
-          <p className="text-muted">No members yet.</p>
+          <p className="text-muted">{t("No members yet.")}</p>
         ) : (
           <ul className="flex flex-col gap-1">
             {party.members.map((memberId) => (
-              <li key={memberId} className="text-sm text-text">Character #{memberId}</li>
+              <li key={memberId} className="text-sm text-text">{t("Character #{{id}}", { id: memberId })}</li>
             ))}
           </ul>
         )}
@@ -113,7 +113,7 @@ export function PartyViewPage() {
       <Card>
         <h2 className="mb-3 font-serif text-lg text-text">{t("Items")}</h2>
         {party.items.length === 0 ? (
-          <p className="text-muted">No items in group storage.</p>
+          <p className="text-muted">{t("No items in group storage.")}</p>
         ) : (
           <ul className="flex flex-col gap-1">
             {party.items.map((item) => (

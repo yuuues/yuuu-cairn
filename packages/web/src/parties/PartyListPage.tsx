@@ -37,7 +37,7 @@ export function PartyListPage() {
         }
       />
       {parties && parties.length === 0 ? (
-        <p className="text-muted">No parties yet.</p>
+        <p className="text-muted">{t("No parties yet.")}</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {parties?.map((p) => (

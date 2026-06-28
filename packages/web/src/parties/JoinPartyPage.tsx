@@ -51,7 +51,7 @@ export function JoinPartyPage() {
                 onChange={(e) => setCharacterId(e.target.value ? Number(e.target.value) : "")}
                 required
               >
-                <option value="">Select a character</option>
+                <option value="">{t("Select a character")}</option>
                 {characters?.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name} ({c.background})
