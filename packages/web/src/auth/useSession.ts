@@ -1,11 +1,13 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import type { SessionUser, LoginInput } from "@kw/shared";
 import { authApi } from "../api/auth.js";
+import { USE_LOCAL } from "../client/mode.js";
 
 export function useSession() {
   return useQuery<SessionUser | null>({
     queryKey: ["session"],
-    queryFn: authApi.me,
+    // En modo local no hay cuentas ni servidor: no pegamos a /api/auth/me.
+    queryFn: USE_LOCAL ? async () => null : authApi.me,
     staleTime: 60_000,
   });
 }

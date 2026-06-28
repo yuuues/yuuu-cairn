@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSession } from "../auth/useSession.js";
+import { USE_LOCAL } from "../client/mode.js";
 import { Container, Button } from "../ui/index.js";
 
 export function HomePage() {
@@ -12,7 +13,11 @@ export function HomePage() {
       <h1 className="mb-4 font-serif text-5xl text-text">Kettlewright</h1>
       <p className="mb-8 text-muted">{t("Manage your Cairn characters and parties")}</p>
       <div className="flex flex-wrap justify-center gap-3">
-        {user ? (
+        {USE_LOCAL ? (
+          <Link to="/characters">
+            <Button>{t("Characters")}</Button>
+          </Link>
+        ) : user ? (
           <>
             <Link to="/characters">
               <Button>{t("Characters")}</Button>
