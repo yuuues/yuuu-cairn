@@ -18,7 +18,7 @@ export class InMemoryPartyRepository implements PartyRepository {
 
   async findByMember(userId: number): Promise<Party[]> {
     return [...this.parties.values()].filter(
-      (p) => p.ownerId === userId || p.members.includes(userId)
+      (p) => p.ownerId === userId || p.subowners.includes(userId)
     );
   }
 
