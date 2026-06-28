@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Averia Serif Libre", ui-serif, Georgia, serif;
+
+  --color-bg: var(--kw-bg);
+  --color-surface: var(--kw-surface);
+  --color-text: var(--kw-text);
+  --color-muted: var(--kw-muted);
+  --color-border: var(--kw-border);
+
+  --color-accent: var(--color-amber-600);
+  --color-accent-fg: var(--color-white);
+  --color-accent-hover: var(--color-amber-700);
+  --color-success: var(--color-emerald-600);
+  --color-success-hover: var(--color-emerald-700);
+  --color-danger: var(--color-rose-600);
+  --color-danger-hover: var(--color-rose-700);
+  --color-info: var(--color-sky-600);
+
+  --radius-lg: 0.5rem;
+}
+
+/* Tokens semánticos light / dark (resueltos por las vars --kw-*) */
+:root {
+  --kw-bg: var(--color-stone-50);
+  --kw-surface: var(--color-white);
+  --kw-text: var(--color-stone-800);
+  --kw-muted: var(--color-stone-500);
+  --kw-border: var(--color-stone-200);
+}
+
+.dark {
+  --kw-bg: var(--color-stone-950);
+  --kw-surface: var(--color-stone-900);
+  --kw-text: var(--color-stone-100);
+  --kw-muted: var(--color-stone-400);
+  --kw-border: var(--color-stone-800);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+  }
+}
