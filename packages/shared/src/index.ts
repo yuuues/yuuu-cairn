@@ -10,3 +10,4 @@ export * from "./schemas/inventoryIo.js";
 export * from "./schemas/partyIo.js";
 export * from "./schemas/realtimeIo.js";
 export * from "./schemas/generatorIo.js";
+export * from "./schemas/i18n.js";
