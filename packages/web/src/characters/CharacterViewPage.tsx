@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useCharacter } from "./useCharacters.js";
+import { Container, PageHeader, Card, Badge, Button, Spinner } from "../ui/index.js";
 
 export function CharacterViewPage() {
   const { t } = useTranslation();
@@ -8,63 +9,107 @@ export function CharacterViewPage() {
   const charId = Number(id);
   const { data: character, isLoading, error } = useCharacter(charId);
 
-  if (isLoading) return <p>Loading…</p>;
-  if (error || !character) return <p>Character not found.</p>;
+  if (isLoading)
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
+  if (error || !character)
+    return (
+      <Container>
+        <p className="text-danger">Character not found.</p>
+      </Container>
+    );
 
   return (
-    <div>
-      <h1>{character.name}</h1>
-      <p>
-        <Link to="/characters">← Back</Link> ·{" "}
-        <Link to={`/characters/${character.id}/edit`}>{t("Edit")}</Link> ·{" "}
-        <Link to={`/characters/${character.id}/inventory`}>{t("Inventory")}</Link>
-      </p>
-      <p>Background: {character.background}</p>
-      <ul>
-        <li>
-          {t("Strength")} {character.strength}/{character.strengthMax}
-        </li>
-        <li>
-          {t("Dexterity")} {character.dexterity}/{character.dexterityMax}
-        </li>
-        <li>
-          {t("Willpower")} {character.willpower}/{character.willpowerMax}
-        </li>
-        <li>
-          {t("HP")} {character.hp}/{character.hpMax}
-        </li>
-        <li>{t("Armor")}: {character.armor ?? "0"}</li>
-        <li>{t("Gold")}: {character.gold}</li>
-      </ul>
-      {character.bonds && (
-        <section>
-          <h2>{t("Bonds")}</h2>
-          <p style={{ whiteSpace: "pre-wrap" }}>{character.bonds}</p>
-        </section>
-      )}
-      {character.omens && (
-        <section>
-          <h2>{t("Omens")}</h2>
-          <p style={{ whiteSpace: "pre-wrap" }}>{character.omens}</p>
-        </section>
-      )}
-      {character.traits && (
-        <section>
-          <h2>{t("Traits")}</h2>
-          <p>{character.traits}</p>
-        </section>
-      )}
-      <section>
-        <h2>{t("Inventory")}</h2>
-        <ul>
-          {character.items.map((it) => (
-            <li key={it.id}>
-              {it.name}
-              {it.tags.length > 0 ? ` (${it.tags.join(", ")})` : ""}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
+    <Container>
+      <PageHeader
+        title={character.name}
+        actions={
+          <>
+            <Link to="/characters">
+              <Button variant="ghost" size="sm">← Back</Button>
+            </Link>
+            <Link to={`/characters/${character.id}/edit`}>
+              <Button variant="secondary" size="sm">{t("Edit")}</Button>
+            </Link>
+            <Link to={`/characters/${character.id}/inventory`}>
+              <Button variant="secondary" size="sm">{t("Inventory")}</Button>
+            </Link>
+            <Link to={`/characters/${character.id}/print`}>
+              <Button variant="ghost" size="sm">Print</Button>
+            </Link>
+          </>
+        }
+      />
+
+      <div className="flex flex-col gap-4">
+        <Card>
+          <p className="mb-3 text-sm text-muted">{character.background}</p>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
+            <div className="text-sm">
+              <span className="font-medium text-text">{t("Strength")}</span>
+              <span className="ml-2 text-muted">{character.strength}/{character.strengthMax}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-medium text-text">{t("Dexterity")}</span>
+              <span className="ml-2 text-muted">{character.dexterity}/{character.dexterityMax}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-medium text-text">{t("Willpower")}</span>
+              <span className="ml-2 text-muted">{character.willpower}/{character.willpowerMax}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-medium text-text">{t("HP")}</span>
+              <span className="ml-2 text-muted">{character.hp}/{character.hpMax}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-medium text-text">{t("Armor")}</span>
+              <span className="ml-2 text-muted">{character.armor ?? "0"}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-medium text-text">{t("Gold")}</span>
+              <span className="ml-2 text-muted">{character.gold}</span>
+            </div>
+          </div>
+        </Card>
+
+        {character.bonds && (
+          <Card>
+            <h2 className="mb-2 font-serif text-lg text-text">{t("Bonds")}</h2>
+            <p className="whitespace-pre-wrap text-sm text-muted">{character.bonds}</p>
+          </Card>
+        )}
+
+        {character.omens && (
+          <Card>
+            <h2 className="mb-2 font-serif text-lg text-text">{t("Omens")}</h2>
+            <p className="whitespace-pre-wrap text-sm text-muted">{character.omens}</p>
+          </Card>
+        )}
+
+        {character.traits && (
+          <Card>
+            <h2 className="mb-2 font-serif text-lg text-text">{t("Traits")}</h2>
+            <p className="text-sm text-muted">{character.traits}</p>
+          </Card>
+        )}
+
+        <Card>
+          <h2 className="mb-3 font-serif text-lg text-text">{t("Inventory")}</h2>
+          <ul className="flex flex-col gap-2">
+            {character.items.map((it) => (
+              <li key={it.id} className="flex flex-wrap items-center gap-2 text-sm text-text">
+                {it.name}
+                {it.tags.map((tag) => (
+                  <Badge key={tag}>{tag}</Badge>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
+    </Container>
   );
 }

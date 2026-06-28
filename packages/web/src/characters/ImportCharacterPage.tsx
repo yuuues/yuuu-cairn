@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useImportCharacter } from "../generators/useGenerators.js";
 import { ImportCharacterPayloadSchema } from "@kw/shared";
+import { Container, Card, Button } from "../ui/index.js";
 
 export function ImportCharacterPage() {
   const { t } = useTranslation();
@@ -41,41 +43,52 @@ export function ImportCharacterPage() {
 
   if (success) {
     return (
-      <section className="body-container">
-        <p>Character imported successfully!</p>
-        <a href="/characters" className="button is-success">Go to characters</a>
-      </section>
+      <Container className="max-w-md">
+        <Card className="flex flex-col gap-4 text-center">
+          <p className="text-success">Character imported successfully!</p>
+          <Link to="/characters">
+            <Button>Go to characters</Button>
+          </Link>
+        </Card>
+      </Container>
     );
   }
 
   return (
-    <section className="body-container">
-      <form onSubmit={(e) => void handleSubmit(e)} style={{ maxWidth: "460px" }}>
-        <div>
-          <h3>Upload JSON Character File</h3>
-          <input
-            type="file"
-            ref={fileRef}
-            accept=".json"
-            style={{ display: "flex", flexDirection: "column" }}
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <br /><br />
-        <div style={{ display: "flex", gap: "0.5em" }}>
-          <button
-            type="submit"
-            className="button is-success"
-            disabled={importMutation.isPending}
-          >
-            {importMutation.isPending ? "Importing..." : t("Import")}
-          </button>
-          <a href="/characters" className="button">
-            {t("Cancel")}
-          </a>
-        </div>
-      </form>
-    </section>
+    <Container className="max-w-md">
+      <Card>
+        <h1 className="mb-6 font-serif text-2xl text-text">Upload JSON Character File</h1>
+        <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-text">
+              JSON File
+            </label>
+            <input
+              type="file"
+              ref={fileRef}
+              accept=".json"
+              className="text-sm text-text file:mr-3 file:rounded-lg file:border file:border-border file:bg-surface file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-text hover:file:bg-bg"
+            />
+          </div>
+          {error && (
+            <p role="alert" className="text-sm text-danger">
+              {error}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <Button
+              type="submit"
+              disabled={importMutation.isPending}
+            >
+              {importMutation.isPending ? "Importing..." : t("Import")}
+            </Button>
+            <Link to="/characters">
+              <Button type="button" variant="secondary">{t("Cancel")}</Button>
+            </Link>
+          </div>
+        </form>
+      </Card>
+    </Container>
   );
 }
 
