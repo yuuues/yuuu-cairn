@@ -14,6 +14,11 @@ import { CharacterViewPage } from "./characters/CharacterViewPage.js";
 import { CharacterEditPage } from "./characters/CharacterEditPage.js";
 import { CharacterCreatePage } from "./characters/create/CharacterCreatePage.js";
 import { InventoryEditorPage } from "./inventory/InventoryEditorPage.js";
+import { PartyListPage } from "./parties/PartyListPage.js";
+import { PartyCreatePage } from "./parties/PartyCreatePage.js";
+import { PartyViewPage } from "./parties/PartyViewPage.js";
+import { PartyEditPage } from "./parties/PartyEditPage.js";
+import { JoinPartyPage } from "./parties/JoinPartyPage.js";
 
 function Home() {
   const { data: user } = useSession();
@@ -23,6 +28,7 @@ function Home() {
       {user ? (
         <p>
           Logged in as {user.username}. <Link to="/characters">Characters</Link> ·{" "}
+          <Link to="/parties">Parties</Link> ·{" "}
           <Link to="/account">Account</Link>
         </p>
       ) : (
@@ -55,6 +61,11 @@ export function App() {
         path="/characters/:id/inventory"
         element={<InventoryEditorPage />}
       />
+      <Route path="/parties" element={<PartyListPage />} />
+      <Route path="/parties/new" element={<PartyCreatePage />} />
+      <Route path="/parties/join" element={<JoinPartyPage />} />
+      <Route path="/parties/:id" element={<PartyViewPage />} />
+      <Route path="/parties/:id/edit" element={<PartyEditPage />} />
     </Routes>
   );
 }
