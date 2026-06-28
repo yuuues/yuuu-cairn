@@ -12,6 +12,7 @@
     "prebuild": "node src/local/gamedata/generate-bundle.mjs"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.1",
     "@capacitor/core": "^8.4.1",
     "@capacitor/filesystem": "^8.1.2",
     "@capacitor/share": "^8.0.1",
