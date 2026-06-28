@@ -143,6 +143,10 @@
   "QR code for {{name}}": "Kod QR dla {{name}}",
   "Scan or copy this code to import the character elsewhere.": "Zeskanuj lub skopiuj ten kod, aby zaimportować postać gdzie indziej.",
   "Import from QR": "Importuj z QR",
+  "Scan with camera": "Skanuj kamerą",
+  "Stop camera": "Zatrzymaj kamerę",
+  "Scan from photo": "Skanuj ze zdjęcia",
+  "Could not read QR from image.": "Nie udało się odczytać kodu QR z obrazu.",
   "QR content": "Treść QR",
   "Please paste QR content.": "Wklej treść kodu QR."
 }
