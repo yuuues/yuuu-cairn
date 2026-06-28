@@ -5,3 +5,5 @@ export * from "./schemas/party.js";
 export * from "./schemas/auth.js";
 export * from "./schemas/gameData.js";
 export * from "./schemas/characterIo.js";
+export * from "./schemas/market.js";
+export * from "./schemas/inventoryIo.js";
