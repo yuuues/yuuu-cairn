@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Cairn</string>
     <string name="title_activity_main">Cairn</string>
-    <string name="package_name">es.kcsystem.cairn</string>
-    <string name="custom_url_scheme">es.kcsystem.cairn</string>
+    <string name="package_name">es.yuuu.cairn</string>
+    <string name="custom_url_scheme">es.yuuu.cairn</string>
 </resources>

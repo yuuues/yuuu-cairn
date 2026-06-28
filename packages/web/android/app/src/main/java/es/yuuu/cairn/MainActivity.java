@@ -1,4 +1,4 @@
-package es.kcsystem.cairn;
+package es.yuuu.cairn;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "es.kcsystem.cairn"
+    namespace = "es.yuuu.cairn"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "es.kcsystem.cairn"
+        applicationId "es.yuuu.cairn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
