@@ -9,6 +9,10 @@ import { AccountPage } from "./auth/AccountPage.js";
 import { ChangePasswordPage } from "./auth/ChangePasswordPage.js";
 import { ChangeEmailPage } from "./auth/ChangeEmailPage.js";
 import { DeleteAccountPage } from "./auth/DeleteAccountPage.js";
+import { CharacterListPage } from "./characters/CharacterListPage.js";
+import { CharacterViewPage } from "./characters/CharacterViewPage.js";
+import { CharacterEditPage } from "./characters/CharacterEditPage.js";
+import { CharacterCreatePage } from "./characters/create/CharacterCreatePage.js";
 
 function Home() {
   const { data: user } = useSession();
@@ -17,7 +21,8 @@ function Home() {
       <h1>Kettlewright</h1>
       {user ? (
         <p>
-          Logged in as {user.username}. <Link to="/account">Account</Link>
+          Logged in as {user.username}. <Link to="/characters">Characters</Link> ·{" "}
+          <Link to="/account">Account</Link>
         </p>
       ) : (
         <p>
@@ -41,6 +46,10 @@ export function App() {
       <Route path="/account/change-password" element={<ChangePasswordPage />} />
       <Route path="/account/change-email" element={<ChangeEmailPage />} />
       <Route path="/account/delete" element={<DeleteAccountPage />} />
+      <Route path="/characters" element={<CharacterListPage />} />
+      <Route path="/characters/new" element={<CharacterCreatePage />} />
+      <Route path="/characters/:id" element={<CharacterViewPage />} />
+      <Route path="/characters/:id/edit" element={<CharacterEditPage />} />
     </Routes>
   );
 }
