@@ -39,7 +39,7 @@ export function GeneratorTablePanel() {
     if (result) void navigator.clipboard.writeText(result);
   }
 
-  if (isLoading) return <p className="text-muted">Loading tables...</p>;
+  if (isLoading) return <p className="text-muted">{t("Loading tables…")}</p>;
 
   return (
     <div className="flex flex-col gap-4">
@@ -49,7 +49,7 @@ export function GeneratorTablePanel() {
           value={category}
           onChange={(e) => handleCategoryChange(e.target.value)}
         >
-          <option value="" disabled>Choose...</option>
+          <option value="" disabled>{t("Choose…")}</option>
           {categories.map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
@@ -63,7 +63,7 @@ export function GeneratorTablePanel() {
             value={subcategory ?? ""}
             onChange={(e) => setSubcategory(e.target.value || null)}
           >
-            <option value="" disabled>Choose subcategory...</option>
+            <option value="" disabled>{t("Choose subcategory…")}</option>
             {subcategories.map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}

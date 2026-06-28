@@ -4,14 +4,15 @@ import type { NpcResult } from "@kw/shared";
 import { Card, Button } from "../ui/index.js";
 
 function NpcCard({ npc }: { npc: NpcResult }) {
+  const { t } = useTranslation();
   return (
     <Card className="mt-4 flex flex-col gap-2 text-sm text-text">
-      <p><strong>Name:</strong> {npc.name}</p>
-      <p><strong>Background:</strong> {npc.background}</p>
-      <p><strong>Virtue:</strong> {npc.virtue}</p>
-      <p><strong>Vice:</strong> {npc.vice}</p>
-      <p><strong>Quirk:</strong> {npc.quirk}</p>
-      <p><strong>Goal:</strong> {npc.goal}</p>
+      <p><strong>{t("Name")}:</strong> {npc.name}</p>
+      <p><strong>{t("Background")}:</strong> {npc.background}</p>
+      <p><strong>{t("Virtue")}:</strong> {npc.virtue}</p>
+      <p><strong>{t("Vice")}:</strong> {npc.vice}</p>
+      <p><strong>{t("Quirk")}:</strong> {npc.quirk}</p>
+      <p><strong>{t("Goal")}:</strong> {npc.goal}</p>
     </Card>
   );
 }

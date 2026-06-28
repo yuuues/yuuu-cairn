@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { rollSingle, rollDouble, formatSingle, formatDouble } from "./diceRoll.js";
 import { Modal, Button } from "../ui/index.js";
 
@@ -14,6 +15,7 @@ export interface DiceModalProps {
 }
 
 export function DiceModal({ mode, onRoll, onClose }: DiceModalProps) {
+  const { t } = useTranslation();
   const [result, setResult] = useState<string>("0");
 
   const singleDice = SINGLE_DICE.filter((s) => s !== 100 || mode === "party");
@@ -31,7 +33,7 @@ export function DiceModal({ mode, onRoll, onClose }: DiceModalProps) {
   }
 
   return (
-    <Modal open onClose={onClose} title="Dice roller">
+    <Modal open onClose={onClose} title={t("Dice roller")}>
       <div className="flex flex-col gap-4">
         <div className="rounded-lg border border-border p-4 text-center text-2xl font-bold text-text">
           {result}
@@ -63,7 +65,7 @@ export function DiceModal({ mode, onRoll, onClose }: DiceModalProps) {
           ))}
         </div>
         <Button variant="secondary" type="button" onClick={onClose}>
-          Close
+          {t("Close")}
         </Button>
       </div>
     </Modal>

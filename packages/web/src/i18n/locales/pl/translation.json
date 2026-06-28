@@ -131,5 +131,9 @@
   "character portrait": "portret postaci",
   "Remove one {{item}}": "Usuń jeden: {{item}}",
   "Add one {{item}}": "Dodaj jeden: {{item}}",
-  "Character #{{id}}": "Postać #{{id}}"
+  "Character #{{id}}": "Postać #{{id}}",
+  "Virtue": "Cnota",
+  "Vice": "Wada",
+  "Quirk": "Cecha",
+  "Goal": "Cel"
 }

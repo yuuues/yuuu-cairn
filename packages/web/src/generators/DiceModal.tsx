@@ -38,7 +38,7 @@ export function DiceModal({
   return (
     <Modal open={isOpen} onClose={onClose} title={t("Roll Dice")}>
       <div className="flex flex-col gap-4">
-        <Field label="Count" htmlFor="dice-count">
+        <Field label={t("Count")} htmlFor="dice-count">
           <Input
             id="dice-count"
             type="number"
@@ -48,7 +48,7 @@ export function DiceModal({
             onChange={(e) => setCount(Math.max(1, parseInt(e.target.value, 10) || 1))}
           />
         </Field>
-        <Field label="Die" htmlFor="dice-face">
+        <Field label={t("Die")} htmlFor="dice-face">
           <Select
             id="dice-face"
             value={face}
@@ -68,7 +68,7 @@ export function DiceModal({
           <Button onClick={handleRoll}>
             {t("Roll")} {count}d{face}
           </Button>
-          <Button variant="secondary" onClick={onClose}>Close</Button>
+          <Button variant="secondary" onClick={onClose}>{t("Close")}</Button>
         </div>
       </div>
     </Modal>

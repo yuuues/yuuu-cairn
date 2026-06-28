@@ -131,5 +131,9 @@
   "character portrait": "Charakterporträt",
   "Remove one {{item}}": "Eins entfernen: {{item}}",
   "Add one {{item}}": "Eins hinzufügen: {{item}}",
-  "Character #{{id}}": "Charakter Nr. {{id}}"
+  "Character #{{id}}": "Charakter Nr. {{id}}",
+  "Virtue": "Tugend",
+  "Vice": "Laster",
+  "Quirk": "Eigenheit",
+  "Goal": "Ziel"
 }

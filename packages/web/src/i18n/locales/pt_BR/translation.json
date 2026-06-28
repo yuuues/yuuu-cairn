@@ -131,5 +131,9 @@
   "character portrait": "retrato do personagem",
   "Remove one {{item}}": "Remover um: {{item}}",
   "Add one {{item}}": "Adicionar um: {{item}}",
-  "Character #{{id}}": "Personagem nº {{id}}"
+  "Character #{{id}}": "Personagem nº {{id}}",
+  "Virtue": "Virtude",
+  "Vice": "Vício",
+  "Quirk": "Mania",
+  "Goal": "Objetivo"
 }

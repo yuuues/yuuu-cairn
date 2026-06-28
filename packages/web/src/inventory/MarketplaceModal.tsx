@@ -113,7 +113,7 @@ export function MarketplaceModal({
                   <Button
                     variant="ghost"
                     size="sm"
-                    aria-label={`Remove one ${it.name}`}
+                    aria-label={t("Remove one {{item}}", { item: it.name })}
                     onClick={() => changeQty(it.name, -1)}
                   >
                     −
@@ -124,7 +124,7 @@ export function MarketplaceModal({
                   <Button
                     variant="ghost"
                     size="sm"
-                    aria-label={`Add one ${it.name}`}
+                    aria-label={t("Add one {{item}}", { item: it.name })}
                     onClick={() => changeQty(it.name, 1)}
                     disabled={remainingGold < it.cost}
                   >

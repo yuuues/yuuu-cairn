@@ -55,7 +55,7 @@ export function InventoryEditorPage() {
         title={`${t("Inventory")} — ${character.name}`}
         actions={
           <Link to={`/characters/${characterId}`}>
-            <Button variant="ghost" size="sm">← Back</Button>
+            <Button variant="ghost" size="sm">← {t("Back")}</Button>
           </Link>
         }
       />
