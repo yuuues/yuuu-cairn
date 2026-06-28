@@ -28,6 +28,8 @@ import { buildMarketplaceRoutes } from "./interfaces/http/marketplaceRoutes.js";
 import { PrismaPartyRepository } from "./infrastructure/persistence/prisma/PrismaPartyRepository.js";
 import { CryptoIdGenerator } from "./infrastructure/rng/CryptoIdGenerator.js";
 import { buildPartyRoutes } from "./interfaces/http/partyRoutes.js";
+import { FileGeneratorRepository } from "./infrastructure/generators/FileGeneratorRepository.js";
+import { buildGeneratorRoutes } from "./interfaces/http/generatorRoutes.js";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -59,6 +61,8 @@ import {
   LeaveParty,
   UpdatePartyInventory,
   RollDice,
+  GenerateNpc,
+  RollTable,
 } from "@kw/core";
 
 async function main() {
@@ -116,6 +120,14 @@ async function main() {
     join: new JoinParty(parties, characters),
     leave: new LeaveParty(parties, characters),
     updateInventory: new UpdatePartyInventory(parties),
+  };
+
+  // ---- adaptador de generadores ----
+  const generators = new FileGeneratorRepository(dataDir);
+  const generatorUseCases = {
+    rollTable: new RollTable(generators, dice),
+    generateNpc: new GenerateNpc(generators, dice),
+    tables: generators,
   };
 
   // ---- adaptador y casos de uso de inventario/marketplace ----
@@ -180,6 +192,7 @@ async function main() {
     prefix: "/api/marketplace",
   });
   await app.register(buildPartyRoutes(partyUseCases), { prefix: "/api/parties" });
+  await app.register(buildGeneratorRoutes(generatorUseCases), { prefix: "/api/generators" });
 
   // ---- tiempo real: publisher + caso de uso + gateway ----
   await app.ready(); // garantiza que app.io está disponible

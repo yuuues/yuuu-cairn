@@ -17,7 +17,8 @@
     "./testing/InMemoryCharacterRepository.js": "./src/testing/InMemoryCharacterRepository.ts",
     "./testing/FakeMarketRepository.js": "./src/testing/FakeMarketRepository.ts",
     "./testing/InMemoryPartyRepository.js": "./src/testing/InMemoryPartyRepository.ts",
-    "./testing/FakeIdGenerator.js": "./src/testing/FakeIdGenerator.ts"
+    "./testing/FakeIdGenerator.js": "./src/testing/FakeIdGenerator.ts",
+    "./testing/FakeGeneratorRepository.js": "./src/testing/FakeGeneratorRepository.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
