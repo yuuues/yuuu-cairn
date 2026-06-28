@@ -12,7 +12,7 @@ const LOCALE_LABELS: Record<Locale, string> = {
 
 /** Paridad con app/templates/lang.html del origen. */
 export function LanguageSelector() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const current = i18n.language as Locale;
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -27,7 +27,7 @@ export function LanguageSelector() {
       id="lang-selector"
       value={current}
       onChange={handleChange}
-      aria-label="Select language"
+      aria-label={t("Select language")}
     >
       {(["pt_BR", "de", "en", "es", "pl"] as const).map((loc) => (
         <option key={loc} value={loc}>

@@ -11,7 +11,7 @@ export function AccountPage() {
   if (isLoading)
     return (
       <Container>
-        <p className="text-muted">Loading...</p>
+        <p className="text-muted">{t("Loading")}…</p>
       </Container>
     );
   if (!user)
