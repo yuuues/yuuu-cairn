@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGeneratorTables, useRollTable } from "./useGenerators.js";
+import { Select, Field, Button, Card } from "../ui/index.js";
 
 function getSubcategories(value: unknown): string[] | null {
   if (value === null || typeof value !== "object" || Array.isArray(value)) return null;
@@ -38,65 +39,69 @@ export function GeneratorTablePanel() {
     if (result) void navigator.clipboard.writeText(result);
   }
 
-  if (isLoading) return <p>Loading tables...</p>;
+  if (isLoading) return <p className="text-muted">Loading tables...</p>;
 
   return (
-    <div className="tools-roll-container">
-      <select
-        className="tools-select"
-        value={category}
-        onChange={(e) => handleCategoryChange(e.target.value)}
-      >
-        <option value="" disabled>Choose...</option>
-        {categories.map((c) => (
-          <option key={c} value={c}>{c}</option>
-        ))}
-      </select>
+    <div className="flex flex-col gap-4">
+      <Field label={t("Category")} htmlFor="gen-category">
+        <Select
+          id="gen-category"
+          value={category}
+          onChange={(e) => handleCategoryChange(e.target.value)}
+        >
+          <option value="" disabled>Choose...</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </Select>
+      </Field>
 
       {subcategories && (
-        <select
-          className="tools-select"
-          value={subcategory ?? ""}
-          onChange={(e) => setSubcategory(e.target.value || null)}
-        >
-          <option value="" disabled>Choose subcategory...</option>
-          {subcategories.map((s) => (
-            <option key={s} value={s}>{s}</option>
-          ))}
-        </select>
+        <Field label={t("Subcategory")} htmlFor="gen-subcategory">
+          <Select
+            id="gen-subcategory"
+            value={subcategory ?? ""}
+            onChange={(e) => setSubcategory(e.target.value || null)}
+          >
+            <option value="" disabled>Choose subcategory...</option>
+            {subcategories.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </Select>
+        </Field>
       )}
 
-      <div id="tools-button-container">
-        <button
-          className="roll button dice-button"
+      <div className="flex flex-wrap gap-2">
+        <Button
           type="button"
           onClick={handleRoll}
           disabled={!category || rollMutation.isPending}
           aria-label={t("Roll")}
         >
-          <i className="fa-solid fa-dice dice"></i>
-        </button>
-        <button
-          className="button dice-button"
+          {t("Roll")}
+        </Button>
+        <Button
+          variant="secondary"
           type="button"
           onClick={handleCopy}
           disabled={!result}
         >
-          <i className="fa-solid fa-copy"></i>
-        </button>
-        <button
-          className="button dice-button"
+          {t("Copy")}
+        </Button>
+        <Button
+          variant="ghost"
           type="button"
           onClick={() => setResult("")}
+          disabled={!result}
         >
-          <i className="fa-solid fa-trash"></i>
-        </button>
+          {t("Clear")}
+        </Button>
       </div>
 
       {result && (
-        <div className="text-border" style={{ marginTop: "1em" }} id="tools-result-display">
+        <Card className="rounded-lg border border-border p-4 text-text" id="tools-result-display">
           {result}
-        </div>
+        </Card>
       )}
     </div>
   );

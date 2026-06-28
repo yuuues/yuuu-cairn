@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { rollSingle, rollDouble, formatSingle, formatDouble } from "./diceRoll.js";
+import { Modal, Button } from "../ui/index.js";
 
 const SINGLE_DICE = [4, 6, 8, 10, 12, 20, 100];
 const DOUBLE_DICE = [4, 6, 8, 10, 12];
@@ -30,28 +31,41 @@ export function DiceModal({ mode, onRoll, onClose }: DiceModalProps) {
   }
 
   return (
-    <div className="dice-modal" role="dialog" aria-label="Dice roller">
-      <div className="dice-modal-background" onClick={onClose} />
-      <div className="dice-modal-content">
-        <p className="dice-modal-result">{result}</p>
-        <div className="dice-modal-single">
+    <Modal open onClose={onClose} title="Dice roller">
+      <div className="flex flex-col gap-4">
+        <div className="rounded-lg border border-border p-4 text-center text-2xl font-bold text-text">
+          {result}
+        </div>
+        <div className="flex flex-wrap gap-2">
           {singleDice.map((sides) => (
-            <button key={`d${sides}`} type="button" onClick={() => handleSingle(sides)}>
+            <Button
+              key={`d${sides}`}
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => handleSingle(sides)}
+            >
               d{sides}
-            </button>
+            </Button>
           ))}
         </div>
-        <div className="dice-modal-double">
+        <div className="flex flex-wrap gap-2">
           {DOUBLE_DICE.map((sides) => (
-            <button key={`dd${sides}`} type="button" onClick={() => handleDouble(sides)}>
+            <Button
+              key={`dd${sides}`}
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => handleDouble(sides)}
+            >
               d{sides}+d{sides}
-            </button>
+            </Button>
           ))}
         </div>
-        <button type="button" onClick={onClose}>
+        <Button variant="secondary" type="button" onClick={onClose}>
           Close
-        </button>
+        </Button>
       </div>
-    </div>
+    </Modal>
   );
 }

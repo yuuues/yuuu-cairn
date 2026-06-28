@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Modal, Select, Input, Field, Button } from "../ui/index.js";
 
 /** Tipos de dado disponibles (paridad con el JS del cliente de origen). */
 const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100] as const;
@@ -28,8 +29,6 @@ export function DiceModal({
   const [face, setFace] = useState<DiceFace>(6);
   const [count, setCount] = useState<number>(1);
 
-  if (!isOpen) return null;
-
   function handleRoll() {
     // Formato paridad: "2d6", "1d20"
     const rollStr = `${count}d${face}`;
@@ -37,57 +36,41 @@ export function DiceModal({
   }
 
   return (
-    <div
-      className="modal is-active"
-      role="dialog"
-      aria-modal="true"
-      aria-label={t("Dice")}
-    >
-      <div className="modal-background" onClick={onClose} />
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <p className="modal-card-title">{t("Dice")}</p>
-          <button className="delete" aria-label="close" onClick={onClose} />
-        </header>
-        <section className="modal-card-body">
-          <div style={{ display: "flex", gap: "1em", alignItems: "center", flexWrap: "wrap" }}>
-            <label>
-              Count:
-              <input
-                type="number"
-                min={1}
-                max={10}
-                value={count}
-                onChange={(e) => setCount(Math.max(1, parseInt(e.target.value, 10) || 1))}
-                style={{ width: "4em", marginLeft: "0.5em" }}
-              />
-            </label>
-            <label>
-              Die:
-              <select
-                value={face}
-                onChange={(e) => setFace(Number(e.target.value) as DiceFace)}
-                style={{ marginLeft: "0.5em" }}
-              >
-                {DICE_TYPES.map((d) => (
-                  <option key={d} value={d}>d{d}</option>
-                ))}
-              </select>
-            </label>
+    <Modal open={isOpen} onClose={onClose} title={t("Roll Dice")}>
+      <div className="flex flex-col gap-4">
+        <Field label="Count" htmlFor="dice-count">
+          <Input
+            id="dice-count"
+            type="number"
+            min={1}
+            max={10}
+            value={count}
+            onChange={(e) => setCount(Math.max(1, parseInt(e.target.value, 10) || 1))}
+          />
+        </Field>
+        <Field label="Die" htmlFor="dice-face">
+          <Select
+            id="dice-face"
+            value={face}
+            onChange={(e) => setFace(Number(e.target.value) as DiceFace)}
+          >
+            {DICE_TYPES.map((d) => (
+              <option key={d} value={d}>d{d}</option>
+            ))}
+          </Select>
+        </Field>
+        {lastResult && (
+          <div className="rounded-lg border border-border p-4 text-text">
+            {lastResult}
           </div>
-          {lastResult && (
-            <div className="text-border" style={{ marginTop: "1em" }}>
-              {lastResult}
-            </div>
-          )}
-        </section>
-        <footer className="modal-card-foot">
-          <button className="button is-primary" onClick={handleRoll}>
-            <i className="fa-solid fa-dice" /> {t("Roll")} {count}d{face}
-          </button>
-          <button className="button" onClick={onClose}>Close</button>
-        </footer>
+        )}
+        <div className="flex gap-2">
+          <Button onClick={handleRoll}>
+            {t("Roll")} {count}d{face}
+          </Button>
+          <Button variant="secondary" onClick={onClose}>Close</Button>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }
