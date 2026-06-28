@@ -8,3 +8,4 @@ export * from "./schemas/characterIo.js";
 export * from "./schemas/market.js";
 export * from "./schemas/inventoryIo.js";
 export * from "./schemas/partyIo.js";
+export * from "./schemas/realtimeIo.js";
