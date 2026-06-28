@@ -21,13 +21,13 @@ export function PartyEditPage() {
 
   if (isLoading)
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <Spinner />
       </Container>
     );
   if (error || !data)
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <p className="text-danger">{t("Party not found or access denied.")}</p>
       </Container>
     );
@@ -38,7 +38,7 @@ export function PartyEditPage() {
 
   if (!isOwner && !isSubowner) {
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <p className="text-danger">{t("Access denied.")}</p>
       </Container>
     );

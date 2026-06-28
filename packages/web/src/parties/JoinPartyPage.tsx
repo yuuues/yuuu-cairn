@@ -23,7 +23,7 @@ export function JoinPartyPage() {
 
   if (isLoading)
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <Spinner />
       </Container>
     );

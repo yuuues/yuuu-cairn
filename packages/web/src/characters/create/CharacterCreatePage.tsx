@@ -129,7 +129,7 @@ export function CharacterCreatePage() {
   ) => setDraft((d) => (d ? { ...d, [key]: value } : d));
 
   return (
-    <Container className="max-w-lg">
+    <Container className="max-w-2xl">
       <Stepper step={step} />
       <Card className="flex flex-col gap-4">
         <h1 className="font-serif text-2xl text-text">Review character</h1>

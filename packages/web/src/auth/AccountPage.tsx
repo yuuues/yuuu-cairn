@@ -10,13 +10,13 @@ export function AccountPage() {
 
   if (isLoading)
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <p className="text-muted">{t("Loading")}…</p>
       </Container>
     );
   if (!user)
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <p className="text-muted">
           You are not logged in.{" "}
           <Link to="/login" className="text-accent hover:underline">

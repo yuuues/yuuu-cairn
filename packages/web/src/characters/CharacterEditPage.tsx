@@ -41,7 +41,7 @@ export function CharacterEditPage() {
 
   if (isLoading || !character)
     return (
-      <Container>
+      <Container className="max-w-2xl">
         <Spinner />
       </Container>
     );
