@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ItemSchema } from "./item.js";
 import { ContainerSchema } from "./container.js";
+import { AvatarSchema } from "./avatar.js";
 
 export const CreateCharacterInputSchema = z.object({
   name: z.string().min(1).max(64),
@@ -18,6 +19,7 @@ export const CreateCharacterInputSchema = z.object({
   bonds: z.string().nullable().default(null),
   omens: z.string().nullable().default(null),
   imageUrl: z.string().nullable().default(null),
+  avatar: AvatarSchema.nullable().optional(),
 });
 export type CreateCharacterInput = z.infer<typeof CreateCharacterInputSchema>;
 
@@ -41,6 +43,7 @@ export const UpdateCharacterInputSchema = z.object({
   scars: z.string().nullable().optional(),
   omens: z.string().nullable().optional(),
   imageUrl: z.string().nullable().optional(),
+  avatar: AvatarSchema.nullable().optional(),
   items: z.array(ItemSchema).optional(),
   containers: z.array(ContainerSchema).optional(),
 });

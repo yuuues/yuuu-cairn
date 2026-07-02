@@ -1,7 +1,9 @@
 import { z } from "zod";
 import { CharacterSchema, type Character } from "./character.js";
 
-export const CHARACTER_SCHEMA_VERSION = 1;
+// v2 añade el campo opcional `avatar`. Los exports v1 (sin avatar) siguen
+// importándose sin cambios: el campo es opcional en CharacterSchema.
+export const CHARACTER_SCHEMA_VERSION = 2;
 
 export const CharacterEnvelopeSchema = z.object({
   kind: z.literal("cairn-character"),

@@ -29,6 +29,13 @@ function NavLinks({
         >
           {t("Characters")}
         </Link>
+        <Link
+          to="/avatar"
+          onClick={onNavigate}
+          className="text-text hover:text-accent"
+        >
+          {t("Avatar")}
+        </Link>
       </div>
     );
   }
@@ -42,6 +49,13 @@ function NavLinks({
             className="text-text hover:text-accent"
           >
             {t("Characters")}
+          </Link>
+          <Link
+            to="/avatar"
+            onClick={onNavigate}
+            className="text-text hover:text-accent"
+          >
+            {t("Avatar")}
           </Link>
           <Link
             to="/parties"

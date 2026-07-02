@@ -31,4 +31,22 @@ describe("characterExport", () => {
     });
     expect(() => parseCharacterEnvelope(bad)).toThrow();
   });
+
+  it("conserva el avatar en el round-trip (v2)", () => {
+    const withAvatar: Character = {
+      ...sample,
+      avatar: { v: 1, parts: { body: { color: "#ffffff", visible: true } } },
+    };
+    const env = parseCharacterEnvelope(serializeCharacter(withAvatar));
+    expect(env.schemaVersion).toBe(2);
+    expect(env.payload.avatar?.parts.body?.color).toBe("#ffffff");
+  });
+
+  it("sigue importando exports v1 (sin avatar)", () => {
+    const v1 = JSON.stringify({
+      kind: "cairn-character", schemaVersion: 1, exportedAt: "", payload: sample,
+    });
+    const env = parseCharacterEnvelope(v1);
+    expect(env.payload.avatar ?? null).toBeNull();
+  });
 });

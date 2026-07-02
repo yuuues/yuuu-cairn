@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppShell } from "./layout/AppShell.js";
 import { HomePage } from "./pages/HomePage.js";
@@ -23,7 +24,23 @@ import { PartyViewPage } from "./parties/PartyViewPage.js";
 import { PartyEditPage } from "./parties/PartyEditPage.js";
 import { JoinPartyPage } from "./parties/JoinPartyPage.js";
 import { ToolsPage } from "./generators/ToolsPage.js";
+import { Spinner } from "./ui/index.js";
 import { USE_LOCAL } from "./client/mode.js";
+
+// Cargado de forma perezosa: el bundle 3D (three/fiber/drei) solo se descarga
+// al visitar /avatar, no penaliza el arranque del resto del gestor de fichas.
+const AvatarForgePage = lazy(() =>
+  import("./avatar/AvatarForgePage.js").then((m) => ({
+    default: m.AvatarForgePage,
+  }))
+);
+// Editor de avatar por personaje. También lazy: el bundle 3D no se carga al
+// navegar por el resto de la ficha.
+const CharacterAvatarPage = lazy(() =>
+  import("./characters/CharacterAvatarPage.js").then((m) => ({
+    default: m.CharacterAvatarPage,
+  }))
+);
 
 export function App() {
   return (
@@ -66,7 +83,35 @@ export function App() {
           element={<InventoryEditorPage />}
         />
         <Route path="/characters/:id/print" element={<PrintCharacterPage />} />
+        <Route
+          path="/characters/:id/avatar"
+          element={
+            <Suspense
+              fallback={
+                <div className="flex justify-center p-12">
+                  <Spinner />
+                </div>
+              }
+            >
+              <CharacterAvatarPage />
+            </Suspense>
+          }
+        />
         <Route path="/tools" element={<ToolsPage />} />
+        <Route
+          path="/avatar"
+          element={
+            <Suspense
+              fallback={
+                <div className="flex justify-center p-12">
+                  <Spinner />
+                </div>
+              }
+            >
+              <AvatarForgePage />
+            </Suspense>
+          }
+        />
       </Routes>
     </AppShell>
   );

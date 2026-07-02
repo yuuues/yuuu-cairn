@@ -38,6 +38,7 @@ export class CreateCharacter {
       omens: i.omens,
       armor: String(armorValue(i.items)),
       imageUrl: i.imageUrl,
+      avatar: i.avatar,
       partyId: null,
     };
     return this.characters.save(character);

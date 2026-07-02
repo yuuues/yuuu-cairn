@@ -90,6 +90,18 @@ describe("PrismaCharacterRepository", () => {
     expect(reloaded?.gold).toBe(99);
   });
 
+  it("guarda y recupera el avatar como JSON", async () => {
+    const repo = new PrismaCharacterRepository(prisma);
+    const saved = await repo.save(
+      baseChar({
+        name: "Av",
+        avatar: { v: 1, parts: { body: { color: "#abcdef", visible: true } } },
+      })
+    );
+    const got = await repo.findById(saved.id);
+    expect(got?.avatar?.parts.body?.color).toBe("#abcdef");
+  });
+
   it("delete elimina el personaje", async () => {
     const repo = new PrismaCharacterRepository(prisma);
     const saved = await repo.save(baseChar({ name: "Z" }));

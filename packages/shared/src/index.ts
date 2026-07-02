@@ -1,5 +1,6 @@
 export * from "./schemas/item.js";
 export * from "./schemas/container.js";
+export * from "./schemas/avatar.js";
 export * from "./schemas/character.js";
 export * from "./schemas/characterExport.js";
 export * from "./schemas/party.js";

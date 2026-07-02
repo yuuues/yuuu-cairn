@@ -148,5 +148,22 @@
   "Scan from photo": "Scan from photo",
   "Could not read QR from image.": "Could not read QR from image.",
   "QR content": "QR content",
-  "Please paste QR content.": "Please paste QR content."
+  "Please paste QR content.": "Please paste QR content.",
+  "Avatar": "Avatar",
+  "Avatar Forge": "Avatar Forge",
+  "Drag to orbit · scroll to zoom": "Drag to orbit · scroll to zoom",
+  "3D preview unavailable": "3D preview unavailable",
+  "Your browser or device couldn't create a WebGL context. Enable hardware acceleration (and avoid remote desktop), then reload.": "Your browser or device couldn't create a WebGL context. Enable hardware acceleration (and avoid remote desktop), then reload.",
+  "Parts": "Parts",
+  "Animation": "Animation",
+  "Body": "Body",
+  "Head": "Head",
+  "Hair": "Hair",
+  "Armor": "Armor",
+  "Weapon": "Weapon",
+  "Show": "Show",
+  "Hide": "Hide",
+  "Reset": "Reset",
+  "Saving…": "Saving…",
+  "Saved": "Saved"
 }

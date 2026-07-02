@@ -47,6 +47,7 @@ model Character {
   omens         String?
   armor         String?
   imageUrl      String?
+  avatar        String?                     // JSON (Avatar) | null
   partyId       Int?
 }
 

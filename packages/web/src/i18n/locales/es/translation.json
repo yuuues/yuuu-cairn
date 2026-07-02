@@ -148,5 +148,22 @@
   "Scan from photo": "Escanear desde foto",
   "Could not read QR from image.": "No se pudo leer el QR de la imagen.",
   "QR content": "Contenido QR",
-  "Please paste QR content.": "Pega el contenido del QR."
+  "Please paste QR content.": "Pega el contenido del QR.",
+  "Avatar": "Avatar",
+  "Avatar Forge": "Forja de avatar",
+  "Drag to orbit · scroll to zoom": "Arrastra para orbitar · rueda para zoom",
+  "3D preview unavailable": "Vista 3D no disponible",
+  "Your browser or device couldn't create a WebGL context. Enable hardware acceleration (and avoid remote desktop), then reload.": "Tu navegador o dispositivo no pudo crear un contexto WebGL. Activa la aceleración por hardware (y evita el escritorio remoto) y recarga.",
+  "Parts": "Piezas",
+  "Animation": "Animación",
+  "Body": "Cuerpo",
+  "Head": "Cabeza",
+  "Hair": "Pelo",
+  "Armor": "Armadura",
+  "Weapon": "Arma",
+  "Show": "Mostrar",
+  "Hide": "Ocultar",
+  "Reset": "Restablecer",
+  "Saving…": "Guardando…",
+  "Saved": "Guardado"
 }

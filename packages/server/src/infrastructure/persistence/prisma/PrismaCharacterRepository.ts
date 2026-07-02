@@ -2,9 +2,11 @@ import type { PrismaClient } from "@prisma/client";
 import {
   ItemSchema,
   ContainerSchema,
+  AvatarSchema,
   type Character,
   type Item,
   type Container,
+  type Avatar,
 } from "@kw/shared";
 import { z } from "zod";
 import type { CharacterRepository } from "@kw/core";
@@ -38,6 +40,7 @@ type Row = {
   omens: string | null;
   armor: string | null;
   imageUrl: string | null;
+  avatar: string | null;
   partyId: number | null;
 };
 
@@ -46,6 +49,9 @@ function parseItems(raw: string): Item[] {
 }
 function parseContainers(raw: string): Container[] {
   return ContainersSchema.parse(JSON.parse(raw));
+}
+function parseAvatar(raw: string | null): Avatar | null {
+  return raw ? AvatarSchema.parse(JSON.parse(raw)) : null;
 }
 
 function toEntity(row: Row): Character {
@@ -75,6 +81,7 @@ function toEntity(row: Row): Character {
     omens: row.omens,
     armor: row.armor,
     imageUrl: row.imageUrl,
+    avatar: parseAvatar(row.avatar),
     partyId: row.partyId,
   };
 }
@@ -105,6 +112,7 @@ function toData(c: Character) {
     omens: c.omens,
     armor: c.armor,
     imageUrl: c.imageUrl,
+    avatar: c.avatar ? JSON.stringify(AvatarSchema.parse(c.avatar)) : null,
     partyId: c.partyId,
   };
 }

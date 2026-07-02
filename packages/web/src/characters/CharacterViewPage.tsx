@@ -65,6 +65,9 @@ export function CharacterViewPage() {
             <Link to={`/characters/${character.id}/inventory`}>
               <Button variant="secondary" size="sm">{t("Inventory")}</Button>
             </Link>
+            <Link to={`/characters/${character.id}/avatar`}>
+              <Button variant="secondary" size="sm">{t("Avatar")}</Button>
+            </Link>
             <Link to={`/characters/${character.id}/print`}>
               <Button variant="ghost" size="sm">{t("Print")}</Button>
             </Link>

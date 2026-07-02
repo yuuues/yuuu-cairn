@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ItemSchema } from "./item.js";
 import { ContainerSchema } from "./container.js";
+import { AvatarSchema } from "./avatar.js";
 
 export const CharacterSchema = z.object({
   id: z.number().int(),
@@ -29,6 +30,9 @@ export const CharacterSchema = z.object({
   armor: z.string().nullable(),
   imageUrl: z.string().nullable(),
   partyId: z.number().int().nullable(),
+  // Avatar 3D opcional. Opcional (no solo nullable) para que los exports v1
+  // —que no llevan el campo— sigan validando sin tocar nada.
+  avatar: AvatarSchema.nullable().optional(),
 });
 
 export type Character = z.infer<typeof CharacterSchema>;
