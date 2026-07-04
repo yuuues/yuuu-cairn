@@ -56,3 +56,6 @@ docker run -d --name kettlewright \
 ```
 
 La base SQLite persiste en el volumen `/app/db`.
+
+{"detail":[{"type":"json_invalid","loc":["body",44],"msg":"JSON decode error","input":{},"ctx":{"error":"Extra data"}}]}root@homero:/var/www/vhosts/api-elsa.yuuu.es/ai# 
+
