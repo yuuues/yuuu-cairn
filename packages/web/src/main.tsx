@@ -9,6 +9,7 @@ import "./index.css";
 import { App } from "./App.js";
 import { initApiClient } from "./client/characters.js";
 import { initGeneratorsClient } from "./client/generators.js";
+import { initAnimations } from "./layout/animations.js";
 
 // Paridad con get_locale(): prioridad cookie kw_lang > fallback 'en'
 function readLangCookie(): string | undefined {
@@ -18,6 +19,9 @@ function readLangCookie(): string | undefined {
 
 const initialLocale = parseLocale(readLangCookie());
 i18n.changeLanguage(initialLocale);
+
+// Aplica el ajuste de animaciones antes de renderizar (evita parpadeo).
+initAnimations();
 
 const queryClient = new QueryClient();
 

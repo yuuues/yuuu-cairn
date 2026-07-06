@@ -101,16 +101,29 @@
     text-underline-offset: 2px;
   }
 
-  /* WCAG 2.3.3 — respetar prefers-reduced-motion: desactivar animaciones/
-     transiciones para quienes lo solicitan (no afecta a los tokens de color). */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  /* WCAG 2.3.3 — animaciones desactivadas cuando la clase .reduce-motion está
+     en <html>. La fija main.tsx a partir del ajuste guardado del usuario o, si
+     no hay, de prefers-reduced-motion del sistema (ver layout/animations.ts).
+     No afecta a los tokens de color. */
+  html.reduce-motion *,
+  html.reduce-motion *::before,
+  html.reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Temblor de dados durante la tirada (solo con animaciones activas: la fase
+     de "rodar" ni siquiera se dispara si están desactivadas). */
+  @keyframes kw-dice-tumble {
+    0% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-3px) rotate(-9deg); }
+    50% { transform: translateY(0) rotate(9deg); }
+    75% { transform: translateY(-2px) rotate(-5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+  .kw-dice-rolling {
+    animation: kw-dice-tumble 0.18s linear infinite;
   }
 }

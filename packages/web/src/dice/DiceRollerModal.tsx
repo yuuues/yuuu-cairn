@@ -1,8 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Button } from "../ui/index.js";
 import { cn } from "../ui/cn.js";
 import { BrowserDice } from "../local/adapters/BrowserDice.js";
+import { getAnimationsEnabled } from "../layout/animations.js";
+
+const ROLL_MS = 600;
+const TICK_MS = 70;
 
 /** Caras disponibles (paridad con el resto de la app). */
 const FACES = [4, 6, 8, 10, 12, 20, 100] as const;
@@ -84,8 +88,33 @@ export function DiceRollerModal({
   const [modifier, setModifier] = useState(0);
   const [last, setLast] = useState<RollEntry | null>(null);
   const [history, setHistory] = useState<RollEntry[]>([]);
+  // Fase de "rodar": números provisionales que parpadean antes del resultado.
+  const [rolling, setRolling] = useState(false);
+  const [flicker, setFlicker] = useState<number[]>([]);
+  const timers = useRef<{ tick?: number; end?: number }>({});
 
   const notation = notationOf(count, face, modifier);
+
+  function clearTimers() {
+    if (timers.current.tick) window.clearInterval(timers.current.tick);
+    if (timers.current.end) window.clearTimeout(timers.current.end);
+    timers.current = {};
+  }
+
+  // Limpia temporizadores al desmontar o al cerrar el modal.
+  useEffect(() => {
+    if (!open) {
+      clearTimers();
+      setRolling(false);
+    }
+    return clearTimers;
+  }, [open]);
+
+  function commit(entry: RollEntry) {
+    setLast(entry);
+    setHistory((h) => [entry, ...h].slice(0, 6));
+    setRolling(false);
+  }
 
   function handleRoll() {
     const { results, total } = dice.rollMulti(face, count);
@@ -95,8 +124,23 @@ export function DiceRollerModal({
       modifier,
       total: total + modifier,
     };
-    setLast(entry);
-    setHistory((h) => [entry, ...h].slice(0, 6));
+
+    if (!getAnimationsEnabled()) {
+      commit(entry);
+      return;
+    }
+
+    // Rodar: parpadea valores aleatorios y asienta el resultado real al final.
+    clearTimers();
+    setRolling(true);
+    setFlicker(Array.from({ length: count }, () => 1 + Math.floor(Math.random() * face)));
+    timers.current.tick = window.setInterval(() => {
+      setFlicker(Array.from({ length: count }, () => 1 + Math.floor(Math.random() * face)));
+    }, TICK_MS);
+    timers.current.end = window.setTimeout(() => {
+      clearTimers();
+      commit(entry);
+    }, ROLL_MS);
   }
 
   function reset() {
@@ -147,12 +191,32 @@ export function DiceRollerModal({
           />
         </div>
 
-        <Button className="w-full" onClick={handleRoll}>
+        <Button className="w-full" onClick={handleRoll} disabled={rolling}>
           {t("Roll")} {notation}
         </Button>
 
+        {/* Fase de rodar: dados temblando con valores provisionales */}
+        {rolling && (
+          <div className="rounded-(--radius-card) border border-border bg-bg p-4 text-center">
+            <div className="font-serif text-5xl font-bold text-muted tabular-nums">
+              …
+            </div>
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
+              {flicker.map((r, i) => (
+                <span
+                  key={i}
+                  className="kw-dice-rolling inline-flex h-7 min-w-7 items-center justify-center rounded-md border border-accent/40 bg-surface px-1.5 text-sm font-medium text-text tabular-nums"
+                >
+                  {r}
+                </span>
+              ))}
+            </div>
+            <div className="mt-1 text-xs text-muted">{notation}</div>
+          </div>
+        )}
+
         {/* Resultado */}
-        {last && (
+        {last && !rolling && (
           <div className="rounded-(--radius-card) border border-border bg-bg p-4 text-center">
             <div className="font-serif text-5xl font-bold text-accent tabular-nums">
               {last.total}
