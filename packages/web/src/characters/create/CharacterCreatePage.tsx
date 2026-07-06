@@ -7,7 +7,18 @@ import {
   useRollCharacter,
   useCreateCharacter,
 } from "../useCharacters.js";
-import { Container, Card, Field, Input, Select, Badge, Button, Spinner } from "../../ui/index.js";
+import {
+  Container,
+  Card,
+  Field,
+  Input,
+  Badge,
+  Button,
+  Spinner,
+  Skeleton,
+} from "../../ui/index.js";
+import { DiceIcon } from "../../ui/icons.js";
+import { cn } from "../../ui/cn.js";
 
 type Step = "background" | "review";
 
@@ -67,6 +78,46 @@ function Stepper({ step }: { step: Step }) {
   );
 }
 
+/* Tile de atributo estilo hoja de personaje: etiqueta pequeña arriba y el
+   número grande en serif, editable en el sitio (sin aspecto de formulario). */
+function StatTile({
+  id,
+  label,
+  value,
+  onChange,
+  className,
+}: {
+  id: string;
+  label: string;
+  value: number;
+  onChange: (n: number) => void;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-(--radius-card) border border-border bg-surface p-3 text-center shadow-(--shadow-card) transition-colors duration-(--duration-fast) focus-within:border-accent focus-within:ring-1 focus-within:ring-accent",
+        className
+      )}
+    >
+      <label
+        htmlFor={id}
+        className="text-xs font-medium tracking-wide text-muted uppercase"
+      >
+        {label}
+      </label>
+      <input
+        id={id}
+        type="number"
+        inputMode="numeric"
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full bg-transparent text-center font-serif text-3xl font-bold text-text focus:outline-none"
+      />
+    </div>
+  );
+}
+
 export function CharacterCreatePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -96,58 +147,84 @@ export function CharacterCreatePage() {
   };
 
   if (step === "background") {
+    const names = backgrounds ? Object.keys(backgrounds) : null;
     return (
       <Container className="max-w-2xl">
         <Stepper step={step} />
-        <Card className="flex flex-col gap-5">
-          <h1 className="font-serif text-2xl font-bold text-text">{t("Create Character")}</h1>
+        <h1 className="mb-5 font-serif text-3xl font-bold tracking-tight text-text">
+          {t("Create Character")}
+        </h1>
+
+        <Button
+          className="w-full"
+          onClick={() => rollWith("")}
+          disabled={roll.isPending}
+        >
+          {roll.isPending ? (
+            <Spinner className="h-4 w-4" />
+          ) : (
+            <DiceIcon className="h-5 w-5" />
+          )}
+          {t("Roll a random character")}
+        </Button>
+
+        <div className="my-5 flex items-center gap-3" aria-hidden>
+          <span className="h-px flex-1 bg-border" />
+          <span className="text-sm text-muted">{t("…or pick a background")}</span>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
+        {/* Trasfondos como cartas seleccionables en vez de un <select>:
+            en móvil se elige tocando, y el elegido queda marcado en ámbar. */}
+        {names ? (
+          <div
+            role="radiogroup"
+            aria-label={t("Background")}
+            className="grid grid-cols-2 gap-2 sm:grid-cols-3"
+          >
+            {names.map((name) => (
+              <button
+                key={name}
+                type="button"
+                role="radio"
+                aria-checked={selected === name}
+                onClick={() => setSelected(selected === name ? "" : name)}
+                className={cn(
+                  "min-h-11 rounded-(--radius-card) border p-3 text-left font-serif text-sm leading-snug transition-[color,border-color,background-color,transform] duration-(--duration-fast) ease-(--ease-emphasized) active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                  selected === name
+                    ? "border-accent bg-btn/10 font-bold text-text"
+                    : "border-border bg-surface text-text hover:border-accent/50"
+                )}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {Array.from({ length: 9 }).map((_, i) => (
+              <Skeleton key={i} className="h-12" />
+            ))}
+          </div>
+        )}
+
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
           <Button
             className="w-full"
-            onClick={() => rollWith("")}
-            disabled={roll.isPending}
+            onClick={() => rollWith(selected)}
+            disabled={!selected || roll.isPending}
           >
-            {roll.isPending ? <Spinner className="h-4 w-4" /> : null}
-            {t("Roll a random character")}
+            {t("Roll this background")}
           </Button>
-          {/* Separador con texto centrado: divide el camino rápido del manual */}
-          <div className="flex items-center gap-3" aria-hidden>
-            <span className="h-px flex-1 bg-border" />
-            <span className="text-sm text-muted">{t("…or pick a background")}</span>
-            <span className="h-px flex-1 bg-border" />
-          </div>
-          <Field label={t("Background")} htmlFor="create-background">
-            <Select
-              id="create-background"
-              value={selected}
-              onChange={(e) => setSelected(e.target.value)}
-            >
-              <option value="">{t("Select…")}</option>
-              {backgrounds &&
-                Object.keys(backgrounds).map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-            </Select>
-          </Field>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              className="w-full"
-              onClick={() => rollWith(selected)}
-              disabled={!selected || roll.isPending}
-            >
-              {t("Roll this background")}
-            </Button>
-            <Button
-              variant="secondary"
-              className="w-full"
-              onClick={startManual}
-              disabled={!selected}
-            >
-              {t("Fill manually")}
-            </Button>
-          </div>
-        </Card>
+          <Button
+            variant="secondary"
+            className="w-full"
+            onClick={startManual}
+            disabled={!selected}
+          >
+            {t("Fill manually")}
+          </Button>
+        </div>
       </Container>
     );
   }
@@ -162,10 +239,14 @@ export function CharacterCreatePage() {
   return (
     <Container className="max-w-2xl">
       <Stepper step={step} />
-      <Card className="flex flex-col gap-4">
-        <h1 className="font-serif text-2xl text-text">Review character</h1>
-        <p className="text-sm text-muted">{t("Background")}: {draft.background}</p>
+      <div className="mb-5 flex flex-wrap items-center gap-3">
+        <h1 className="font-serif text-3xl font-bold tracking-tight text-text">
+          {t("Review")}
+        </h1>
+        {draft.background ? <Badge>{draft.background}</Badge> : null}
+      </div>
 
+      <div className="flex flex-col gap-5">
         <Field label={t("Name")} htmlFor="review-name">
           <Input
             id="review-name"
@@ -174,59 +255,50 @@ export function CharacterCreatePage() {
           />
         </Field>
 
-        <fieldset className="flex flex-col gap-3 rounded-lg border border-border p-4">
-          <legend className="px-1 text-sm font-medium text-text">Attributes (max)</legend>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label={t("Strength")} htmlFor="review-str">
-              <Input
-                id="review-str"
-                type="number"
-                value={draft.strengthMax}
-                onChange={(e) => setField("strengthMax", Number(e.target.value))}
-              />
-            </Field>
-            <Field label={t("Dexterity")} htmlFor="review-dex">
-              <Input
-                id="review-dex"
-                type="number"
-                value={draft.dexterityMax}
-                onChange={(e) => setField("dexterityMax", Number(e.target.value))}
-              />
-            </Field>
-            <Field label={t("Willpower")} htmlFor="review-wil">
-              <Input
-                id="review-wil"
-                type="number"
-                value={draft.willpowerMax}
-                onChange={(e) => setField("willpowerMax", Number(e.target.value))}
-              />
-            </Field>
-            <Field label={t("HP")} htmlFor="review-hp">
-              <Input
-                id="review-hp"
-                type="number"
-                value={draft.hpMax}
-                onChange={(e) => setField("hpMax", Number(e.target.value))}
-              />
-            </Field>
-          </div>
-        </fieldset>
-
-        <Field label={t("Gold")} htmlFor="review-gold">
-          <Input
-            id="review-gold"
-            type="number"
-            value={draft.gold}
-            onChange={(e) => setField("gold", Number(e.target.value))}
+        {/* Atributos como hoja de personaje, no como formulario */}
+        <div className="grid grid-cols-2 gap-2">
+          <StatTile
+            id="review-str"
+            label={t("Strength")}
+            value={draft.strengthMax}
+            onChange={(n) => setField("strengthMax", n)}
           />
-        </Field>
+          <StatTile
+            id="review-dex"
+            label={t("Dexterity")}
+            value={draft.dexterityMax}
+            onChange={(n) => setField("dexterityMax", n)}
+          />
+          <StatTile
+            id="review-wil"
+            label={t("Willpower")}
+            value={draft.willpowerMax}
+            onChange={(n) => setField("willpowerMax", n)}
+          />
+          <StatTile
+            id="review-hp"
+            label={t("HP")}
+            value={draft.hpMax}
+            onChange={(n) => setField("hpMax", n)}
+          />
+          <StatTile
+            id="review-gold"
+            label={t("Gold")}
+            value={draft.gold}
+            onChange={(n) => setField("gold", n)}
+            className="col-span-2"
+          />
+        </div>
 
         {draft.items.length > 0 && (
-          <section>
-            <h2 className="mb-2 font-serif text-lg text-text">Starting gear</h2>
-            <ul className="flex flex-col gap-1">
+          <Card>
+            <h2 className="mb-3 font-serif text-lg font-bold text-text">Starting gear</h2>
+            <ul className="flex flex-col gap-2">
               {draft.items.map((it) => (
-                <li key={it.id} className="flex flex-wrap items-center gap-2 text-sm text-text">
+                <li
+                  key={it.id}
+                  className="flex flex-wrap items-center gap-2 text-sm text-text"
+                >
                   {it.name}
                   {it.tags.map((tag) => (
                     <Badge key={tag}>{tag}</Badge>
@@ -234,18 +306,20 @@ export function CharacterCreatePage() {
                 </li>
               ))}
             </ul>
-          </section>
+          </Card>
         )}
 
         {draft.bonds && (
-          <p className="text-sm text-text">
-            <span className="font-medium">{t("Bonds")}:</span> {draft.bonds}
-          </p>
+          <Card>
+            <h2 className="mb-2 font-serif text-lg font-bold text-text">{t("Bonds")}</h2>
+            <p className="text-sm text-muted">{draft.bonds}</p>
+          </Card>
         )}
         {draft.omens && (
-          <p className="text-sm text-text">
-            <span className="font-medium">{t("Omens")}:</span> {draft.omens}
-          </p>
+          <Card>
+            <h2 className="mb-2 font-serif text-lg font-bold text-text">{t("Omens")}</h2>
+            <p className="text-sm text-muted">{draft.omens}</p>
+          </Card>
         )}
 
         {create.isError && (
@@ -258,11 +332,15 @@ export function CharacterCreatePage() {
           <Button variant="ghost" onClick={() => setStep("background")}>
             ← {t("Back")}
           </Button>
-          <Button className="flex-1" onClick={onSave} disabled={!draft.name || create.isPending}>
+          <Button
+            className="flex-1"
+            onClick={onSave}
+            disabled={!draft.name || create.isPending}
+          >
             {t("Save Character")}
           </Button>
         </div>
-      </Card>
+      </div>
     </Container>
   );
 }
