@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { RollTableInput, ImportCharacterPayload } from "@kw/shared";
-import { generatorsApi, characterIoApi } from "../api/generators.js";
+import { generatorsApi } from "../client/generators.js";
+import { characterIoApi } from "../api/generators.js";
 
 /** Carga el mapa de tablas de generadores (cacheado — no cambia en runtime). */
 export function useGeneratorTables() {

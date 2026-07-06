@@ -8,6 +8,7 @@ import { parseLocale } from "@kw/shared";
 import "./index.css";
 import { App } from "./App.js";
 import { initApiClient } from "./client/characters.js";
+import { initGeneratorsClient } from "./client/generators.js";
 
 // Paridad con get_locale(): prioridad cookie kw_lang > fallback 'en'
 function readLangCookie(): string | undefined {
@@ -21,8 +22,8 @@ i18n.changeLanguage(initialLocale);
 const queryClient = new QueryClient();
 
 // El cliente (local u HTTP) debe estar listo antes del primer render:
-// los hooks consumen charactersApi/dataApi en cuanto montan las páginas.
-void initApiClient().then(() => {
+// los hooks consumen charactersApi/dataApi/generatorsApi al montar.
+void Promise.all([initApiClient(), initGeneratorsClient()]).then(() => {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <I18nextProvider i18n={i18n}>

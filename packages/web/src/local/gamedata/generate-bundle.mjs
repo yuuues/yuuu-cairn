@@ -17,12 +17,26 @@ const bgFiles = readdirSync(bgDir)
 const backgrounds = {};
 for (const f of bgFiles) Object.assign(backgrounds, readJson(join(bgDir, f)));
 
+// generators/*.json -> merge (paridad FileGeneratorRepository.tables())
+const genDir = join(dataDir, "generators");
+const genFiles = readdirSync(genDir)
+  .filter((f) => f.endsWith(".json"))
+  .sort();
+const generators = {};
+for (const f of genFiles) {
+  const data = readJson(join(genDir, f));
+  if (data && typeof data === "object" && !Array.isArray(data)) {
+    Object.assign(generators, data);
+  }
+}
+
 const bundle = {
   backgrounds,
   bonds: readJson(join(dataDir, "bonds.json")),
   omens: readJson(join(dataDir, "omens.json")),
   traits: readJson(join(dataDir, "traits.json")),
   scars: readJson(join(dataDir, "scars.json")),
+  generators,
 };
 
 writeFileSync(
@@ -33,4 +47,10 @@ writeFileSync(
     " as const;\n",
   "utf8"
 );
-console.log("bundle.generated.ts escrito:", bgFiles.length, "backgrounds");
+console.log(
+  "bundle.generated.ts escrito:",
+  bgFiles.length,
+  "backgrounds,",
+  genFiles.length,
+  "generadores"
+);

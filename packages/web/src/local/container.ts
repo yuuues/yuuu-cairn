@@ -5,15 +5,19 @@ import {
   UpdateCharacter,
   DeleteCharacter,
   RollCharacter,
+  RollTable,
+  GenerateNpc,
 } from "@kw/core";
 import type {
   Character,
   CreateCharacterInput,
   UpdateCharacterInput,
+  RollTableInput,
 } from "@kw/shared";
 import { IndexedDbCharacterRepository } from "./adapters/IndexedDbCharacterRepository.js";
 import { BrowserDice } from "./adapters/BrowserDice.js";
 import { BundledGameDataRepository } from "./gamedata/BundledGameDataRepository.js";
+import { BundledGeneratorRepository } from "./gamedata/BundledGeneratorRepository.js";
 import { LOCAL_OWNER_ID } from "./owner.js";
 
 export function createLocalClient(dbName?: string) {
@@ -53,4 +57,22 @@ export function createLocalClient(dbName?: string) {
   };
 
   return { charactersApi, dataApi };
+}
+
+/**
+ * API de generadores en modo local: mismas firmas que la HTTP
+ * (api/generators.ts) pero resueltas contra el bundle, sin servidor.
+ * No usa IndexedDB, así que es independiente de createLocalClient.
+ */
+export function createLocalGeneratorsApi() {
+  const repo = new BundledGeneratorRepository();
+  const dice = new BrowserDice();
+  const rollTable = new RollTable(repo, dice);
+  const generateNpc = new GenerateNpc(repo, dice);
+
+  return {
+    tables: async () => repo.tables(),
+    roll: (input: RollTableInput) => rollTable.execute(input),
+    npc: () => generateNpc.execute(),
+  };
 }

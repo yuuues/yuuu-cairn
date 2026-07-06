@@ -28,7 +28,7 @@ export function NpcGeneratorPanel() {
         onClick={() => npcMutation.mutate()}
         disabled={npcMutation.isPending}
       >
-        {t("Generators")}
+        {t("Generate NPC")}
       </Button>
       {npcMutation.data && <NpcCard npc={npcMutation.data} />}
     </div>

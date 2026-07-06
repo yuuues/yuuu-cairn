@@ -159,11 +159,11 @@
   "Body": "Corpo",
   "Head": "Cabeça",
   "Hair": "Cabelo",
-  "Armor": "Armadura",
   "Weapon": "Arma",
   "Show": "Mostrar",
   "Hide": "Ocultar",
   "Reset": "Redefinir",
   "Saving…": "Salvando…",
-  "Saved": "Salvo"
+  "Saved": "Salvo",
+  "Generate NPC": "Gerar NPC"
 }

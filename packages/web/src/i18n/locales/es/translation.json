@@ -159,11 +159,11 @@
   "Body": "Cuerpo",
   "Head": "Cabeza",
   "Hair": "Pelo",
-  "Armor": "Armadura",
   "Weapon": "Arma",
   "Show": "Mostrar",
   "Hide": "Ocultar",
   "Reset": "Restablecer",
   "Saving…": "Guardando…",
-  "Saved": "Guardado"
+  "Saved": "Guardado",
+  "Generate NPC": "Generar PNJ"
 }

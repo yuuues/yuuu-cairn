@@ -50,7 +50,7 @@
   "Items": "Przedmioty",
   "Containers": "Pojemniki",
   "Image URL": "URL obrazka",
-  "Armor": "Pancerz",
+  "Armor": "Zbroja",
   "Save Party": "Zapisz drużynę",
   "petty": "drobny",
   "bulky": "nieporęczny",
@@ -159,11 +159,11 @@
   "Body": "Ciało",
   "Head": "Głowa",
   "Hair": "Włosy",
-  "Armor": "Zbroja",
   "Weapon": "Broń",
   "Show": "Pokaż",
   "Hide": "Ukryj",
   "Reset": "Resetuj",
   "Saving…": "Zapisywanie…",
-  "Saved": "Zapisano"
+  "Saved": "Zapisano",
+  "Generate NPC": "Generuj BN"
 }

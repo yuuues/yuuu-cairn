@@ -159,11 +159,11 @@
   "Body": "Körper",
   "Head": "Kopf",
   "Hair": "Haare",
-  "Armor": "Rüstung",
   "Weapon": "Waffe",
   "Show": "Zeigen",
   "Hide": "Ausblenden",
   "Reset": "Zurücksetzen",
   "Saving…": "Speichern…",
-  "Saved": "Gespeichert"
+  "Saved": "Gespeichert",
+  "Generate NPC": "NSC generieren"
 }

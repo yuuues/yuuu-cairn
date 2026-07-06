@@ -159,11 +159,11 @@
   "Body": "Body",
   "Head": "Head",
   "Hair": "Hair",
-  "Armor": "Armor",
   "Weapon": "Weapon",
   "Show": "Show",
   "Hide": "Hide",
   "Reset": "Reset",
   "Saving…": "Saving…",
-  "Saved": "Saved"
+  "Saved": "Saved",
+  "Generate NPC": "Generate NPC"
 }
