@@ -6,7 +6,8 @@ import { serializeCharacter } from "@kw/shared";
 import { useCharacter } from "./useCharacters.js";
 import { downloadOrShare } from "../local/exportFile.js";
 import { encodeForQr, fitsInQr } from "../local/qr.js";
-import { Container, PageHeader, Card, Badge, Button, Skeleton, Modal } from "../ui/index.js";
+import { Container, Card, Badge, Button, Skeleton, Modal } from "../ui/index.js";
+import { ArrowLeftIcon } from "../ui/icons.js";
 
 export function CharacterViewPage() {
   const { t } = useTranslation();
@@ -67,47 +68,56 @@ export function CharacterViewPage() {
 
   return (
     <Container>
-      <PageHeader
-        title={character.name}
-        actions={
-          <>
-            <Link to="/characters">
-              <Button variant="ghost" size="sm">← {t("Back")}</Button>
-            </Link>
-            <Link to={`/characters/${character.id}/edit`}>
-              <Button variant="secondary" size="sm">{t("Edit")}</Button>
-            </Link>
-            <Link to={`/characters/${character.id}/inventory`}>
-              <Button variant="secondary" size="sm">{t("Inventory")}</Button>
-            </Link>
-            <Link to={`/characters/${character.id}/avatar`}>
-              <Button variant="secondary" size="sm">{t("Avatar")}</Button>
-            </Link>
-            <Link to={`/characters/${character.id}/print`}>
-              <Button variant="ghost" size="sm">{t("Print")}</Button>
-            </Link>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() =>
-                void downloadOrShare(
-                  `${character.name}.cairn.json`,
-                  serializeCharacter(character),
-                )
-              }
-            >
-              {t("Export")}
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => void handleShowQr()}
-            >
-              {t("QR")}
-            </Button>
-          </>
-        }
-      />
+      {/* Título con retorno + acciones en dos niveles: las de navegación del
+          personaje (grid) y las utilidades (fila discreta), en vez de siete
+          pastillas envueltas en la cabecera. */}
+      <div className="mb-4 flex items-center gap-1">
+        <Link
+          to="/characters"
+          aria-label={t("Back")}
+          className="-ml-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors duration-(--duration-fast) hover:text-text"
+        >
+          <ArrowLeftIcon />
+        </Link>
+        <h1 className="min-w-0 truncate font-serif text-2xl font-bold tracking-tight text-text sm:text-3xl">
+          {character.name}
+        </h1>
+      </div>
+      <div className="mb-3 grid grid-cols-3 gap-2">
+        <Link to={`/characters/${character.id}/edit`} className="contents">
+          <Button variant="secondary" className="w-full">{t("Edit")}</Button>
+        </Link>
+        <Link to={`/characters/${character.id}/inventory`} className="contents">
+          <Button variant="secondary" className="w-full">{t("Inventory")}</Button>
+        </Link>
+        <Link to={`/characters/${character.id}/avatar`} className="contents">
+          <Button variant="secondary" className="w-full">{t("Avatar")}</Button>
+        </Link>
+      </div>
+      <div className="mb-6 flex flex-wrap gap-2">
+        <Link to={`/characters/${character.id}/print`}>
+          <Button variant="ghost" size="sm">{t("Print")}</Button>
+        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() =>
+            void downloadOrShare(
+              `${character.name}.cairn.json`,
+              serializeCharacter(character),
+            )
+          }
+        >
+          {t("Export")}
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => void handleShowQr()}
+        >
+          {t("QR")}
+        </Button>
+      </div>
 
       <Modal
         open={qrOpen}

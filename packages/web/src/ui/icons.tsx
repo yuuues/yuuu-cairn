@@ -18,6 +18,16 @@ function base(props: SVGProps<SVGSVGElement>): SVGProps<SVGSVGElement> {
   };
 }
 
+/** Flecha atrás: navegación de retorno */
+export function ArrowLeftIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+    </svg>
+  );
+}
+
 /** Pergamino: ficha de personaje */
 export function ScrollIcon(props: SVGProps<SVGSVGElement>) {
   return (

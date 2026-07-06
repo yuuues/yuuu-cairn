@@ -31,15 +31,38 @@ const emptyDraft = (background: string): CreateCharacterInput => ({
 
 function Stepper({ step }: { step: Step }) {
   const { t } = useTranslation();
+  const steps = [t("Background"), t("Review")];
+  const current = step === "background" ? 0 : 1;
   return (
-    <ol className="mb-6 flex items-center gap-4 text-sm">
-      <li className={step === "background" ? "font-semibold text-accent" : "text-muted"}>
-        1. {t("Background")}
-      </li>
-      <li aria-hidden className="text-muted">→</li>
-      <li className={step === "review" ? "font-semibold text-accent" : "text-muted"}>
-        2. {t("Review")}
-      </li>
+    <ol className="mb-6 flex items-center">
+      {steps.map((label, i) => (
+        <li key={label} className={i > 0 ? "flex flex-1 items-center" : "flex items-center"}>
+          {i > 0 && (
+            <span
+              aria-hidden
+              className={`mx-3 h-px flex-1 ${i <= current ? "bg-btn" : "bg-border"}`}
+            />
+          )}
+          <span className="flex items-center gap-2">
+            <span
+              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors duration-(--duration-base) ${
+                i === current
+                  ? "bg-btn text-btn-fg"
+                  : i < current
+                    ? "bg-btn/20 text-accent"
+                    : "border border-border text-muted"
+              }`}
+            >
+              {i + 1}
+            </span>
+            <span
+              className={`text-sm ${i === current ? "font-semibold text-text" : "text-muted"}`}
+            >
+              {label}
+            </span>
+          </span>
+        </li>
+      ))}
     </ol>
   );
 }
@@ -76,16 +99,22 @@ export function CharacterCreatePage() {
     return (
       <Container className="max-w-2xl">
         <Stepper step={step} />
-        <Card className="flex flex-col gap-4">
-          <h1 className="font-serif text-2xl text-text">{t("Create Character")}</h1>
+        <Card className="flex flex-col gap-5">
+          <h1 className="font-serif text-2xl font-bold text-text">{t("Create Character")}</h1>
           <Button
+            className="w-full"
             onClick={() => rollWith("")}
             disabled={roll.isPending}
           >
             {roll.isPending ? <Spinner className="h-4 w-4" /> : null}
             {t("Roll a random character")}
           </Button>
-          <p className="text-sm text-muted">{t("…or pick a background")}</p>
+          {/* Separador con texto centrado: divide el camino rápido del manual */}
+          <div className="flex items-center gap-3" aria-hidden>
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-sm text-muted">{t("…or pick a background")}</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
           <Field label={t("Background")} htmlFor="create-background">
             <Select
               id="create-background"
@@ -101,8 +130,9 @@ export function CharacterCreatePage() {
                 ))}
             </Select>
           </Field>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <Button
+              className="w-full"
               onClick={() => rollWith(selected)}
               disabled={!selected || roll.isPending}
             >
@@ -110,6 +140,7 @@ export function CharacterCreatePage() {
             </Button>
             <Button
               variant="secondary"
+              className="w-full"
               onClick={startManual}
               disabled={!selected}
             >
@@ -227,7 +258,7 @@ export function CharacterCreatePage() {
           <Button variant="ghost" onClick={() => setStep("background")}>
             ← {t("Back")}
           </Button>
-          <Button onClick={onSave} disabled={!draft.name || create.isPending}>
+          <Button className="flex-1" onClick={onSave} disabled={!draft.name || create.isPending}>
             {t("Save Character")}
           </Button>
         </div>
