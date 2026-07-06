@@ -19,6 +19,7 @@ import {
 } from "../../ui/index.js";
 import { DiceIcon } from "../../ui/icons.js";
 import { cn } from "../../ui/cn.js";
+import { StatField, ATTR_DICE, HP_DICE } from "../../dice/StatField.js";
 
 type Step = "background" | "review";
 
@@ -75,46 +76,6 @@ function Stepper({ step }: { step: Step }) {
         </li>
       ))}
     </ol>
-  );
-}
-
-/* Tile de atributo estilo hoja de personaje: etiqueta pequeña arriba y el
-   número grande en serif, editable en el sitio (sin aspecto de formulario). */
-function StatTile({
-  id,
-  label,
-  value,
-  onChange,
-  className,
-}: {
-  id: string;
-  label: string;
-  value: number;
-  onChange: (n: number) => void;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-(--radius-card) border border-border bg-surface p-3 text-center shadow-(--shadow-card) transition-colors duration-(--duration-fast) focus-within:border-accent focus-within:ring-1 focus-within:ring-accent",
-        className
-      )}
-    >
-      <label
-        htmlFor={id}
-        className="text-xs font-medium tracking-wide text-muted uppercase"
-      >
-        {label}
-      </label>
-      <input
-        id={id}
-        type="number"
-        inputMode="numeric"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full bg-transparent text-center font-serif text-3xl font-bold text-text focus:outline-none"
-      />
-    </div>
   );
 }
 
@@ -255,36 +216,36 @@ export function CharacterCreatePage() {
           />
         </Field>
 
-        {/* Atributos como hoja de personaje, no como formulario */}
+        {/* Atributos como hoja de personaje: se pulsan para tirar o editar */}
         <div className="grid grid-cols-2 gap-2">
-          <StatTile
-            id="review-str"
+          <StatField
             label={t("Strength")}
             value={draft.strengthMax}
+            preset={ATTR_DICE}
             onChange={(n) => setField("strengthMax", n)}
           />
-          <StatTile
-            id="review-dex"
+          <StatField
             label={t("Dexterity")}
             value={draft.dexterityMax}
+            preset={ATTR_DICE}
             onChange={(n) => setField("dexterityMax", n)}
           />
-          <StatTile
-            id="review-wil"
+          <StatField
             label={t("Willpower")}
             value={draft.willpowerMax}
+            preset={ATTR_DICE}
             onChange={(n) => setField("willpowerMax", n)}
           />
-          <StatTile
-            id="review-hp"
+          <StatField
             label={t("HP")}
             value={draft.hpMax}
+            preset={HP_DICE}
             onChange={(n) => setField("hpMax", n)}
           />
-          <StatTile
-            id="review-gold"
+          <StatField
             label={t("Gold")}
             value={draft.gold}
+            preset={ATTR_DICE}
             onChange={(n) => setField("gold", n)}
             className="col-span-2"
           />

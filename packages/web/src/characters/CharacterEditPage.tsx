@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { UpdateCharacterInput } from "@kw/shared";
 import { useCharacter, useUpdateCharacter } from "./useCharacters.js";
 import { Container, Card, Field, Input, Textarea, Button, Skeleton } from "../ui/index.js";
+import { StatField, ATTR_DICE, HP_DICE } from "../dice/StatField.js";
 
 export function CharacterEditPage() {
   const { t } = useTranslation();
@@ -51,10 +52,10 @@ export function CharacterEditPage() {
       </Container>
     );
 
-  const num =
+  const setNum =
     (key: keyof UpdateCharacterInput) =>
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setForm((f) => ({ ...f, [key]: Number(e.target.value) }));
+    (value: number) =>
+      setForm((f) => ({ ...f, [key]: value }));
   const str =
     (key: keyof UpdateCharacterInput) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -83,39 +84,22 @@ export function CharacterEditPage() {
             />
           </Field>
 
+          {/* Atributos: se pulsan para tirar dados o escribir el valor */}
           <fieldset className="flex flex-col gap-3 rounded-lg border border-border p-4">
-            <legend className="px-1 text-sm font-medium text-text">Attributes</legend>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <Field label={t("Strength")} htmlFor="edit-str">
-                <Input id="edit-str" type="number" value={form.strength ?? 0} onChange={num("strength")} />
-              </Field>
-              <Field label={`${t("Strength")} Max`} htmlFor="edit-str-max">
-                <Input id="edit-str-max" type="number" value={form.strengthMax ?? 0} onChange={num("strengthMax")} />
-              </Field>
-              <Field label={t("Dexterity")} htmlFor="edit-dex">
-                <Input id="edit-dex" type="number" value={form.dexterity ?? 0} onChange={num("dexterity")} />
-              </Field>
-              <Field label={`${t("Dexterity")} Max`} htmlFor="edit-dex-max">
-                <Input id="edit-dex-max" type="number" value={form.dexterityMax ?? 0} onChange={num("dexterityMax")} />
-              </Field>
-              <Field label={t("Willpower")} htmlFor="edit-wil">
-                <Input id="edit-wil" type="number" value={form.willpower ?? 0} onChange={num("willpower")} />
-              </Field>
-              <Field label={`${t("Willpower")} Max`} htmlFor="edit-wil-max">
-                <Input id="edit-wil-max" type="number" value={form.willpowerMax ?? 0} onChange={num("willpowerMax")} />
-              </Field>
-              <Field label={t("HP")} htmlFor="edit-hp">
-                <Input id="edit-hp" type="number" value={form.hp ?? 0} onChange={num("hp")} />
-              </Field>
-              <Field label={`${t("HP")} Max`} htmlFor="edit-hp-max">
-                <Input id="edit-hp-max" type="number" value={form.hpMax ?? 0} onChange={num("hpMax")} />
-              </Field>
+            <legend className="px-1 text-sm font-medium text-text">{t("Attributes")}</legend>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <StatField label={t("Strength")} value={form.strength ?? 0} preset={ATTR_DICE} onChange={setNum("strength")} />
+              <StatField label={`${t("Strength")} Max`} value={form.strengthMax ?? 0} preset={ATTR_DICE} onChange={setNum("strengthMax")} />
+              <StatField label={t("Dexterity")} value={form.dexterity ?? 0} preset={ATTR_DICE} onChange={setNum("dexterity")} />
+              <StatField label={`${t("Dexterity")} Max`} value={form.dexterityMax ?? 0} preset={ATTR_DICE} onChange={setNum("dexterityMax")} />
+              <StatField label={t("Willpower")} value={form.willpower ?? 0} preset={ATTR_DICE} onChange={setNum("willpower")} />
+              <StatField label={`${t("Willpower")} Max`} value={form.willpowerMax ?? 0} preset={ATTR_DICE} onChange={setNum("willpowerMax")} />
+              <StatField label={t("HP")} value={form.hp ?? 0} preset={HP_DICE} onChange={setNum("hp")} />
+              <StatField label={`${t("HP")} Max`} value={form.hpMax ?? 0} preset={HP_DICE} onChange={setNum("hpMax")} />
             </div>
           </fieldset>
 
-          <Field label={t("Gold")} htmlFor="edit-gold">
-            <Input id="edit-gold" type="number" value={form.gold ?? 0} onChange={num("gold")} />
-          </Field>
+          <StatField label={t("Gold")} value={form.gold ?? 0} preset={ATTR_DICE} onChange={setNum("gold")} className="w-full" />
 
           <div className="flex flex-col gap-2">
             <label className="flex items-center gap-2 text-sm font-medium text-text">
