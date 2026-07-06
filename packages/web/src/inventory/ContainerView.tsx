@@ -23,11 +23,17 @@ export function ContainerView({
 
   return (
     <Card className={full ? "mt-4 border-danger/50" : "mt-4"}>
-      <h3 className="mb-3 font-serif text-lg text-text">
-        {container.name}{" "}
-        <span className={full ? "text-danger" : "text-muted"}>
-          ({used}/{container.slots} {t("Slots")})
-        </span>
+      <h3 className="mb-3 flex flex-wrap items-center gap-2 font-serif text-lg text-text">
+        {container.name}
+        {full ? (
+          <span className="text-sm text-danger">
+            ({used}/{container.slots} {t("Slots")})
+          </span>
+        ) : (
+          <Badge variant="moss">
+            {used}/{container.slots} {t("Slots")}
+          </Badge>
+        )}
       </h3>
       <ul className="flex flex-col divide-y divide-border">
         {containerItems.map((it) => (

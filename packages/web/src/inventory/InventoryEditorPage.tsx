@@ -7,7 +7,7 @@ import { useCharacter } from "../characters/useCharacters.js";
 import { useUpdateInventory } from "./useInventory.js";
 import { ContainerView } from "./ContainerView.js";
 import { MarketplaceModal } from "./MarketplaceModal.js";
-import { Container as UiContainer, PageHeader, Card, Field, Input, Button, Spinner } from "../ui/index.js";
+import { Container as UiContainer, PageHeader, Card, Field, Input, Button, Skeleton } from "../ui/index.js";
 
 export function InventoryEditorPage() {
   const { t } = useTranslation();
@@ -45,7 +45,24 @@ export function InventoryEditorPage() {
   if (isLoading || !character)
     return (
       <UiContainer>
-        <Spinner />
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Skeleton className="h-8 w-56" />
+          <Skeleton className="h-8 w-24" />
+        </div>
+        <Card className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6">
+          <Skeleton className="h-11 w-28" />
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-5 w-24" />
+          <div className="flex gap-2 sm:ml-auto">
+            <Skeleton className="h-11 w-32" />
+            <Skeleton className="h-11 w-24" />
+          </div>
+        </Card>
+        <Card className="flex flex-col gap-3">
+          <Skeleton className="h-5 w-1/3" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+        </Card>
       </UiContainer>
     );
 

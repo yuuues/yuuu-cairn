@@ -21,13 +21,27 @@
   --color-btn-hover: var(--kw-btn-hover);
   --color-btn-fg: var(--color-stone-950);
   --color-accent-fg: var(--color-stone-950);
-  --color-success: var(--color-emerald-700);
-  --color-success-hover: var(--color-emerald-800);
+  /* Musgo (--kw-moss) sustituye a emerald en success; claro/oscuro vía :root/.dark */
+  --color-success: var(--kw-moss);
+  --color-success-hover: var(--kw-moss-hover);
+  --color-moss: var(--kw-moss);
+  --color-moss-fg: var(--color-stone-950);
   --color-danger: var(--color-rose-700);
   --color-danger-hover: var(--color-rose-800);
   --color-info: var(--color-sky-700);
 
-  --radius-lg: 0.5rem;
+  /* Radio base 12px (botones/inputs/badges); --radius-card 16px para cards/modales */
+  --radius-lg: 0.75rem;
+  --radius-card: 1rem;
+
+  /* Sombras suaves en capas; en oscuro la elevación se expresa por tono de superficie */
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 2px 8px -2px rgb(0 0 0 / 0.08);
+  --shadow-fab: 0 4px 12px -2px rgb(0 0 0 / 0.18), 0 2px 4px -1px rgb(0 0 0 / 0.12);
+
+  /* Movimiento: sutil y rápido; prefers-reduced-motion (más abajo) los neutraliza */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* Tokens semánticos light / dark (resueltos por las vars --kw-*) */
@@ -41,20 +55,27 @@
   --kw-accent-hover: var(--color-amber-900);
   --kw-btn: var(--color-amber-600);
   --kw-btn-hover: var(--color-amber-500);
+  /* Musgo oscuro: texto/borde/superficie sólida en claro (AA >=4.5:1, ver spec) */
+  --kw-moss: #4a5a2f;
+  --kw-moss-hover: #3d4b26;
   /* Hace que los controles nativos (incluido el popup del <select>) se pinten en claro */
   color-scheme: light;
 }
 
 .dark {
-  --kw-bg: var(--color-stone-950);
-  --kw-surface: var(--color-stone-900);
-  --kw-text: var(--color-stone-100);
-  --kw-muted: var(--color-stone-400);
-  --kw-border: var(--color-stone-800);
+  /* Oscuro cálido (matiz marrón) — contraste AA verificado frente a --kw-text */
+  --kw-bg: #1a1613;
+  --kw-surface: #26211c;
+  --kw-text: #f5f5f4;
+  --kw-muted: #a8a29e;
+  --kw-border: #3a332c;
   --kw-accent: var(--color-amber-400);
   --kw-accent-hover: var(--color-amber-300);
   --kw-btn: var(--color-amber-400);
   --kw-btn-hover: var(--color-amber-300);
+  /* Musgo claro: texto/estado positivo en oscuro (AA >=4.5:1, ver spec) */
+  --kw-moss: #a3b579;
+  --kw-moss-hover: #b4c58f;
   /* Popup nativo del <select> en oscuro: texto legible en dark mode */
   color-scheme: dark;
 }

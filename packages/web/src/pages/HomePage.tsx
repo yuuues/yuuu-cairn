@@ -10,8 +10,12 @@ export function HomePage() {
 
   return (
     <Container className="max-w-3xl text-center">
-      <h1 className="mb-4 font-serif text-5xl text-text">Kettlewright</h1>
-      <p className="mb-8 text-muted">{t("Manage your Cairn characters and parties")}</p>
+      <h1 className="mb-4 font-serif text-4xl font-bold tracking-tight text-text sm:text-5xl">
+        Kettlewright
+      </h1>
+      <p className="mb-8 text-base text-muted sm:text-lg">
+        {t("Manage your Cairn characters and parties")}
+      </p>
       <div className="flex flex-wrap justify-center gap-3">
         {USE_LOCAL ? (
           <Link to="/characters">

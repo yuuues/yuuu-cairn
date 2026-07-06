@@ -78,13 +78,13 @@ export function MarketplaceModal({
         </div>
       ) : (
         <>
-          <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-text">
-              {t("Gold")}:{" "}
-              <span className={remainingGold < 0 ? "font-semibold text-danger" : "font-semibold"}>
-                {remainingGold}
-              </span>
-            </p>
+          <div className="mb-4 flex items-center justify-between gap-2">
+            <p className="text-sm text-text">{t("Gold")}:</p>
+            {remainingGold < 0 ? (
+              <span className="text-sm font-semibold text-danger">{remainingGold}</span>
+            ) : (
+              <Badge variant="moss">{remainingGold}</Badge>
+            )}
           </div>
 
           {error && (

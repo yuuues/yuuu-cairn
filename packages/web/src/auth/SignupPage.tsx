@@ -38,7 +38,7 @@ export function SignupPage() {
 
   if (done) {
     return (
-      <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+      <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-8">
         <Card className="w-full">
           <p className="text-text">A confirmation email has been sent. Please check your inbox.</p>
         </Card>
@@ -47,9 +47,11 @@ export function SignupPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-8">
       <Card className="w-full">
-        <h1 className="mb-6 font-serif text-2xl text-text">{t("Sign Up")}</h1>
+        <h1 className="mb-6 font-serif text-2xl font-bold tracking-tight text-text">
+          {t("Sign Up")}
+        </h1>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           {error && (
             <p role="alert" className="text-sm text-danger">
@@ -98,9 +100,11 @@ export function SignupPage() {
               onChange={(e) => setSignupCode(e.target.value)}
             />
           </Field>
-          <Button type="submit">{t("Sign Up")}</Button>
+          <Button type="submit" className="mt-2">
+            {t("Sign Up")}
+          </Button>
         </form>
-        <p className="mt-4 text-sm text-muted">
+        <p className="mt-6 text-sm text-muted">
           <Link to="/login" className="text-accent hover:underline">
             Already have an account? {t("Login")}
           </Link>

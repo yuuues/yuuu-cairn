@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { cn } from "./cn.js";
 
 export interface ModalProps {
@@ -18,6 +18,10 @@ export function Modal({ open, onClose, title, ariaLabel, children, className }: 
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
+  // Controla la transición de entrada (bottom-sheet en móvil / fade en desktop):
+  // arranca en false y pasa a true en el siguiente frame para que el navegador
+  // pueda animar desde el estado inicial.
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -55,11 +59,20 @@ export function Modal({ open, onClose, title, ariaLabel, children, className }: 
     };
   }, [open, onClose]);
 
+  useEffect(() => {
+    if (!open) {
+      setMounted(false);
+      return;
+    }
+    const frame = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
+
   if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 md:items-center md:p-4"
       onClick={onClose}
     >
       <div
@@ -70,11 +83,13 @@ export function Modal({ open, onClose, title, ariaLabel, children, className }: 
         aria-label={title ? undefined : ariaLabel}
         tabIndex={-1}
         className={cn(
-          "max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-surface p-6 shadow-lg focus:outline-none",
+          "max-h-[90vh] w-full max-w-none overflow-y-auto rounded-t-(--radius-card) rounded-b-none border border-border bg-surface p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-lg transition-[transform,opacity] duration-(--duration-base) ease-(--ease-emphasized) focus:outline-none md:max-w-lg md:translate-y-0 md:rounded-(--radius-card)",
+          mounted ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
           className
         )}
         onClick={(e) => e.stopPropagation()}
       >
+        <div aria-hidden="true" className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border md:hidden" />
         {title ? (
           <h2 id={titleId} className="mb-4 font-serif text-xl text-text">
             {title}

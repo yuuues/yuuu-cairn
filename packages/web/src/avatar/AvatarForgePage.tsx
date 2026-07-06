@@ -1,6 +1,6 @@
 import { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Container, Card, Spinner, Button, cn } from "../ui/index.js";
+import { Container, Card, PageHeader, Spinner, Button, cn } from "../ui/index.js";
 import { WebGLErrorBoundary } from "./WebGLErrorBoundary.js";
 import { CharacterPartsEditor } from "./CharacterPartsEditor.js";
 import {
@@ -27,7 +27,7 @@ export function AvatarForgePage() {
 
   const tabClass = (active: boolean) =>
     cn(
-      "rounded-t-lg border-b-2 px-4 py-2 text-sm font-medium",
+      "flex min-h-11 items-center rounded-t-lg border-b-2 px-4 text-sm font-medium transition-colors duration-(--duration-fast) ease-(--ease-emphasized)",
       active
         ? "border-accent text-accent"
         : "border-transparent text-muted hover:text-text"
@@ -35,9 +35,7 @@ export function AvatarForgePage() {
 
   return (
     <Container className="max-w-3xl">
-      <h1 className="mb-4 font-serif text-3xl text-text">
-        {t("Avatar Forge")}
-      </h1>
+      <PageHeader title={t("Avatar Forge")} />
 
       <div role="tablist" className="mb-4 flex gap-2 border-b border-border">
         <button

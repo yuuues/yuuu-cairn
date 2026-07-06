@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGeneratorTables, useRollTable } from "./useGenerators.js";
-import { Select, Field, Button, Card } from "../ui/index.js";
+import { Select, Field, Button, Card, Skeleton } from "../ui/index.js";
 
 function getSubcategories(value: unknown): string[] | null {
   if (value === null || typeof value !== "object" || Array.isArray(value)) return null;
@@ -39,7 +39,13 @@ export function GeneratorTablePanel() {
     if (result) void navigator.clipboard.writeText(result);
   }
 
-  if (isLoading) return <p className="text-muted">{t("Loading tables…")}</p>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col gap-4">
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-2/3" />
+      </div>
+    );
 
   return (
     <div className="flex flex-col gap-4">
@@ -99,7 +105,7 @@ export function GeneratorTablePanel() {
       </div>
 
       {result && (
-        <Card className="rounded-lg border border-border p-4 text-text" id="tools-result-display">
+        <Card className="text-text" id="tools-result-display">
           {result}
         </Card>
       )}

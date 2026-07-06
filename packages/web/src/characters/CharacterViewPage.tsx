@@ -6,7 +6,7 @@ import { serializeCharacter } from "@kw/shared";
 import { useCharacter } from "./useCharacters.js";
 import { downloadOrShare } from "../local/exportFile.js";
 import { encodeForQr, fitsInQr } from "../local/qr.js";
-import { Container, PageHeader, Card, Badge, Button, Spinner, Modal } from "../ui/index.js";
+import { Container, PageHeader, Card, Badge, Button, Skeleton, Modal } from "../ui/index.js";
 
 export function CharacterViewPage() {
   const { t } = useTranslation();
@@ -40,7 +40,22 @@ export function CharacterViewPage() {
   if (isLoading)
     return (
       <Container>
-        <Spinner />
+        <div className="mb-6 flex flex-col gap-3">
+          <Skeleton className="h-8 w-48" />
+        </div>
+        <div className="flex flex-col gap-4">
+          <Card>
+            <Skeleton className="mb-3 h-4 w-2/3" />
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-4 w-20" />
+              ))}
+            </div>
+          </Card>
+          <Card>
+            <Skeleton className="h-4 w-full" />
+          </Card>
+        </div>
       </Container>
     );
   if (error || !character)

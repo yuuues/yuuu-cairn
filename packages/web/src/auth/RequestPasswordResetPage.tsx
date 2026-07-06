@@ -24,9 +24,11 @@ export function RequestPasswordResetPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-8">
       <Card className="w-full">
-        <h1 className="mb-6 font-serif text-2xl text-text">{t("Reset Password")}</h1>
+        <h1 className="mb-6 font-serif text-2xl font-bold tracking-tight text-text">
+          {t("Reset Password")}
+        </h1>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           {message && (
             <p role="alert" className="text-sm text-muted">
@@ -42,7 +44,9 @@ export function RequestPasswordResetPage() {
               required
             />
           </Field>
-          <Button type="submit">{t("Reset Password")}</Button>
+          <Button type="submit" className="mt-2">
+            {t("Reset Password")}
+          </Button>
         </form>
       </Card>
     </div>

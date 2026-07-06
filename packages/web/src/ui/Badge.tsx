@@ -9,7 +9,8 @@ const badgeVariants = cva(
       variant: {
         neutral: "bg-border/60 text-text",
         accent: "bg-accent/15 text-accent",
-        armor: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+        armor: "bg-moss/15 text-moss",
+        moss: "bg-moss/15 text-moss",
       },
     },
     defaultVariants: { variant: "neutral" },

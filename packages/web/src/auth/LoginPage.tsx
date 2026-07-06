@@ -25,9 +25,11 @@ export function LoginPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-8">
       <Card className="w-full">
-        <h1 className="mb-6 font-serif text-2xl text-text">{t("Login")}</h1>
+        <h1 className="mb-6 font-serif text-2xl font-bold tracking-tight text-text">
+          {t("Login")}
+        </h1>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           {error && (
             <p role="alert" className="text-sm text-danger">
@@ -52,11 +54,11 @@ export function LoginPage() {
               required
             />
           </Field>
-          <Button type="submit" disabled={login.isPending}>
+          <Button type="submit" disabled={login.isPending} className="mt-2">
             {t("Login")}
           </Button>
         </form>
-        <p className="mt-4 text-sm text-muted">
+        <p className="mt-6 text-sm text-muted">
           <Link to="/signup" className="text-accent hover:underline">
             {t("Sign Up")}
           </Link>{" "}

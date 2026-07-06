@@ -90,7 +90,7 @@ export function CharacterPartsEditor({
                   aria-label={c}
                   style={{ backgroundColor: c }}
                   className={cn(
-                    "h-6 w-6 rounded border",
+                    "h-6 w-6 rounded-lg border transition-transform duration-(--duration-fast) ease-(--ease-emphasized) active:scale-[0.9]",
                     value[s.id].color === c
                       ? "ring-2 ring-accent"
                       : "border-border"

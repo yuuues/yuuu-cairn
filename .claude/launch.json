@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cairn-dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@kw/server", "--filter", "@kw/web", "--parallel", "dev"],
+      "port": 5173
+    }
+  ]
+}

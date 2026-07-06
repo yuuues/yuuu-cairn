@@ -25,9 +25,11 @@ export function DeleteAccountPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4">
+    <div className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-8 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8">
       <Card className="w-full">
-        <h1 className="mb-6 font-serif text-2xl text-text">Delete Account</h1>
+        <h1 className="mb-6 font-serif text-2xl font-bold tracking-tight text-text">
+          Delete Account
+        </h1>
         <p className="mb-4 text-sm text-muted">This action is permanent.</p>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           {error && (
@@ -44,7 +46,7 @@ export function DeleteAccountPage() {
               required
             />
           </Field>
-          <Button type="submit" variant="danger">
+          <Button type="submit" variant="danger" className="mt-2">
             {t("Delete")} My Account
           </Button>
         </form>

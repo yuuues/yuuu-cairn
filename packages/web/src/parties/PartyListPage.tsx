@@ -1,17 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useParties, useDeleteParty } from "./useParties.js";
-import { Container, PageHeader, Card, Button, Spinner } from "../ui/index.js";
+import { Container, PageHeader, Card, Button, Fab, Skeleton } from "../ui/index.js";
 
 export function PartyListPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { data: parties, isLoading, error } = useParties();
   const del = useDeleteParty();
 
   if (isLoading)
     return (
       <Container>
-        <Spinner />
+        <PageHeader title={t("Parties")} />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={i} className="flex flex-col gap-3">
+              <Skeleton className="h-5 w-2/3" />
+              <Skeleton className="h-4 w-1/2" />
+            </Card>
+          ))}
+        </div>
       </Container>
     );
   if (error)
@@ -41,14 +50,14 @@ export function PartyListPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {parties?.map((p) => (
-            <Card key={p.id} className="flex flex-col gap-3">
-              <div>
-                <Link
-                  to={`/parties/${p.id}`}
-                  className="font-serif text-lg text-text hover:text-accent"
-                >
-                  {p.name}
-                </Link>
+            <Card key={p.id} interactive className="relative flex flex-col gap-3">
+              <Link
+                to={`/parties/${p.id}`}
+                className="absolute inset-0 rounded-(--radius-card) focus:outline-none"
+                aria-label={p.name}
+              />
+              <div className="pointer-events-none">
+                <p className="font-serif text-lg text-text">{p.name}</p>
                 {p.description ? (
                   <p className="text-sm text-muted">{p.description}</p>
                 ) : null}
@@ -56,7 +65,7 @@ export function PartyListPage() {
               <Button
                 variant="danger"
                 size="sm"
-                className="self-start"
+                className="relative z-10 self-start"
                 onClick={() => del.mutate(p.id)}
                 disabled={del.isPending}
                 aria-label={`${t("Delete")} ${p.name}`}
@@ -67,6 +76,9 @@ export function PartyListPage() {
           ))}
         </div>
       )}
+      <Fab aria-label={t("Create Party")} onClick={() => navigate("/parties/new")}>
+        +
+      </Fab>
     </Container>
   );
 }

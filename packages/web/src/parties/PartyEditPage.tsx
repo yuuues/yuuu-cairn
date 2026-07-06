@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useParty, useUpdateParty, useDeleteParty, useRemoveMember } from "./useParties.js";
 import { useSession } from "../auth/useSession.js";
-import { Container, Card, Field, Input, Textarea, Button, Spinner } from "../ui/index.js";
+import { Container, PageHeader, Card, Field, Input, Textarea, Button, Skeleton } from "../ui/index.js";
 
 export function PartyEditPage() {
   const { t } = useTranslation();
@@ -22,7 +22,11 @@ export function PartyEditPage() {
   if (isLoading)
     return (
       <Container className="max-w-2xl">
-        <Spinner />
+        <Skeleton className="mb-6 h-8 w-1/2" />
+        <div className="flex flex-col gap-6">
+          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-32 w-full" />
+        </div>
       </Container>
     );
   if (error || !data)
@@ -61,7 +65,7 @@ export function PartyEditPage() {
 
   return (
     <Container className="max-w-2xl">
-      <h1 className="mb-6 font-serif text-3xl text-text">{t("Edit")} {party.name}</h1>
+      <PageHeader title={`${t("Edit")} ${party.name}`} />
 
       <Card className="mb-6">
         <form onSubmit={handleSave} className="flex flex-col gap-4">

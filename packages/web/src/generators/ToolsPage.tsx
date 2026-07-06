@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GeneratorTablePanel } from "./GeneratorTablePanel.js";
 import { NpcGeneratorPanel } from "./NpcGeneratorPanel.js";
-import { Container, Card, cn } from "../ui/index.js";
+import { Container, Card, PageHeader, cn } from "../ui/index.js";
 
 type Tab = "tables" | "pcgen";
 
@@ -12,7 +12,7 @@ export function ToolsPage() {
 
   const tabClass = (active: boolean) =>
     cn(
-      "rounded-t-lg border-b-2 px-4 py-2 text-sm font-medium",
+      "flex min-h-11 items-center rounded-t-(--radius-lg) border-b-2 px-4 text-sm font-medium transition-colors duration-(--duration-fast) ease-(--ease-emphasized) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
       active
         ? "border-accent text-accent"
         : "border-transparent text-muted hover:text-text"
@@ -20,7 +20,7 @@ export function ToolsPage() {
 
   return (
     <Container className="max-w-3xl">
-      <h1 className="mb-4 font-serif text-3xl text-text">{t("Tools")}</h1>
+      <PageHeader title={t("Tools")} />
       <div role="tablist" className="flex gap-2 border-b border-border">
         <button
           role="tab"

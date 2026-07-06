@@ -6,7 +6,7 @@ import { useSession } from "../auth/useSession.js";
 import { useCharacters } from "../characters/useCharacters.js";
 import { useDiceRoller } from "../realtime/useDiceRoller.js";
 import { DiceModal } from "../realtime/DiceModal.js";
-import { Container, PageHeader, Card, Badge, Button, Spinner } from "../ui/index.js";
+import { Container, PageHeader, Card, Badge, Button, Skeleton } from "../ui/index.js";
 
 export function PartyViewPage() {
   const { t } = useTranslation();
@@ -21,7 +21,12 @@ export function PartyViewPage() {
   if (isLoading)
     return (
       <Container>
-        <Spinner />
+        <Skeleton className="mb-6 h-8 w-1/2" />
+        <div className="flex flex-col gap-6">
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-32 w-full" />
+          <Skeleton className="h-32 w-full" />
+        </div>
       </Container>
     );
   if (error)

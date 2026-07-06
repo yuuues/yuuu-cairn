@@ -10,3 +10,6 @@ export { PageHeader, type PageHeaderProps } from "./PageHeader.js";
 export { Container, type ContainerProps } from "./Container.js";
 export { Spinner } from "./Spinner.js";
 export { Modal, type ModalProps } from "./Modal.js";
+export { Skeleton, type SkeletonProps } from "./Skeleton.js";
+export { Fab, type FabProps } from "./Fab.js";
+export { BottomNav, type BottomNavProps, type BottomNavItem } from "./BottomNav.js";

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useJoinParty } from "./useParties.js";
 import { useCharacters } from "../characters/useCharacters.js";
-import { Container, Card, Field, Input, Select, Button, Spinner } from "../ui/index.js";
+import { Container, Card, Field, Input, Select, Button, Skeleton } from "../ui/index.js";
 
 export function JoinPartyPage() {
   const { t } = useTranslation();
@@ -24,7 +24,15 @@ export function JoinPartyPage() {
   if (isLoading)
     return (
       <Container className="max-w-2xl">
-        <Spinner />
+        <div className="mx-auto flex min-h-[60vh] w-full items-start">
+          <Card className="w-full">
+            <Skeleton className="mb-6 h-7 w-1/3" />
+            <div className="flex flex-col gap-4">
+              <Skeleton className="h-11 w-full" />
+              <Skeleton className="h-11 w-full" />
+            </div>
+          </Card>
+        </div>
       </Container>
     );
 
@@ -32,7 +40,7 @@ export function JoinPartyPage() {
     <Container className="max-w-2xl">
       <div className="mx-auto flex min-h-[60vh] w-full items-start">
         <Card className="w-full">
-          <h1 className="mb-6 font-serif text-2xl text-text">{t("Join Party")}</h1>
+          <h1 className="mb-6 font-serif text-2xl font-bold tracking-tight text-text">{t("Join Party")}</h1>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Field label={t("Party Code")} htmlFor="join-code">
               <Input

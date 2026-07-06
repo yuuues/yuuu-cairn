@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { UpdateCharacterInput } from "@kw/shared";
 import { useCharacter, useUpdateCharacter } from "./useCharacters.js";
-import { Container, Card, Field, Input, Textarea, Button, Spinner } from "../ui/index.js";
+import { Container, Card, Field, Input, Textarea, Button, Skeleton } from "../ui/index.js";
 
 export function CharacterEditPage() {
   const { t } = useTranslation();
@@ -42,7 +42,12 @@ export function CharacterEditPage() {
   if (isLoading || !character)
     return (
       <Container className="max-w-2xl">
-        <Spinner />
+        <Card className="flex flex-col gap-4">
+          <Skeleton className="h-7 w-1/2" />
+          <Skeleton className="h-11 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-11 w-1/3" />
+        </Card>
       </Container>
     );
 

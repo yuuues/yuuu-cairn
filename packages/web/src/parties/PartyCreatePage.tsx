@@ -21,7 +21,7 @@ export function PartyCreatePage() {
     <Container className="max-w-2xl">
       <div className="mx-auto flex min-h-[60vh] w-full items-start">
         <Card className="w-full">
-          <h1 className="mb-6 font-serif text-2xl text-text">{t("Create Party")}</h1>
+          <h1 className="mb-6 font-serif text-2xl font-bold tracking-tight text-text">{t("Create Party")}</h1>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Field label={t("Name")} htmlFor="party-name">
               <Input

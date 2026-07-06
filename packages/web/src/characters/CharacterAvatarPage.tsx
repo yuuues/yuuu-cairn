@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { Character } from "@kw/shared";
-import { Container, PageHeader, Button, Spinner } from "../ui/index.js";
+import { Container, PageHeader, Button, Skeleton } from "../ui/index.js";
 import { useCharacter, useUpdateCharacter } from "./useCharacters.js";
 import { CharacterPartsEditor } from "../avatar/CharacterPartsEditor.js";
 import {
@@ -62,7 +62,8 @@ export function CharacterAvatarPage() {
   if (isLoading)
     return (
       <Container>
-        <Spinner />
+        <Skeleton className="mb-6 h-8 w-56" />
+        <Skeleton className="h-96 w-full" />
       </Container>
     );
   if (error || !character)
