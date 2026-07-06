@@ -7,6 +7,7 @@ import i18n from "./i18n/i18n.js";
 import { parseLocale } from "@kw/shared";
 import "./index.css";
 import { App } from "./App.js";
+import { initApiClient } from "./client/characters.js";
 
 // Paridad con get_locale(): prioridad cookie kw_lang > fallback 'en'
 function readLangCookie(): string | undefined {
@@ -19,14 +20,18 @@ i18n.changeLanguage(initialLocale);
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <I18nextProvider i18n={i18n}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </I18nextProvider>
-  </StrictMode>
-);
+// El cliente (local u HTTP) debe estar listo antes del primer render:
+// los hooks consumen charactersApi/dataApi en cuanto montan las páginas.
+void initApiClient().then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </I18nextProvider>
+    </StrictMode>
+  );
+});
