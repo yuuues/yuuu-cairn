@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSession } from "../auth/useSession.js";
 import { USE_LOCAL } from "../client/mode.js";
-import { LanguageSelector } from "../i18n/LanguageSelector.js";
-import { ThemeToggle } from "./ThemeToggle.js";
+import { DiceRollerModal } from "../dice/DiceRollerModal.js";
+import { SettingsModal } from "./SettingsModal.js";
 import { BottomNav, type BottomNavItem } from "../ui/index.js";
 import { ScrollIcon, UsersIcon, SettingsIcon, DiceIcon } from "../ui/icons.js";
 
@@ -99,6 +99,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { data: user } = useSession();
   const { t } = useTranslation();
   const authed = Boolean(user);
+  const [diceOpen, setDiceOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Misma lógica que NavLinks para decidir los items de la barra inferior móvil.
   // Sin autenticar en modo online: no hay BottomNav (Login/Signup viven en el header).
@@ -131,17 +133,29 @@ export function AppShell({ children }: { children: ReactNode }) {
             <NavLinks authed={authed} className="flex items-center gap-6" />
           </nav>
 
-          <div className="hidden items-center gap-2 md:flex">
-            <LanguageSelector />
-            <ThemeToggle />
-          </div>
-
-          <div className="flex items-center gap-1 md:hidden">
+          <div className="flex items-center gap-1">
+            {/* Login/Signup en móvil sin autenticar (no hay BottomNav ahí). */}
             {!USE_LOCAL && !authed && (
-              <NavLinks authed={authed} className="flex items-center gap-3" />
+              <div className="md:hidden">
+                <NavLinks authed={authed} className="flex items-center gap-3" />
+              </div>
             )}
-            <LanguageSelector />
-            <ThemeToggle />
+            <button
+              type="button"
+              aria-label={t("Quick dice")}
+              onClick={() => setDiceOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors duration-(--duration-fast) hover:bg-border/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <DiceIcon />
+            </button>
+            <button
+              type="button"
+              aria-label={t("Settings")}
+              onClick={() => setSettingsOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors duration-(--duration-fast) hover:bg-border/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <SettingsIcon />
+            </button>
           </div>
         </div>
       </header>
@@ -149,6 +163,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main>{children}</main>
 
       {showBottomNav && <BottomNav items={bottomNavItems} />}
+
+      <DiceRollerModal open={diceOpen} onClose={() => setDiceOpen(false)} />
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { Locale } from "@kw/shared";
-import { SUPPORTED_LOCALES } from "@kw/shared";
+import { Select } from "../ui/index.js";
 
 const LOCALE_LABELS: Record<Locale, string> = {
   pt_BR: "Brasilian Português",
@@ -23,7 +23,7 @@ export function LanguageSelector() {
   }
 
   return (
-    <select
+    <Select
       id="lang-selector"
       value={current}
       onChange={handleChange}
@@ -34,6 +34,6 @@ export function LanguageSelector() {
           {LOCALE_LABELS[loc]}
         </option>
       ))}
-    </select>
+    </Select>
   );
 }

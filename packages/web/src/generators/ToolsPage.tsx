@@ -28,7 +28,7 @@ export function ToolsPage() {
           onClick={() => setTab("tables")}
           className={tabClass(tab === "tables")}
         >
-          Tables
+          {t("Tables")}
         </button>
         <button
           role="tab"

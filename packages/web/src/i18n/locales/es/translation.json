@@ -165,5 +165,17 @@
   "Reset": "Restablecer",
   "Saving…": "Guardando…",
   "Saved": "Guardado",
-  "Generate NPC": "Generar PNJ"
+  "Generate NPC": "Generar PNJ",
+  "Tables": "Tablas",
+  "Category": "Categoría",
+  "Subcategory": "Subcategoría",
+  "Copy": "Copiar",
+  "Clear": "Limpiar",
+  "Result": "Resultado",
+  "Total": "Total",
+  "Modifier": "Modificador",
+  "Clear history": "Borrar historial",
+  "Quick dice": "Dados rápidos",
+  "Settings": "Ajustes",
+  "Theme": "Tema"
 }

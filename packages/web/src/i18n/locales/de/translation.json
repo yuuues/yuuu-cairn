@@ -165,5 +165,17 @@
   "Reset": "Zurücksetzen",
   "Saving…": "Speichern…",
   "Saved": "Gespeichert",
-  "Generate NPC": "NSC generieren"
+  "Generate NPC": "NSC generieren",
+  "Tables": "Tabellen",
+  "Category": "Kategorie",
+  "Subcategory": "Unterkategorie",
+  "Copy": "Kopieren",
+  "Clear": "Leeren",
+  "Result": "Ergebnis",
+  "Total": "Summe",
+  "Modifier": "Modifikator",
+  "Clear history": "Verlauf löschen",
+  "Quick dice": "Schnelle Würfel",
+  "Settings": "Einstellungen",
+  "Theme": "Design"
 }
