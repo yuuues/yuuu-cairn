@@ -27,8 +27,8 @@ const PALETTE = [
 
 /**
  * Editor de personaje por piezas, CONTROLADO: el estado vive en el padre
- * (`value` / `onChange`). Así lo reutilizan tanto el sandbox /avatar como la
- * página por personaje /characters/:id/avatar (que además lo guarda).
+ * (`value` / `onChange`), que decide cuándo y cómo guardarlo. Lo usa la
+ * página de avatar por personaje (/characters/:id/avatar).
  */
 export function CharacterPartsEditor({
   value,

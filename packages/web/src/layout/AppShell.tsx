@@ -6,7 +6,7 @@ import { USE_LOCAL } from "../client/mode.js";
 import { LanguageSelector } from "../i18n/LanguageSelector.js";
 import { ThemeToggle } from "./ThemeToggle.js";
 import { BottomNav, type BottomNavItem } from "../ui/index.js";
-import { ScrollIcon, UsersIcon, SettingsIcon } from "../ui/icons.js";
+import { ScrollIcon, UsersIcon, SettingsIcon, DiceIcon } from "../ui/icons.js";
 
 function NavLinks({
   authed,
@@ -19,7 +19,7 @@ function NavLinks({
 }) {
   const { t } = useTranslation();
   if (USE_LOCAL) {
-    // Modo local: sin cuentas ni partidas online; solo personajes.
+    // Modo local: sin cuentas ni partidas online.
     // El avatar no es una sección propia: se edita desde cada personaje.
     return (
       <div className={className}>
@@ -29,6 +29,13 @@ function NavLinks({
           className="text-text hover:text-accent"
         >
           {t("Characters")}
+        </Link>
+        <Link
+          to="/tools"
+          onClick={onNavigate}
+          className="text-text hover:text-accent"
+        >
+          {t("Tools")}
         </Link>
       </div>
     );
@@ -50,6 +57,13 @@ function NavLinks({
             className="text-text hover:text-accent"
           >
             {t("Parties")}
+          </Link>
+          <Link
+            to="/tools"
+            onClick={onNavigate}
+            className="text-text hover:text-accent"
+          >
+            {t("Tools")}
           </Link>
           <Link
             to="/account"
@@ -90,14 +104,19 @@ export function AppShell({ children }: { children: ReactNode }) {
   // Sin autenticar en modo online: no hay BottomNav (Login/Signup viven en el header).
   // El avatar se edita desde cada personaje, no es una sección de navegación.
   let bottomNavItems: BottomNavItem[] = [];
-  if (!USE_LOCAL && authed) {
+  if (USE_LOCAL) {
+    bottomNavItems = [
+      { to: "/characters", label: t("Characters"), icon: <ScrollIcon /> },
+      { to: "/tools", label: t("Tools"), icon: <DiceIcon /> },
+    ];
+  } else if (authed) {
     bottomNavItems = [
       { to: "/characters", label: t("Characters"), icon: <ScrollIcon /> },
       { to: "/parties", label: t("Parties"), icon: <UsersIcon /> },
+      { to: "/tools", label: t("Tools"), icon: <DiceIcon /> },
       { to: "/account", label: t("Account"), icon: <SettingsIcon /> },
     ];
   }
-  // Con un solo destino (modo local) la barra no aporta navegación: se omite.
   const showBottomNav = bottomNavItems.length >= 2;
 
   return (
