@@ -10,3 +10,5 @@ packages/web/src/local/gamedata/bundle.generated.ts
 # IDE y artefactos de herramientas
 .idea/
 .playwright-mcp/
+
+.superpowers/
