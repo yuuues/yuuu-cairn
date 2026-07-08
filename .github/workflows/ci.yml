@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      # Prisma (sqlite) no conecta en `generate`; las suites de repositorio
+      # crean su propia BD temporal. Este valor solo evita warnings.
+      DATABASE_URL: "file:./ci.db"
+      # Requerido por la config del server (mínimo 32 caracteres).
+      SECRET_KEY: "ci-secret-key-with-at-least-32-chars!"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # El cliente Prisma se genera; los tests usan `db push --skip-generate`
+      # y el typecheck necesita los tipos de @prisma/client.
+      - name: Generate Prisma client
+        run: pnpm --filter @kw/server run prisma:generate
+
+      - name: Build
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
