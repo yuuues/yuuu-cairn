@@ -7,6 +7,7 @@ import i18n from "./i18n/i18n.js";
 import { parseLocale } from "@kw/shared";
 import "./index.css";
 import { App } from "./App.js";
+import { AppErrorBoundary } from "./layout/AppErrorBoundary.js";
 import { initApiClient } from "./client/characters.js";
 import { initGeneratorsClient } from "./client/generators.js";
 import { initAnimations } from "./layout/animations.js";
@@ -33,7 +34,9 @@ void Promise.all([initApiClient(), initGeneratorsClient()]).then(() => {
       <I18nextProvider i18n={i18n}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <App />
+            <AppErrorBoundary>
+              <App />
+            </AppErrorBoundary>
           </BrowserRouter>
         </QueryClientProvider>
       </I18nextProvider>

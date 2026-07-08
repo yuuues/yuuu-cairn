@@ -1,4 +1,7 @@
 {
+  "Something went wrong": "Something went wrong",
+  "The app hit an unexpected error. Reloading usually fixes it.": "The app hit an unexpected error. Reloading usually fixes it.",
+  "Reload": "Reload",
   "Roll a random character": "Roll a random character",
   "…or pick a background": "…or pick a background",
   "Select…": "Select…",

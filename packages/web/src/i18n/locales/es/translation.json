@@ -1,4 +1,7 @@
 {
+  "Something went wrong": "Algo ha salido mal",
+  "The app hit an unexpected error. Reloading usually fixes it.": "La aplicación ha sufrido un error inesperado. Recargar suele solucionarlo.",
+  "Reload": "Recargar",
   "Roll a random character": "Crear personaje aleatorio",
   "…or pick a background": "…o elige un trasfondo",
   "Select…": "Selecciona…",
